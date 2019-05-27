@@ -24,13 +24,15 @@ class RedirectsPresenter(
 
     override fun setRedirect(source: String, destination: String) {
         smsVerifyCatcher = SmsVerifyCatcher(activity, OnSmsCatchListener { message ->
-            Log.d(RedirectsActivity::class.java.simpleName, "SMS received from $source : $message")
-            sendSMS(destination, "SMS received from $source : $message")
+            Log.d(RedirectsActivity::class.java.simpleName, "Caught a SMS from $source: $message")
+            sendSMS(destination, "SMS received from $source: $message")
         })
         view.redirectSetConfirmation(source, destination)
+        onStart()
     }
 
     private fun sendSMS(phoneNumber: String, message: String) {
+        Log.d(RedirectsActivity::class.java.simpleName, "Forwarding to $phoneNumber: $message")
         val smsManager = SmsManager.getDefault()
         smsManager.sendTextMessage(phoneNumber, null, message, null, null)
     }

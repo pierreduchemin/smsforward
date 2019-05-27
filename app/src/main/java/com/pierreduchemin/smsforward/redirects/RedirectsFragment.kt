@@ -48,6 +48,6 @@ class RedirectsFragment : Fragment(), RedirectsContract.View {
     }
 
     override fun redirectSetConfirmation(source: String, destination: String) {
-        Toast.makeText(requireContext(), "ok", Toast.LENGTH_LONG).show()
+        Toast.makeText(requireContext(), "Redirection définie de $source vers $destination", Toast.LENGTH_LONG).show()
     }
 }
