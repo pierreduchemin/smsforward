@@ -11,9 +11,16 @@ class RedirectsActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.redirects_fragment)
-        redirectsPresenter = RedirectsPresenter(this)
-        redirectsPresenter.start()
+        setContentView(R.layout.redirects_activity)
+
+        val redirectsFragment = supportFragmentManager.findFragmentById(R.id.mainContent) as RedirectsFragment?
+            ?: RedirectsFragment.newInstance().also {
+                supportFragmentManager.beginTransaction().apply {
+                    replace(R.id.mainContent, it)
+                }.commit()
+            }
+
+        redirectsPresenter = RedirectsPresenter(this, redirectsFragment)
     }
 
     override fun onStart() {

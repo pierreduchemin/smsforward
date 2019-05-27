@@ -6,9 +6,17 @@ import android.util.Log
 import com.stfalcon.smsverifycatcher.OnSmsCatchListener
 import com.stfalcon.smsverifycatcher.SmsVerifyCatcher
 
-class RedirectsPresenter(private val activity: Activity): RedirectsContract.Presenter {
+class RedirectsPresenter(
+    private val activity: Activity,
+//    val redirectsRepository: RedirectsRepository,
+    private val view: RedirectsContract.View
+) : RedirectsContract.Presenter {
 
     private lateinit var smsVerifyCatcher: SmsVerifyCatcher
+
+    init {
+        view.presenter = this
+    }
 
     override fun start() {
 
@@ -19,12 +27,12 @@ class RedirectsPresenter(private val activity: Activity): RedirectsContract.Pres
             Log.d(RedirectsActivity::class.java.simpleName, "SMS received from $source : $message")
             sendSMS(destination, "SMS received from $source : $message")
         })
+        view.redirectSetConfirmation(source, destination)
     }
 
     private fun sendSMS(phoneNumber: String, message: String) {
-        val sms = SmsManager.getDefault()
-        // TODO check valid sms manager
-        sms.sendTextMessage(phoneNumber, null, message, null, null)
+        val smsManager = SmsManager.getDefault()
+        smsManager.sendTextMessage(phoneNumber, null, message, null, null)
     }
 
     override fun onStart() {
