@@ -1,3 +1,10 @@
 <resources>
     <string name="app_name">SMS Forward</string>
+    <string name="redirects_info_automatically_redirect_sms_from">Rediriger automatiquement les SMS en provenence de</string>
+    <string name="redirects_info_to">vers</string>
+    <string name="redirects_info_enable">Activer</string>
+    <string name="redirects_info_forwarding_from_to">Redirection définie de %s vers %s</string>
+    <string name="redirects_error_source_and_redirection_must_be_different">La source et la destination doivent être différentes</string>
+    <string name="redirects_error_rempty_destination">Adresse destination invalide</string>
+    <string name="redirects_error_rempty_source">Adresse source invalide</string>
 </resources>

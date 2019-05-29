@@ -7,6 +7,9 @@ interface RedirectsContract {
 
     interface View : BaseView<Presenter> {
         fun redirectSetConfirmation(source: String, destination: String)
+        fun showError(message: Int)
+        fun hasPermission(permissionString: String): Boolean
+        fun askPermission(permissionString: String)
     }
 
     interface Presenter : BasePresenter {
