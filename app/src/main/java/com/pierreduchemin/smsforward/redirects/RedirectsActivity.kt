@@ -7,34 +7,34 @@ import com.pierreduchemin.smsforward.R
 
 class RedirectsActivity : AppCompatActivity() {
 
-    private lateinit var redirectsPresenter: RedirectsPresenter
+    private lateinit var presenter: RedirectsPresenter
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.redirects_activity)
 
-        val redirectsFragment = supportFragmentManager.findFragmentById(R.id.mainContent) as RedirectsFragment?
+        val view = supportFragmentManager.findFragmentById(R.id.mainContent) as RedirectsFragment?
             ?: RedirectsFragment.newInstance().also {
                 supportFragmentManager.beginTransaction().apply {
                     replace(R.id.mainContent, it)
                 }.commit()
             }
 
-        redirectsPresenter = RedirectsPresenter(this, redirectsFragment)
+        presenter = RedirectsPresenter(this, view)
     }
 
     override fun onStart() {
         super.onStart()
-        redirectsPresenter.onStart()
+        presenter.onStart()
     }
 
     override fun onStop() {
         super.onStop()
-        redirectsPresenter.onStop()
+        presenter.onStop()
     }
 
     override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<String>, grantResults: IntArray) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)
-        redirectsPresenter.onRequestPermissionsResult(requestCode, permissions, grantResults)
+        presenter.onRequestPermissionsResult(requestCode, permissions, grantResults)
     }
 }
