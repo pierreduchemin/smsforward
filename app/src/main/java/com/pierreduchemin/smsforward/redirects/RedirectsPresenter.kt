@@ -5,8 +5,6 @@ import android.app.Activity
 import android.telephony.SmsManager
 import android.util.Log
 import com.pierreduchemin.smsforward.R
-import com.stfalcon.smsverifycatcher.OnSmsCatchListener
-import com.stfalcon.smsverifycatcher.SmsVerifyCatcher
 
 class RedirectsPresenter(
     private val activity: Activity,
@@ -53,9 +51,11 @@ class RedirectsPresenter(
         }
 
         // in service
-        smsVerifyCatcher = SmsVerifyCatcher(activity, OnSmsCatchListener { message ->
-            Log.i(tag, "Caught a SMS from $source: $message")
-            sendSMS(destination, activity.getString(R.string.redirects_info_sms_received_from, source, message))
+        smsVerifyCatcher = SmsVerifyCatcher(activity, object : OnSmsReceivedListener {
+            override fun onSmsReceived(message: String) {
+                Log.i(tag, "Caught a SMS from $source: $message")
+                sendSMS(destination, activity.getString(R.string.redirects_info_sms_received_from, source, message))
+            }
         })
         smsVerifyCatcher.onStart()
 
@@ -81,7 +81,7 @@ class RedirectsPresenter(
     }
 
     override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<String>, grantResults: IntArray) {
-        if (::smsVerifyCatcher.isInitialized)
-            smsVerifyCatcher.onRequestPermissionsResult(requestCode, permissions, grantResults)
+//        if (::smsVerifyCatcher.isInitialized)
+//            smsVerifyCatcher.onRequestPermissionsResult(requestCode, permissions, grantResults)
     }
 }
