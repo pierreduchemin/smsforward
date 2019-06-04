@@ -5,7 +5,6 @@ import android.content.Intent
 import android.os.IBinder
 import android.telephony.SmsManager
 import android.util.Log
-import com.pierreduchemin.smsforward.R
 
 class RedirectsService : Service() {
 
@@ -22,8 +21,8 @@ class RedirectsService : Service() {
 
         // in service
         smsVerifyCatcher = SmsVerifyCatcher(applicationContext, object : OnSmsReceivedListener {
-            override fun onSmsReceived(message: String) {
-//                Log.i(tag, "Caught a SMS from $source: $message")
+            override fun onSmsReceived(source: String, message: String) {
+                Log.i(tag, "Caught a SMS from $source: $message")
 //                sendSMS(destination, getString(R.string.redirects_info_sms_received_from, source, message))
             }
         })

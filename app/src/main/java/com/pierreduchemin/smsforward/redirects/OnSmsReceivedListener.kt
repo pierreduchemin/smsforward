@@ -1,5 +1,5 @@
 package com.pierreduchemin.smsforward.redirects
 
 interface OnSmsReceivedListener {
-    fun onSmsReceived(message: String)
+    fun onSmsReceived(source: String, message: String)
 }

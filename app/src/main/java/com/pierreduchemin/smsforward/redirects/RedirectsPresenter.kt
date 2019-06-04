@@ -2,6 +2,7 @@ package com.pierreduchemin.smsforward.redirects
 
 import android.Manifest
 import android.app.Activity
+import android.content.Intent
 import android.telephony.SmsManager
 import android.util.Log
 import com.pierreduchemin.smsforward.R
@@ -51,13 +52,16 @@ class RedirectsPresenter(
         }
 
         // in service
-        smsVerifyCatcher = SmsVerifyCatcher(activity, object : OnSmsReceivedListener {
-            override fun onSmsReceived(message: String) {
-                Log.i(tag, "Caught a SMS from $source: $message")
-                sendSMS(destination, activity.getString(R.string.redirects_info_sms_received_from, source, message))
-            }
-        })
-        smsVerifyCatcher.onStart()
+//        smsVerifyCatcher = SmsVerifyCatcher(activity, object : OnSmsReceivedListener {
+//            override fun onSmsReceived(source: String, message: String) {
+//                Log.i(tag, "Caught a SMS from $source: $message")
+//                sendSMS(destination, activity.getString(R.string.redirects_info_sms_received_from, source, message))
+//            }
+//        })
+//        smsVerifyCatcher.onStart()
+
+        val intent = Intent(activity, RedirectsService::class.java)
+        activity.startService(intent)
 
         view.redirectSetConfirmation(source, destination)
     }

@@ -42,9 +42,7 @@ internal class SmsReceiver : BroadcastReceiver() {
                     return
                 }
 
-                if (callback != null) {
-                    callback!!.onSmsReceived(message)
-                }
+                callback?.onSmsReceived(phoneNumber, message)
             }
         } catch (e: Exception) {
             Log.e("SmsReceiver", "Exception smsReceiver$e")
