@@ -51,23 +51,16 @@ class RedirectsPresenter(
             return
         }
 
-        // in service
-//        smsVerifyCatcher = SmsVerifyCatcher(activity, object : OnSmsReceivedListener {
-//            override fun onSmsReceived(source: String, message: String) {
-//                Log.i(tag, "Caught a SMS from $source: $message")
-//                sendSMS(destination, activity.getString(R.string.redirects_info_sms_received_from, source, message))
-//            }
-//        })
-//        smsVerifyCatcher.onStart()
-
         val intent = Intent(activity, RedirectsService::class.java)
+        intent.putExtra(EXTRAKEY_SOURCE, source)
+        intent.putExtra(EXTRAKEY_DESTINATION, destination)
         activity.startService(intent)
 
         view.redirectSetConfirmation(source, destination)
     }
 
     private fun isValidNumber(phoneNumber: String): Boolean {
-        return phoneNumber.length >= 4 || phoneNumber.length <= 16
+        return phoneNumber.length in 4..16
     }
 
     private fun sendSMS(phoneNumber: String, message: String) {
@@ -82,10 +75,5 @@ class RedirectsPresenter(
     override fun onStop() {
         if (::smsVerifyCatcher.isInitialized)
             smsVerifyCatcher.onStop()
-    }
-
-    override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<String>, grantResults: IntArray) {
-//        if (::smsVerifyCatcher.isInitialized)
-//            smsVerifyCatcher.onRequestPermissionsResult(requestCode, permissions, grantResults)
     }
 }

@@ -15,7 +15,6 @@ interface RedirectsContract {
     interface Presenter : BasePresenter {
         fun onStart()
         fun onStop()
-        fun onRequestPermissionsResult(requestCode: Int, permissions: Array<String>, grantResults: IntArray)
         fun setRedirect(source: String, destination: String)
     }
 }

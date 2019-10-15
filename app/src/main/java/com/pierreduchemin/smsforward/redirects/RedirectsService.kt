@@ -1,25 +1,23 @@
 package com.pierreduchemin.smsforward.redirects
 
-import android.app.Service
+import android.app.IntentService
+import android.app.Notification
+import android.app.PendingIntent
 import android.content.Intent
-import android.os.IBinder
 import android.telephony.SmsManager
 import android.util.Log
+import com.pierreduchemin.smsforward.R
 
-class RedirectsService : Service() {
+const val EXTRAKEY_SOURCE: String = "EXTRAKEY_SOURCE"
+const val EXTRAKEY_DESTINATION: String = "EXTRAKEY_DESTINATION"
+
+class RedirectsService : IntentService("SMSForwardService") {
 
     private val tag: String = RedirectsActivity::class.java.simpleName
 
     private lateinit var smsVerifyCatcher: SmsVerifyCatcher
 
-    override fun onBind(intent: Intent): IBinder? {
-        return null
-    }
-
-    override fun onCreate() {
-        super.onCreate()
-
-        // in service
+    override fun onHandleIntent(p0: Intent?) {
         smsVerifyCatcher = SmsVerifyCatcher(applicationContext, object : OnSmsReceivedListener {
             override fun onSmsReceived(source: String, message: String) {
                 Log.i(tag, "Caught a SMS from $source: $message")
@@ -27,6 +25,22 @@ class RedirectsService : Service() {
             }
         })
         smsVerifyCatcher.onStart()
+
+//        val pendingIntent: PendingIntent =
+//            Intent(this, ExampleActivity::class.java).let { notificationIntent ->
+//                PendingIntent.getActivity(this, 0, notificationIntent, 0)
+//            }
+//
+//        val notification: Notification = Notification.Builder(this, CHANNEL_DEFAULT_IMPORTANCE)
+//            .setContentTitle(getText(R.string.notification_title))
+//            .setContentText(getText(R.string.notification_message))
+//            .setSmallIcon(R.drawable.icon)
+//            .setContentIntent(pendingIntent)
+//            .setTicker(getText(R.string.ticker_text))
+//            .build()
+//
+//        startForeground(ONGOING_NOTIFICATION_ID, notification)
+
     }
 
     private fun sendSMS(phoneNumber: String, message: String) {
