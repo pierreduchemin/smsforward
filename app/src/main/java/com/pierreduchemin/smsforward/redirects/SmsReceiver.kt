@@ -23,6 +23,7 @@ class SmsReceiver : BroadcastReceiver() {
     }
 
     override fun onReceive(context: Context, intent: Intent) {
+        val smsReceivedListener = callback ?: return
         val bundle = intent.extras ?: return
         try {
             val pdusObj = bundle.get("pdus") as Array<*>
@@ -42,7 +43,7 @@ class SmsReceiver : BroadcastReceiver() {
                     return
                 }
 
-                callback?.onSmsReceived(phoneNumber, message)
+                smsReceivedListener.onSmsReceived(phoneNumber, message)
             }
         } catch (e: Exception) {
             Log.e(TAG, "Exception in smsReceiver $e")

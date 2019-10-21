@@ -24,23 +24,27 @@ class RedirectsPresenter(
     }
 
     override fun setRedirect(source: String, destination: String) {
-        if (source.isEmpty()) {
+        val machineSource = toMachineNumber(source)
+        val machineDestination = toMachineNumber(destination)
+
+
+        if (machineSource.isEmpty()) {
             view.showError(R.string.redirects_error_empty_source)
             return
         }
-        if (destination.isEmpty()) {
+        if (machineDestination.isEmpty()) {
             view.showError(R.string.redirects_error_empty_destination)
             return
         }
-        if (source == destination) {
+        if (machineSource == machineDestination) {
             view.showError(R.string.redirects_error_source_and_redirection_must_be_different)
             return
         }
-        if (!isValidNumber(source)) {
+        if (!isValidNumber(machineSource)) {
             view.showError(R.string.redirects_error_invalid_source)
             return
         }
-        if (!isValidNumber(destination)) {
+        if (!isValidNumber(machineDestination)) {
             view.showError(R.string.redirects_error_invalid_destination)
             return
         }
@@ -57,9 +61,14 @@ class RedirectsPresenter(
                 sendSMS(destination, activity.getString(R.string.redirects_info_sms_received_from, source, message))
             }
         })
-        smsReceiver.setPhoneNumberFilter(source)
+        smsReceiver.setPhoneNumberFilter(machineSource)
 
-        view.redirectSetConfirmation(source, destination)
+        view.redirectSetConfirmation(machineSource, machineDestination)
+    }
+
+    private fun toMachineNumber(phoneNumber: String): String {
+        val regex = "\\D".toRegex()
+        return regex.replace(phoneNumber, "")
     }
 
     private fun isValidNumber(phoneNumber: String): Boolean {
