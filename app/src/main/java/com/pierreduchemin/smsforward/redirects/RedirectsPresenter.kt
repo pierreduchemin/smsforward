@@ -81,7 +81,6 @@ class RedirectsPresenter(
     }
 
     override fun onStopListening() {
-//        if (::smsVerifyCatcher.isInitialized)
-//            smsVerifyCatcher.onStopListening()
+        activity.unregisterReceiver(smsReceiver)
     }
 }

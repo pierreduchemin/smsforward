@@ -10,6 +10,7 @@ interface RedirectsContract {
         fun showError(message: Int)
         fun hasPermission(permissionString: String): Boolean
         fun askPermission(permissionString: String)
+        fun onPickNumber(requestCode: Int)
     }
 
     interface Presenter : BasePresenter {
