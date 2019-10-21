@@ -1,11 +1,20 @@
 package com.pierreduchemin.smsforward.redirects
 
+import android.Manifest
 import android.os.Bundle
+import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.app.ActivityCompat
 import com.pierreduchemin.smsforward.R
 
 
+const val REQUEST_CODE_SMS_PERMISSION = 9954
+
 class RedirectsActivity : AppCompatActivity() {
+
+    companion object {
+        private val TAG by lazy { RedirectsActivity::class.java.simpleName }
+    }
 
     private lateinit var presenter: RedirectsPresenter
 
@@ -21,15 +30,23 @@ class RedirectsActivity : AppCompatActivity() {
             }
 
         presenter = RedirectsPresenter(this, view)
+
+        ActivityCompat.requestPermissions(
+            this,
+            arrayOf(Manifest.permission.RECEIVE_SMS),
+            REQUEST_CODE_SMS_PERMISSION
+        )
     }
 
-    override fun onStart() {
-        super.onStart()
-        presenter.onStart()
-    }
-
-    override fun onStop() {
-        super.onStop()
-        presenter.onStop()
+    override fun onRequestPermissionsResult(
+        requestCode: Int,
+        permissions: Array<String>,
+        grantResults: IntArray
+    ) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
+        if (requestCode == REQUEST_CODE_SMS_PERMISSION) {
+            Log.i(TAG, "REQUEST_CODE_SMS_PERMISSION ok")
+            presenter.onStartListening()
+        }
     }
 }

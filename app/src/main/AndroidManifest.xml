@@ -14,10 +14,6 @@
             android:roundIcon="@mipmap/ic_launcher_round"
             android:supportsRtl="true"
             android:theme="@style/AppTheme">
-        <service
-                android:name=".redirects.RedirectsService"
-                android:enabled="true"
-                android:exported="false" />
 
         <activity android:name=".redirects.RedirectsActivity">
             <intent-filter>
@@ -30,10 +26,13 @@
             </intent-filter>
         </activity>
 
+        <receiver
+                android:name=".redirects.SmsReceiver"
+                android:exported="true"
+                android:permission="android.permission.BROADCAST_SMS">
 
-        <receiver android:name=".redirects.SmsReceiver"  android:exported="true">
-            <intent-filter>
-                <action android:name="android.provider.telephony.SMS_RECEIVED"/>
+            <intent-filter android:priority="2147483647">
+                <action android:name="android.provider.Telephony.SMS_RECEIVED" />
             </intent-filter>
         </receiver>
     </application>

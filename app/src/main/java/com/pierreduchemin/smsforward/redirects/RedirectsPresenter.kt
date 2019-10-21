@@ -2,7 +2,7 @@ package com.pierreduchemin.smsforward.redirects
 
 import android.Manifest
 import android.app.Activity
-import android.content.Intent
+import android.content.IntentFilter
 import android.telephony.SmsManager
 import android.util.Log
 import com.pierreduchemin.smsforward.R
@@ -13,16 +13,14 @@ class RedirectsPresenter(
     private val view: RedirectsContract.View
 ) : RedirectsContract.Presenter {
 
-    private val tag: String = RedirectsActivity::class.java.simpleName
+    companion object {
+        private val TAG by lazy { RedirectsPresenter::class.java.simpleName }
+    }
 
-    private lateinit var smsVerifyCatcher: SmsVerifyCatcher
+    private var smsReceiver: SmsReceiver = SmsReceiver()
 
     init {
         view.presenter = this
-    }
-
-    override fun start() {
-
     }
 
     override fun setRedirect(source: String, destination: String) {
@@ -51,29 +49,39 @@ class RedirectsPresenter(
             return
         }
 
-        val intent = Intent(activity, RedirectsService::class.java)
-        intent.putExtra(EXTRAKEY_SOURCE, source)
-        intent.putExtra(EXTRAKEY_DESTINATION, destination)
-        activity.startService(intent)
+        smsReceiver.setCallback(object : OnSmsReceivedListener {
+            override fun onSmsReceived(source: String, message: String) {
+                Log.i(TAG, "Caught a SMS from $source: $message")
+
+                // db request to get destination
+                sendSMS(destination, activity.getString(R.string.redirects_info_sms_received_from, source, message))
+            }
+        })
+        smsReceiver.setPhoneNumberFilter(source)
 
         view.redirectSetConfirmation(source, destination)
     }
 
     private fun isValidNumber(phoneNumber: String): Boolean {
+        // TODO use libphonenumber
         return phoneNumber.length in 4..16
     }
 
     private fun sendSMS(phoneNumber: String, message: String) {
-        Log.i(tag, "Forwarding to $phoneNumber: $message")
+        Log.i(TAG, "Forwarding to $phoneNumber: $message")
         val smsManager = SmsManager.getDefault()
         smsManager.sendTextMessage(phoneNumber, null, message, null, null)
     }
 
-    override fun onStart() {
+    override fun onStartListening() {
+        activity.registerReceiver(
+            smsReceiver,
+            IntentFilter("android.provider.Telephony.SMS_RECEIVED")
+        )
     }
 
-    override fun onStop() {
-        if (::smsVerifyCatcher.isInitialized)
-            smsVerifyCatcher.onStop()
+    override fun onStopListening() {
+//        if (::smsVerifyCatcher.isInitialized)
+//            smsVerifyCatcher.onStopListening()
     }
 }

@@ -18,6 +18,7 @@ package com.pierreduchemin.smsforward
 
 interface BasePresenter {
 
-    fun start()
+    fun start() {
+    }
 
 }

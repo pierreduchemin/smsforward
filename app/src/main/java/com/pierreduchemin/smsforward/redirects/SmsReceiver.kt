@@ -8,7 +8,11 @@ import android.os.Bundle
 import android.telephony.SmsMessage
 import android.util.Log
 
-internal class SmsReceiver : BroadcastReceiver() {
+class SmsReceiver : BroadcastReceiver() {
+
+    companion object {
+        private val TAG by lazy { SmsReceiver::class.java.simpleName }
+    }
 
     private var callback: OnSmsReceivedListener? = null
     private var phoneNumberFilter: String? = null
@@ -19,12 +23,8 @@ internal class SmsReceiver : BroadcastReceiver() {
     }
 
     override fun onReceive(context: Context, intent: Intent) {
-        val bundle = intent.extras
+        val bundle = intent.extras ?: return
         try {
-            if (bundle == null) {
-                throw Error("Null bundle")
-            }
-
             val pdusObj = bundle.get("pdus") as Array<*>
             for (o in pdusObj) {
                 if (o == null) {
@@ -45,9 +45,8 @@ internal class SmsReceiver : BroadcastReceiver() {
                 callback?.onSmsReceived(phoneNumber, message)
             }
         } catch (e: Exception) {
-            Log.e("SmsReceiver", "Exception smsReceiver$e")
+            Log.e(TAG, "Exception in smsReceiver $e")
         }
-
     }
 
     private fun getIncomingMessage(aObject: Any, bundle: Bundle): SmsMessage {
@@ -64,9 +63,5 @@ internal class SmsReceiver : BroadcastReceiver() {
 
     fun setPhoneNumberFilter(phoneNumberFilter: String?) {
         this.phoneNumberFilter = phoneNumberFilter
-    }
-
-    fun setFilter(regularExpression: String?) {
-        this.filter = regularExpression
     }
 }

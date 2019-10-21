@@ -13,8 +13,8 @@ interface RedirectsContract {
     }
 
     interface Presenter : BasePresenter {
-        fun onStart()
-        fun onStop()
+        fun onStartListening()
+        fun onStopListening()
         fun setRedirect(source: String, destination: String)
     }
 }
