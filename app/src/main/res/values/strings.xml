@@ -1,13 +1,13 @@
 <resources>
-    <string name="app_name">SMS Forward</string>
-    <string name="redirects_info_automatically_redirect_sms_from">Rediriger automatiquement les SMS en provenence de</string>
-    <string name="redirects_info_to">vers</string>
-    <string name="redirects_info_enable">Activer</string>
-    <string name="redirects_info_forwarding_from_to">Redirection définie de %s vers %s</string>
+    <string name="app_name" translatable="false">SMS Forward</string>
+    <string name="redirects_info_automatically_redirect_sms_from">Automatically redirect SMS from</string>
+    <string name="redirects_info_to">to</string>
+    <string name="redirects_info_enable">Enable</string>
+    <string name="redirects_info_forwarding_from_to">Redirection set from %s to %s</string>
     <string name="redirects_info_sms_received_from">SMS received from %s: %s</string>
-    <string name="redirects_error_source_and_redirection_must_be_different">La source et la destination doivent être différentes</string>
-    <string name="redirects_error_empty_source">Source vide</string>
-    <string name="redirects_error_invalid_source">Source invalide</string>
-    <string name="redirects_error_empty_destination">Destination vide</string>
-    <string name="redirects_error_invalid_destination">Destination invalide</string>
+    <string name="redirects_error_source_and_redirection_must_be_different">Source and destination must differs</string>
+    <string name="redirects_error_empty_source">Empty source</string>
+    <string name="redirects_error_invalid_source">Invalid source</string>
+    <string name="redirects_error_empty_destination">Empty destination</string>
+    <string name="redirects_error_invalid_destination">Invalid destination</string>
 </resources>

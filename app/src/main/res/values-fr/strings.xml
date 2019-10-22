@@ -1,0 +1,12 @@
+<resources>
+    <string name="redirects_info_automatically_redirect_sms_from">Rediriger automatiquement les SMS en provenence de</string>
+    <string name="redirects_info_to">vers</string>
+    <string name="redirects_info_enable">Activer</string>
+    <string name="redirects_info_forwarding_from_to">Redirection définie de %s vers %s</string>
+    <string name="redirects_info_sms_received_from">SMS reçu de %s: %s</string>
+    <string name="redirects_error_source_and_redirection_must_be_different">La source et la destination doivent être différentes</string>
+    <string name="redirects_error_empty_source">Source vide</string>
+    <string name="redirects_error_invalid_source">Source invalide</string>
+    <string name="redirects_error_empty_destination">Destination vide</string>
+    <string name="redirects_error_invalid_destination">Destination invalide</string>
+</resources>
