@@ -2,10 +2,17 @@ package com.pierreduchemin.smsforward.redirects
 
 import android.Manifest
 import android.app.Activity
+import android.content.Context.TELEPHONY_SERVICE
 import android.content.IntentFilter
 import android.telephony.SmsManager
+import android.telephony.TelephonyManager
 import android.util.Log
+import com.google.i18n.phonenumbers.NumberParseException
+import com.google.i18n.phonenumbers.PhoneNumberUtil
+import com.google.i18n.phonenumbers.Phonenumber
 import com.pierreduchemin.smsforward.R
+import java.util.*
+
 
 class RedirectsPresenter(
     private val activity: Activity,
@@ -18,33 +25,33 @@ class RedirectsPresenter(
     }
 
     private var smsReceiver: SmsReceiver = SmsReceiver()
+    private val phoneUtil = PhoneNumberUtil.getInstance()
 
     init {
         view.presenter = this
     }
 
     override fun setRedirect(source: String, destination: String) {
-        val machineSource = toMachineNumber(source)
-        val machineDestination = toMachineNumber(destination)
+        val fSource = toFormattedNumber(source)
+        val fDestination = toFormattedNumber(destination)
 
-
-        if (machineSource.isEmpty()) {
+        if (fSource.isEmpty()) {
             view.showError(R.string.redirects_error_empty_source)
             return
         }
-        if (machineDestination.isEmpty()) {
+        if (fDestination.isEmpty()) {
             view.showError(R.string.redirects_error_empty_destination)
             return
         }
-        if (machineSource == machineDestination) {
+        if (fSource == fDestination) {
             view.showError(R.string.redirects_error_source_and_redirection_must_be_different)
             return
         }
-        if (!isValidNumber(machineSource)) {
+        if (!isValidNumber(fSource)) {
             view.showError(R.string.redirects_error_invalid_source)
             return
         }
-        if (!isValidNumber(machineDestination)) {
+        if (!isValidNumber(fDestination)) {
             view.showError(R.string.redirects_error_invalid_destination)
             return
         }
@@ -57,23 +64,34 @@ class RedirectsPresenter(
             override fun onSmsReceived(source: String, message: String) {
                 Log.i(TAG, "Caught a SMS from $source: $message")
 
-                // db request to get destination
+                // TODO db request to get destination
                 sendSMS(destination, activity.getString(R.string.redirects_info_sms_received_from, source, message))
             }
         })
-        smsReceiver.setPhoneNumberFilter(machineSource)
+        smsReceiver.setPhoneNumberFilter(fSource)
 
-        view.redirectSetConfirmation(machineSource, machineDestination)
+        view.redirectSetConfirmation(fSource, fDestination)
     }
 
-    private fun toMachineNumber(phoneNumber: String): String {
-        val regex = "\\D".toRegex()
-        return regex.replace(phoneNumber, "")
+    private fun getProto(phoneNumber: String): Phonenumber.PhoneNumber? {
+        return try {
+            val tm = activity.getSystemService(TELEPHONY_SERVICE) as TelephonyManager?
+            val countryCode = tm?.simCountryIso?.toUpperCase(Locale.ROOT) ?: "FR"
+            phoneUtil.parse(phoneNumber, countryCode)
+        } catch (e: NumberParseException) {
+            System.err.println("NumberParseException was thrown: $e")
+            null
+        }
+    }
+
+    private fun toFormattedNumber(phoneNumber: String): String {
+        val proto = getProto(phoneNumber)
+        return phoneUtil.format(proto, PhoneNumberUtil.PhoneNumberFormat.E164)
     }
 
     private fun isValidNumber(phoneNumber: String): Boolean {
-        // TODO use libphonenumber
-        return phoneNumber.length in 4..16
+        val proto = getProto(phoneNumber)
+        return phoneUtil.isValidNumber(proto)
     }
 
     private fun sendSMS(phoneNumber: String, message: String) {
