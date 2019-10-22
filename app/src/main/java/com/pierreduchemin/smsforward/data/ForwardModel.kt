@@ -16,8 +16,5 @@ data class ForwardModel(
     val from: String,
 
     @ColumnInfo
-    val to: String,
-
-    @ColumnInfo
-    val active: Boolean
+    val to: String
 )

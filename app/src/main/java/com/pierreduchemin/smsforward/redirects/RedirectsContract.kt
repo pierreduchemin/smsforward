@@ -11,11 +11,13 @@ interface RedirectsContract {
         fun hasPermission(permissionString: String): Boolean
         fun askPermission(permissionString: String)
         fun onPickNumber(requestCode: Int)
+        fun activateButton(activated: Boolean)
     }
 
     interface Presenter : BasePresenter {
         fun onStartListening()
         fun onStopListening()
         fun setRedirect(source: String, destination: String)
+        fun onNumberPicked()
     }
 }

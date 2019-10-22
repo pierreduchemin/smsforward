@@ -40,6 +40,7 @@ class RedirectsFragment : Fragment(), RedirectsContract.View {
 
     override lateinit var presenter: RedirectsContract.Presenter
     private lateinit var root: View
+    private lateinit var btnEnable: Button
     private lateinit var etSource: EditText
     private lateinit var etDestination: EditText
 
@@ -53,7 +54,7 @@ class RedirectsFragment : Fragment(), RedirectsContract.View {
     ): View? {
         root = inflater.inflate(R.layout.redirects_fragment, container, false)
 
-        val btnEnable = root.findViewById<Button>(R.id.btnEnable)
+        btnEnable = root.findViewById(R.id.btnEnable)
         etSource = root.findViewById(R.id.etSource)
         etSource.setOnClickListener { onPickNumber(CONTACT_PICKER_SOURCE_REQUEST_CODE) }
         etDestination = root.findViewById(R.id.etDestination)
@@ -84,7 +85,8 @@ class RedirectsFragment : Fragment(), RedirectsContract.View {
     }
 
     override fun redirectSetConfirmation(source: String, destination: String) {
-        Snackbar.make(root,
+        Snackbar.make(
+            root,
             requireContext().getString(
                 R.string.redirects_info_forwarding_from_to,
                 source,
@@ -125,5 +127,11 @@ class RedirectsFragment : Fragment(), RedirectsContract.View {
         }
 
         cursor.close()
+
+        presenter.onNumberPicked()
+    }
+
+    override fun activateButton(activated: Boolean) {
+        btnEnable.isEnabled = activated
     }
 }

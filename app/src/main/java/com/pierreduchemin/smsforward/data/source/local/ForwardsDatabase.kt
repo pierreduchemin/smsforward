@@ -27,20 +27,19 @@ abstract class ForwardsDatabase : RoomDatabase() {
 
     companion object {
 
+        @Volatile
         private var INSTANCE: ForwardsDatabase? = null
 
-        private val lock = Any()
-
         fun getInstance(context: Context): ForwardsDatabase {
-            synchronized(lock) {
+            synchronized(this) {
                 if (INSTANCE == null) {
-                    INSTANCE = Room.databaseBuilder(context.applicationContext,
-                            ForwardsDatabase::class.java, "forward.db")
-                            .build()
+                    INSTANCE = Room.databaseBuilder(
+                        context,
+                        ForwardsDatabase::class.java, "forward.db"
+                    ).build()
                 }
                 return INSTANCE!!
             }
         }
     }
-
 }

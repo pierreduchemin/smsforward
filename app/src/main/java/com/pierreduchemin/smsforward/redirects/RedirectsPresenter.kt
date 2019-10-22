@@ -11,6 +11,7 @@ import com.google.i18n.phonenumbers.NumberParseException
 import com.google.i18n.phonenumbers.PhoneNumberUtil
 import com.google.i18n.phonenumbers.Phonenumber
 import com.pierreduchemin.smsforward.R
+import com.pierreduchemin.smsforward.data.source.local.ForwardsDatabase
 import java.util.*
 
 
@@ -64,8 +65,6 @@ class RedirectsPresenter(
         smsReceiver.setCallback(object : OnSmsReceivedListener {
             override fun onSmsReceived(source: String, message: String) {
                 Log.i(TAG, "Caught a SMS from $source: $message")
-
-                // TODO db request to get destination
                 sendSMS(destination, activity.getString(R.string.redirects_info_sms_received_from, source, message))
             }
         })
@@ -99,6 +98,11 @@ class RedirectsPresenter(
         Log.i(TAG, "Forwarding to $phoneNumber: $message")
         val smsManager = SmsManager.getDefault()
         smsManager.sendTextMessage(phoneNumber, null, message, null, null)
+    }
+
+    override fun onNumberPicked() {
+        // TODO if ForwardModel in repo
+        view.activateButton(true)
     }
 
     override fun onStartListening() {
