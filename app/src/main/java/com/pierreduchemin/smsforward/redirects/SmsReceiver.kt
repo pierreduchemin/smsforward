@@ -7,6 +7,7 @@ import android.os.Build
 import android.os.Bundle
 import android.telephony.SmsMessage
 import android.util.Log
+import com.pierreduchemin.smsforward.utils.PhoneNumberUtils
 
 class SmsReceiver : BroadcastReceiver() {
 
@@ -32,7 +33,11 @@ class SmsReceiver : BroadcastReceiver() {
                     continue
                 }
                 val currentMessage = getIncomingMessage(o, bundle)
-                val phoneNumber = currentMessage.displayOriginatingAddress
+                val phoneNumber = PhoneNumberUtils.toFormattedNumber(context, currentMessage.displayOriginatingAddress)
+                if (phoneNumber == null) {
+                    Log.e(TAG, "Received SMS from invalid number (???): $phoneNumber")
+                    return
+                }
 
                 if (phoneNumberFilter != null && phoneNumber != phoneNumberFilter) {
                     Log.d(TAG, "Not the target: $phoneNumberFilter, was: $phoneNumber")
