@@ -32,17 +32,18 @@ class RedirectsPresenter(
     }
 
     override fun setRedirect(source: String, destination: String) {
-        val fSource = toFormattedNumber(source)
-        val fDestination = toFormattedNumber(destination)
-
-        if (fSource.isEmpty()) {
+        if (source.isEmpty()) {
             view.showError(R.string.redirects_error_empty_source)
             return
         }
-        if (fDestination.isEmpty()) {
+        if (destination.isEmpty()) {
             view.showError(R.string.redirects_error_empty_destination)
             return
         }
+
+        val fSource = toFormattedNumber(source)
+        val fDestination = toFormattedNumber(destination)
+
         if (fSource == fDestination) {
             view.showError(R.string.redirects_error_source_and_redirection_must_be_different)
             return

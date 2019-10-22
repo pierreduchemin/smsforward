@@ -29,6 +29,7 @@ import android.widget.Toast
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
+import com.google.android.material.snackbar.Snackbar
 import com.pierreduchemin.smsforward.R
 
 const val PERMISSIONS_REQUEST_SEND_SMS = 1654
@@ -38,6 +39,7 @@ const val CONTACT_PICKER_DESTINATION_REQUEST_CODE = 1896
 class RedirectsFragment : Fragment(), RedirectsContract.View {
 
     override lateinit var presenter: RedirectsContract.Presenter
+    private lateinit var root: View
     private lateinit var etSource: EditText
     private lateinit var etDestination: EditText
 
@@ -49,7 +51,7 @@ class RedirectsFragment : Fragment(), RedirectsContract.View {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        val root = inflater.inflate(R.layout.redirects_fragment, container, false)
+        root = inflater.inflate(R.layout.redirects_fragment, container, false)
 
         val btnEnable = root.findViewById<Button>(R.id.btnEnable)
         etSource = root.findViewById(R.id.etSource)
@@ -82,14 +84,13 @@ class RedirectsFragment : Fragment(), RedirectsContract.View {
     }
 
     override fun redirectSetConfirmation(source: String, destination: String) {
-        Toast.makeText(
-            requireContext(),
+        Snackbar.make(root,
             requireContext().getString(
                 R.string.redirects_info_forwarding_from_to,
                 source,
                 destination
             ),
-            Toast.LENGTH_LONG
+            Snackbar.LENGTH_INDEFINITE
         ).show()
     }
 
