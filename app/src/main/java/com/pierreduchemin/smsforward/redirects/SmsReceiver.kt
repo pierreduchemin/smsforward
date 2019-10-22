@@ -35,6 +35,7 @@ class SmsReceiver : BroadcastReceiver() {
                 val phoneNumber = currentMessage.displayOriginatingAddress
 
                 if (phoneNumberFilter != null && phoneNumber != phoneNumberFilter) {
+                    Log.d(TAG, "Not the target: $phoneNumberFilter, was: $phoneNumber")
                     return
                 }
                 val message = currentMessage.displayMessageBody
