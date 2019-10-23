@@ -114,7 +114,7 @@ class RedirectsPresenter(
 
             smsReceiver.setCallback(object : OnSmsReceivedListener {
                 override fun onSmsReceived(source: String, message: String) {
-                    Log.i(TAG, "Caught a SMS from $source: $message")
+                    Log.i(TAG, "Caught a SMS from $source")
                     sendSMS(
                         destination, activity.getString(
                             R.string.redirects_info_sms_received_from,
