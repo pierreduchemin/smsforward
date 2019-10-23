@@ -6,18 +6,21 @@ import com.pierreduchemin.smsforward.BaseView
 interface RedirectsContract {
 
     interface View : BaseView<Presenter> {
-        fun redirectSetConfirmation(source: String, destination: String)
         fun showError(message: Int)
         fun hasPermission(permissionString: String): Boolean
         fun askPermission(permissionString: String)
-        fun onPickNumber(requestCode: Int)
-        fun activateButton(activated: Boolean)
+        fun pickNumber(requestCode: Int)
+        fun setSource(source: String)
+        fun setDestination(destination: String)
+        fun setButtonState(buttonState: RedirectsFragment.ButtonState)
+        fun resetFields()
     }
 
     interface Presenter : BasePresenter {
-        fun onStartListening()
-        fun onStopListening()
-        fun setRedirect(source: String, destination: String)
+        fun onButtonClicked(source: String, destination: String)
         fun onNumberPicked()
+        fun onSourceSet(source: String?)
+        fun onDestinationSet(destination: String?)
+        fun onViewCreated()
     }
 }

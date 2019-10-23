@@ -38,7 +38,14 @@ const val CONTACT_PICKER_DESTINATION_REQUEST_CODE = 1896
 
 class RedirectsFragment : Fragment(), RedirectsContract.View {
 
+    enum class ButtonState {
+        DISABLED,
+        ENABLED,
+        STOP
+    }
+
     override lateinit var presenter: RedirectsContract.Presenter
+
     private lateinit var root: View
     private lateinit var btnEnable: Button
     private lateinit var etSource: EditText
@@ -56,15 +63,17 @@ class RedirectsFragment : Fragment(), RedirectsContract.View {
 
         btnEnable = root.findViewById(R.id.btnEnable)
         etSource = root.findViewById(R.id.etSource)
-        etSource.setOnClickListener { onPickNumber(CONTACT_PICKER_SOURCE_REQUEST_CODE) }
+        etSource.setOnClickListener { pickNumber(CONTACT_PICKER_SOURCE_REQUEST_CODE) }
         etDestination = root.findViewById(R.id.etDestination)
-        etDestination.setOnClickListener { onPickNumber(CONTACT_PICKER_DESTINATION_REQUEST_CODE) }
+        etDestination.setOnClickListener { pickNumber(CONTACT_PICKER_DESTINATION_REQUEST_CODE) }
         btnEnable.setOnClickListener {
-            presenter.setRedirect(
+            presenter.onButtonClicked(
                 etSource.text.trim().toString(),
                 etDestination.text.trim().toString()
             )
         }
+
+        presenter.onViewCreated()
 
         return root
     }
@@ -84,23 +93,11 @@ class RedirectsFragment : Fragment(), RedirectsContract.View {
         )
     }
 
-    override fun redirectSetConfirmation(source: String, destination: String) {
-        Snackbar.make(
-            root,
-            requireContext().getString(
-                R.string.redirects_info_forwarding_from_to,
-                source,
-                destination
-            ),
-            Snackbar.LENGTH_INDEFINITE
-        ).show()
-    }
-
     override fun showError(message: Int) {
         Toast.makeText(requireContext(), message, Toast.LENGTH_LONG).show()
     }
 
-    override fun onPickNumber(requestCode: Int) {
+    override fun pickNumber(requestCode: Int) {
         val intent = Intent(Intent.ACTION_PICK, ContactsContract.CommonDataKinds.Phone.CONTENT_URI)
         startActivityForResult(intent, requestCode)
     }
@@ -121,9 +118,9 @@ class RedirectsFragment : Fragment(), RedirectsContract.View {
         }
 
         if (requestCode == CONTACT_PICKER_SOURCE_REQUEST_CODE) {
-            etSource.setText(phoneNo, TextView.BufferType.EDITABLE)
+            presenter.onSourceSet(phoneNo)
         } else if (requestCode == CONTACT_PICKER_DESTINATION_REQUEST_CODE) {
-            etDestination.setText(phoneNo, TextView.BufferType.EDITABLE)
+            presenter.onDestinationSet(phoneNo)
         }
 
         cursor.close()
@@ -131,7 +128,39 @@ class RedirectsFragment : Fragment(), RedirectsContract.View {
         presenter.onNumberPicked()
     }
 
-    override fun activateButton(activated: Boolean) {
-        btnEnable.isEnabled = activated
+    override fun setButtonState(buttonState: ButtonState) {
+        when (buttonState) {
+            ButtonState.DISABLED -> {
+                etSource.isEnabled = true
+                etDestination.isEnabled = true
+                btnEnable.isEnabled = false
+                btnEnable.text = getString(R.string.redirects_info_enable)
+            }
+            ButtonState.ENABLED -> {
+                etSource.isEnabled = true
+                etDestination.isEnabled = true
+                btnEnable.isEnabled = true
+                btnEnable.text = getString(R.string.redirects_info_enable)
+            }
+            ButtonState.STOP -> {
+                etSource.isEnabled = false
+                etDestination.isEnabled = false
+                btnEnable.isEnabled = true
+                btnEnable.text = getString(R.string.redirects_info_stop)
+            }
+        }
+    }
+
+    override fun setSource(source: String) {
+        etSource.setText(source, TextView.BufferType.EDITABLE)
+    }
+
+    override fun setDestination(destination: String) {
+        etDestination.setText(destination, TextView.BufferType.EDITABLE)
+    }
+
+    override fun resetFields() {
+        etSource.setText("", TextView.BufferType.EDITABLE)
+        etDestination.setText("", TextView.BufferType.EDITABLE)
     }
 }

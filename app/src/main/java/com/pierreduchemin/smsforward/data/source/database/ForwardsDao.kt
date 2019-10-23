@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.pierreduchemin.smsforward.data.source.local
+package com.pierreduchemin.smsforward.data.source.database
 
 import androidx.room.Dao
 import androidx.room.Insert
@@ -25,11 +25,18 @@ import com.pierreduchemin.smsforward.data.ForwardModel
 /**
  * Data Access Object for the tasks table.
  */
-@Dao interface ForwardsDao {
+@Dao
+interface ForwardsDao {
 
-    @Query("SELECT * FROM ForwardModel") fun getForwardModels(): List<ForwardModel>
+    @Query("SELECT * FROM ForwardModel WHERE id = 0")
+    fun getForwardModel(): ForwardModel?
 
-    @Insert(onConflict = OnConflictStrategy.REPLACE) fun insertForwardModel(forwardModel: ForwardModel)
+    @Query("SELECT COUNT(*) FROM ForwardModel")
+    fun countForwardModel(): Long
 
-    @Query("DELETE FROM ForwardModel WHERE id = :id") fun deleteForwardModelById(id: Long): Int
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    fun insertForwardModel(forwardModel: ForwardModel)
+
+    @Query("DELETE FROM ForwardModel WHERE id = :id")
+    fun deleteForwardModelById(id: Long): Int
 }

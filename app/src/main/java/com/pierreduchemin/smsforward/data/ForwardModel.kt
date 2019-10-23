@@ -13,8 +13,11 @@ data class ForwardModel(
     val id: Long,
 
     @ColumnInfo
-    val from: String,
+    var from: String,
 
     @ColumnInfo
-    val to: String
+    var to: String,
+
+    @ColumnInfo
+    var activated: Boolean
 )

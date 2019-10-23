@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.pierreduchemin.smsforward.data.source.local
+package com.pierreduchemin.smsforward.data.source.database
 
 import android.content.Context
 import androidx.room.Database
@@ -24,6 +24,8 @@ import com.pierreduchemin.smsforward.data.ForwardModel
 
 @Database(entities = [ForwardModel::class], version = 1)
 abstract class ForwardsDatabase : RoomDatabase() {
+
+    abstract fun forwardsDao(): ForwardsDao
 
     companion object {
 

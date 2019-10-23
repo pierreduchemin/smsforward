@@ -6,6 +6,7 @@ import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import com.pierreduchemin.smsforward.R
+import com.pierreduchemin.smsforward.data.ForwardModelRepository
 
 
 const val REQUEST_CODE_SMS_PERMISSION = 9954
@@ -29,7 +30,9 @@ class RedirectsActivity : AppCompatActivity() {
                 }.commit()
             }
 
-        presenter = RedirectsPresenter(this, view)
+        // TODO inject with DI
+        val forwardModelRepository = ForwardModelRepository(this)
+        presenter = RedirectsPresenter(this, forwardModelRepository, view)
 
         ActivityCompat.requestPermissions(
             this,
@@ -46,7 +49,7 @@ class RedirectsActivity : AppCompatActivity() {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)
         if (requestCode == REQUEST_CODE_SMS_PERMISSION) {
             Log.i(TAG, "REQUEST_CODE_SMS_PERMISSION ok")
-            presenter.onStartListening()
+            presenter.onViewCreated()
         }
     }
 }
