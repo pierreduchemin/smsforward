@@ -29,7 +29,6 @@ import android.widget.Toast
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
-import com.google.android.material.snackbar.Snackbar
 import com.pierreduchemin.smsforward.R
 
 const val PERMISSIONS_REQUEST_SEND_SMS = 1654
@@ -162,5 +161,17 @@ class RedirectsFragment : Fragment(), RedirectsContract.View {
     override fun resetFields() {
         etSource.setText("", TextView.BufferType.EDITABLE)
         etDestination.setText("", TextView.BufferType.EDITABLE)
+    }
+
+    override fun showRedirectMessage(source: String, destination: String) {
+        Toast.makeText(
+            requireActivity().applicationContext,
+            requireContext().getString(
+                R.string.redirects_info_sms_redirect_confirmation,
+                source,
+                destination
+            ),
+            Toast.LENGTH_SHORT
+        ).show()
     }
 }

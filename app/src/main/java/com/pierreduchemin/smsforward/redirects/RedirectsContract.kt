@@ -14,6 +14,7 @@ interface RedirectsContract {
         fun setDestination(destination: String)
         fun setButtonState(buttonState: RedirectsFragment.ButtonState)
         fun resetFields()
+        fun showRedirectMessage(source: String, destination: String)
     }
 
     interface Presenter : BasePresenter {
