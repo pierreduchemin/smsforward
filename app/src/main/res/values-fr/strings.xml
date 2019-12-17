@@ -11,4 +11,5 @@
     <string name="redirects_error_invalid_source">Source invalide</string>
     <string name="redirects_error_empty_destination">Destination vide</string>
     <string name="redirects_error_invalid_destination">Destination invalide</string>
+    <string name="redirects_error_invalid_phone_number">Invalid phone number</string>
 </resources>

@@ -1,0 +1,164 @@
+package com.pierreduchemin.smsforward.redirects
+
+import android.app.*
+import android.content.Context
+import android.content.Intent
+import android.graphics.BitmapFactory
+import android.graphics.Color
+import android.os.Build
+import android.os.IBinder
+import android.telephony.SmsManager
+import android.util.Log
+import androidx.annotation.RequiresApi
+import androidx.core.app.NotificationCompat
+import com.pierreduchemin.smsforward.R
+
+
+private const val ACTION_START_REDIRECT =
+    "com.pierreduchemin.smsforward.redirects.action.START_REDIRECT"
+private const val ACTION_STOP_REDIRECT =
+    "com.pierreduchemin.smsforward.redirects.action.STOP_REDIRECT"
+
+private const val EXTRA_SOURCE = "com.pierreduchemin.smsforward.redirects.extra.SOURCE"
+private const val EXTRA_DESTINATION = "com.pierreduchemin.smsforward.redirects.extra.DESTINATION"
+
+private const val REDIRECT_NOTIFICATION_ID: Int = 1
+
+class RedirectService : Service() {
+
+    private var smsReceiver: SmsReceiver = SmsReceiver()
+
+    companion object {
+
+        private val TAG by lazy { RedirectService::class.java.simpleName }
+        private var intent: Intent? = null
+
+        /**
+         * Starts this service to perform action Redirect with the given parameters. If
+         * the service is already performing a task this action will be queued.
+         *
+         * @see IntentService
+         */
+        @JvmStatic
+        fun startActionRedirect(context: Context, source: String, destination: String) {
+            intent = Intent(context, RedirectService::class.java).apply {
+                action = ACTION_START_REDIRECT
+                putExtra(EXTRA_SOURCE, source)
+                putExtra(EXTRA_DESTINATION, destination)
+            }
+            context.startService(intent)
+        }
+
+        @JvmStatic
+        fun stopActionRedirect(context: Context) {
+            context.stopService(intent)
+        }
+    }
+
+    override fun onCreate() {
+        super.onCreate()
+        Log.d(TAG, "RedirectService created")
+    }
+
+    override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
+        when (intent?.action) {
+            ACTION_START_REDIRECT -> {
+                val source = intent.getStringExtra(EXTRA_SOURCE)
+                val destination = intent.getStringExtra(EXTRA_DESTINATION)
+                // TODO: call safely
+                handleActionRedirect(source, destination)
+
+                val channelId = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                    createNotificationChannel("REDIRECT_CHANNEL_ID", "SMS redirection")
+                } else {
+                    // If earlier version channel ID is not used
+                    // https://developer.android.com/reference/android/support/v4/app/NotificationCompat.Builder.html#NotificationCompat.Builder(android.content.Context)
+                    "REDIRECT_CHANNEL_ID"
+                }
+
+
+                val startAppIntent = Intent(this, RedirectsActivity::class.java)
+                val startAppPendingIntent = PendingIntent.getService(this, 0, startAppIntent, 0)
+
+                // Add Play button intent in notification.
+                val stopServiceIntent = Intent(this, RedirectService::class.java)
+                stopServiceIntent.action = ACTION_STOP_REDIRECT
+                val stopServicePendingIntent = PendingIntent.getService(this, 0, stopServiceIntent, 0)
+                val stopAction = NotificationCompat.Action(
+                    android.R.mipmap.sym_def_app_icon,
+                    "Stop", // TODO
+                    stopServicePendingIntent
+                )
+
+                val notification: Notification =
+                    NotificationCompat.Builder(this, channelId)
+                        .setSmallIcon(android.R.drawable.ic_delete)
+                        .setLargeIcon(
+                            BitmapFactory.decodeResource(
+                                resources,
+                                android.R.mipmap.sym_def_app_icon
+                            )
+                        )
+                        .addAction(stopAction)
+                        .setContentIntent(startAppPendingIntent)
+                        .setWhen(System.currentTimeMillis())
+                        .setPriority(NotificationCompat.PRIORITY_DEFAULT)
+                        .setStyle(
+                            NotificationCompat.BigTextStyle()
+                                .setBigContentTitle(baseContext.getString(R.string.app_name))
+                                // TODO
+                                .bigText("SMS are now being forwarded from $source to $destination.")
+                        )
+                        .build()
+
+                Log.d(TAG, "Notification started")
+
+                startForeground(REDIRECT_NOTIFICATION_ID, notification)
+            }
+        }
+
+        return super.onStartCommand(intent, flags, startId)
+    }
+
+    /**
+     * Handle action Redirect in the provided background thread with the provided
+     * parameters.
+     */
+    private fun handleActionRedirect(source: String, destination: String) {
+        smsReceiver.setCallback(object : OnSmsReceivedListener {
+            override fun onSmsReceived(source: String, message: String) {
+                Log.i(TAG, "Caught a SMS from $source")
+                // TODO: show notification
+                sendSMS(
+                    destination, getString(
+                        R.string.redirects_info_sms_received_from,
+                        source,
+                        message
+                    )
+                )
+            }
+        })
+        smsReceiver.setPhoneNumberFilter(source)
+    }
+
+    private fun sendSMS(phoneNumber: String, message: String) {
+        Log.i(TAG, "Forwarding to $phoneNumber: $message")
+        val smsManager = SmsManager.getDefault()
+        smsManager.sendTextMessage(phoneNumber, null, message, null, null)
+    }
+
+    @RequiresApi(Build.VERSION_CODES.O)
+    private fun createNotificationChannel(channelId: String, channelName: String): String {
+        val notificationChannel =
+            NotificationChannel(channelId, channelName, NotificationManager.IMPORTANCE_NONE)
+        notificationChannel.lightColor = Color.BLUE
+        notificationChannel.lockscreenVisibility = Notification.VISIBILITY_PRIVATE
+        val service = getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
+        service.createNotificationChannel(notificationChannel)
+        return channelId
+    }
+
+    override fun onBind(intent: Intent?): IBinder? {
+        throw NotImplementedError()
+    }
+}

@@ -2,9 +2,7 @@ package com.pierreduchemin.smsforward.redirects
 
 import android.Manifest
 import android.app.Activity
-import android.content.IntentFilter
-import android.telephony.SmsManager
-import android.util.Log
+import com.google.i18n.phonenumbers.NumberParseException
 import com.pierreduchemin.smsforward.R
 import com.pierreduchemin.smsforward.data.ForwardModel
 import com.pierreduchemin.smsforward.data.ForwardModelRepository
@@ -20,8 +18,6 @@ class RedirectsPresenter(
     companion object {
         private val TAG by lazy { RedirectsPresenter::class.java.simpleName }
     }
-
-    private var smsReceiver: SmsReceiver = SmsReceiver()
 
     init {
         view.presenter = this
@@ -89,60 +85,40 @@ class RedirectsPresenter(
             view.setButtonState(RedirectsFragment.ButtonState.DISABLED)
             view.resetFields()
             forwardModel.activated = false
-            // TODO stop service
-            activity.unregisterReceiver(smsReceiver)
+
+            RedirectService.stopActionRedirect(activity)
         } else {
-            val fSource = PhoneNumberUtils.toFormattedNumber(activity, source)
-            if (fSource == null) {
-                view.showError(R.string.redirects_error_invalid_source)
-                return
-            }
-            val fDestination = PhoneNumberUtils.toFormattedNumber(activity, destination)
-            if (fDestination == null) {
-                view.showError(R.string.redirects_error_invalid_destination)
-                return
-            }
+            try {
+                val fSource = PhoneNumberUtils.toFormattedNumber(activity, source)
 
-            if (fSource == fDestination) {
-                view.showError(R.string.redirects_error_source_and_redirection_must_be_different)
-                return
-            }
-            if (!view.hasPermission(Manifest.permission.SEND_SMS)) {
-                view.askPermission(Manifest.permission.SEND_SMS)
-                return
-            }
-
-            smsReceiver.setCallback(object : OnSmsReceivedListener {
-                override fun onSmsReceived(source: String, message: String) {
-                    Log.i(TAG, "Caught a SMS from $source")
-                    view.showRedirectMessage(source, destination)
-                    sendSMS(
-                        destination, activity.getString(
-                            R.string.redirects_info_sms_received_from,
-                            source,
-                            message
-                        )
-                    )
+                if (fSource == null) {
+                    view.showError(R.string.redirects_error_invalid_source)
+                    return
                 }
-            })
-            smsReceiver.setPhoneNumberFilter(fSource)
+                val fDestination = PhoneNumberUtils.toFormattedNumber(activity, destination)
+                if (fDestination == null) {
+                    view.showError(R.string.redirects_error_invalid_destination)
+                    return
+                }
 
-            forwardModel.activated = true
-            // TODO start service
-            activity.registerReceiver(
-                smsReceiver,
-                IntentFilter("android.provider.Telephony.SMS_RECEIVED")
-            )
-            view.setButtonState(RedirectsFragment.ButtonState.STOP)
+                if (fSource == fDestination) {
+                    view.showError(R.string.redirects_error_source_and_redirection_must_be_different)
+                    return
+                }
+                if (!view.hasPermission(Manifest.permission.SEND_SMS)) {
+                    view.askPermission(Manifest.permission.SEND_SMS)
+                    return
+                }
+
+                forwardModel.activated = true
+                RedirectService.startActionRedirect(activity, source, destination)
+                view.setButtonState(RedirectsFragment.ButtonState.STOP)
+
+                forwardModelRepository.insertForwardModel(forwardModel)
+            } catch (e: NumberParseException) {
+                view.showError(R.string.redirects_error_invalid_phone_number)
+            }
         }
-
-        forwardModelRepository.insertForwardModel(forwardModel)
-    }
-
-    private fun sendSMS(phoneNumber: String, message: String) {
-        Log.i(TAG, "Forwarding to $phoneNumber: $message")
-        val smsManager = SmsManager.getDefault()
-        smsManager.sendTextMessage(phoneNumber, null, message, null, null)
     }
 
     override fun onNumberPicked() {

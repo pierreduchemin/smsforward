@@ -24,7 +24,11 @@ class SmsReceiver : BroadcastReceiver() {
     }
 
     override fun onReceive(context: Context, intent: Intent) {
-        val smsReceivedListener = callback ?: return
+        val smsReceivedListener = callback
+        if (smsReceivedListener == null) {
+            Log.d(TAG, "No callback defined")
+            return
+        }
         val bundle = intent.extras ?: return
         try {
             val pdusObj = bundle.get("pdus") as Array<*>
