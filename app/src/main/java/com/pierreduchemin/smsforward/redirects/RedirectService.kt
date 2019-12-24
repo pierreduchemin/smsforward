@@ -3,11 +3,13 @@ package com.pierreduchemin.smsforward.redirects
 import android.app.*
 import android.content.Context
 import android.content.Intent
+import android.content.IntentFilter
 import android.graphics.BitmapFactory
 import android.graphics.Color
 import android.os.Build
 import android.os.IBinder
 import android.telephony.SmsManager
+import android.telephony.TelephonyManager
 import android.util.Log
 import androidx.annotation.RequiresApi
 import androidx.core.app.NotificationCompat
@@ -115,6 +117,9 @@ class RedirectService : Service() {
 
                 startForeground(REDIRECT_NOTIFICATION_ID, notification)
             }
+            ACTION_STOP_REDIRECT -> {
+                unregisterReceiver(smsReceiver)
+            }
         }
 
         return super.onStartCommand(intent, flags, startId)
@@ -127,8 +132,7 @@ class RedirectService : Service() {
     private fun handleActionRedirect(source: String, destination: String) {
         smsReceiver.setCallback(object : OnSmsReceivedListener {
             override fun onSmsReceived(source: String, message: String) {
-                Log.i(TAG, "Caught a SMS from $source")
-                // TODO: show notification
+                Log.d(TAG, "Caught a SMS from $source")
                 sendSMS(
                     destination, getString(
                         R.string.redirects_info_sms_received_from,
@@ -139,10 +143,16 @@ class RedirectService : Service() {
             }
         })
         smsReceiver.setPhoneNumberFilter(source)
+
+        val filter = IntentFilter()
+        filter.addAction("android.provider.Telephony.SMS_RECEIVED")
+        filter.addAction(TelephonyManager.ACTION_PHONE_STATE_CHANGED)
+
+        registerReceiver(smsReceiver, filter)
     }
 
     private fun sendSMS(phoneNumber: String, message: String) {
-        Log.i(TAG, "Forwarding to $phoneNumber: $message")
+        Log.d(TAG, "Forwarding to $phoneNumber: $message")
         val smsManager = SmsManager.getDefault()
         smsManager.sendTextMessage(phoneNumber, null, message, null, null)
     }
@@ -160,5 +170,10 @@ class RedirectService : Service() {
 
     override fun onBind(intent: Intent?): IBinder? {
         throw NotImplementedError()
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        unregisterReceiver(smsReceiver)
     }
 }

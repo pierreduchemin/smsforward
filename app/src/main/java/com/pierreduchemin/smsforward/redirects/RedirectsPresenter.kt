@@ -67,15 +67,6 @@ class RedirectsPresenter(
     }
 
     override fun onButtonClicked(source: String, destination: String) {
-        if (source.isEmpty()) {
-            view.showError(R.string.redirects_error_empty_source)
-            return
-        }
-        if (destination.isEmpty()) {
-            view.showError(R.string.redirects_error_empty_destination)
-            return
-        }
-
         var forwardModel = forwardModelRepository.getForwardModel()
         if (forwardModel == null) {
             forwardModel = ForwardModel(0, "", "", false)
@@ -84,10 +75,19 @@ class RedirectsPresenter(
         if (forwardModel.activated) {
             view.setButtonState(RedirectsFragment.ButtonState.DISABLED)
             view.resetFields()
-            forwardModel.activated = false
+            forwardModelRepository.deleteForwardModelById(forwardModel.id)
 
             RedirectService.stopActionRedirect(activity)
         } else {
+            if (source.isEmpty()) {
+                view.showError(R.string.redirects_error_empty_source)
+                return
+            }
+            if (destination.isEmpty()) {
+                view.showError(R.string.redirects_error_empty_destination)
+                return
+            }
+
             try {
                 val fSource = PhoneNumberUtils.toFormattedNumber(activity, source)
 
@@ -107,11 +107,10 @@ class RedirectsPresenter(
                 }
                 if (!view.hasPermission(Manifest.permission.SEND_SMS)) {
                     view.askPermission(Manifest.permission.SEND_SMS)
-                    return
                 }
 
                 forwardModel.activated = true
-                RedirectService.startActionRedirect(activity, source, destination)
+                RedirectService.startActionRedirect(activity, fSource, fDestination)
                 view.setButtonState(RedirectsFragment.ButtonState.STOP)
 
                 forwardModelRepository.insertForwardModel(forwardModel)
