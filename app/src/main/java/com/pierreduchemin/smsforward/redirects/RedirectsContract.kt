@@ -20,8 +20,8 @@ interface RedirectsContract {
     interface Presenter : BasePresenter {
         fun onButtonClicked(source: String, destination: String)
         fun onNumberPicked()
-        fun onSourceSet(source: String?)
-        fun onDestinationSet(destination: String?)
+        fun onSourceRetreived(source: String?)
+        fun onDestinationRetreived(destination: String?)
         fun onViewCreated()
     }
 }

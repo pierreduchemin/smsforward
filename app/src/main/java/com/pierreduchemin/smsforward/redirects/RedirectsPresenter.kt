@@ -32,35 +32,47 @@ class RedirectsPresenter(
         }
     }
 
-    override fun onSourceSet(source: String?) {
+    override fun onSourceRetreived(source: String?) {
         if (source == null) {
             view.showError(R.string.redirects_error_invalid_source)
             return
         }
-        view.setSource(source)
+
+        val fSource = PhoneNumberUtils.toFormattedNumber(activity, source)
+        if (fSource == null) {
+            view.showError(R.string.redirects_error_invalid_source)
+            return
+        }
+        view.setSource(fSource)
 
         var forwardModel = forwardModelRepository.getForwardModel()
         forwardModel = if (forwardModel == null) {
-            ForwardModel(0, source, "", false)
+            ForwardModel(0, fSource, "", false)
         } else {
-            forwardModel.from = source
+            forwardModel.from = fSource
             forwardModel
         }
         forwardModelRepository.insertForwardModel(forwardModel)
     }
 
-    override fun onDestinationSet(destination: String?) {
+    override fun onDestinationRetreived(destination: String?) {
         if (destination == null) {
             view.showError(R.string.redirects_error_invalid_destination)
             return
         }
-        view.setDestination(destination)
+
+        val fDestination = PhoneNumberUtils.toFormattedNumber(activity, destination)
+        if (fDestination == null) {
+            view.showError(R.string.redirects_error_invalid_destination)
+            return
+        }
+        view.setDestination(fDestination)
 
         var forwardModel = forwardModelRepository.getForwardModel()
         forwardModel = if (forwardModel == null) {
-            ForwardModel(0, "", destination, false)
+            ForwardModel(0, "", fDestination, false)
         } else {
-            forwardModel.to = destination
+            forwardModel.to = fDestination
             forwardModel
         }
         forwardModelRepository.insertForwardModel(forwardModel)
@@ -89,28 +101,12 @@ class RedirectsPresenter(
             }
 
             try {
-                val fSource = PhoneNumberUtils.toFormattedNumber(activity, source)
-
-                if (fSource == null) {
-                    view.showError(R.string.redirects_error_invalid_source)
-                    return
-                }
-                val fDestination = PhoneNumberUtils.toFormattedNumber(activity, destination)
-                if (fDestination == null) {
-                    view.showError(R.string.redirects_error_invalid_destination)
-                    return
-                }
-
-                if (fSource == fDestination) {
-                    view.showError(R.string.redirects_error_source_and_redirection_must_be_different)
-                    return
-                }
                 if (!view.hasPermission(Manifest.permission.SEND_SMS)) {
                     view.askPermission(Manifest.permission.SEND_SMS)
                 }
 
                 forwardModel.activated = true
-                RedirectService.startActionRedirect(activity, fSource, fDestination)
+                RedirectService.startActionRedirect(activity, forwardModel.from, forwardModel.to)
                 view.setButtonState(RedirectsFragment.ButtonState.STOP)
 
                 forwardModelRepository.insertForwardModel(forwardModel)

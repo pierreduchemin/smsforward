@@ -117,9 +117,9 @@ class RedirectsFragment : Fragment(), RedirectsContract.View {
         }
 
         if (requestCode == CONTACT_PICKER_SOURCE_REQUEST_CODE) {
-            presenter.onSourceSet(phoneNo)
+            presenter.onSourceRetreived(phoneNo)
         } else if (requestCode == CONTACT_PICKER_DESTINATION_REQUEST_CODE) {
-            presenter.onDestinationSet(phoneNo)
+            presenter.onDestinationRetreived(phoneNo)
         }
 
         cursor.close()
