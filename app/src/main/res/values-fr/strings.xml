@@ -1,15 +1,21 @@
 <resources>
-    <string name="redirects_info_automatically_redirect_sms_from">Rediriger automatiquement les SMS en provenence de</string>
+    <string name="redirects_info_automatically_redirect_sms_from">Transférer automatiquement les SMS en provenence de</string>
     <string name="redirects_info_to">vers</string>
     <string name="redirects_info_enable">Activer</string>
     <string name="redirects_info_stop">Stop</string>
     <string name="redirects_info_forwarding_from_to">Redirection définie de %s vers %s</string>
     <string name="redirects_info_sms_received_from">SMS reçu de %s: %s</string>
     <string name="redirects_info_sms_redirect_confirmation">SMS redirigé de %s vers %s</string>
+    <string name="redirects_info_sms_now_redirected">Les SMS de %s sont redirigés vers %s.</string>
     <string name="redirects_error_source_and_redirection_must_be_different">La source et la destination doivent être différentes</string>
     <string name="redirects_error_empty_source">Source vide</string>
     <string name="redirects_error_invalid_source">Source invalide</string>
     <string name="redirects_error_empty_destination">Destination vide</string>
     <string name="redirects_error_invalid_destination">Destination invalide</string>
-    <string name="redirects_error_invalid_phone_number">Invalid phone number</string>
+    <string name="redirects_error_invalid_phone_number">Numéro de téléphone invalide</string>
+
+    <string name="about_info_version">Version %s</string>
+    <string name="about_info_license">Sous license GNU GPLv3</string>
+    <string name="about_info_app_description">SMS Forward est une application qui vous permet de transférer automatiquement des SMS</string>
+    <string name="about_info_title">À propos</string>
 </resources>

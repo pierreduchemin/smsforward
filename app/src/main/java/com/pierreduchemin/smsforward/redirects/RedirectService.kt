@@ -78,26 +78,16 @@ class RedirectService : Service() {
                     "REDIRECT_CHANNEL_ID"
                 }
 
-
                 val startAppIntent = Intent(this, RedirectsActivity::class.java)
-                val startAppPendingIntent = PendingIntent.getService(this, 0, startAppIntent, 0)
-
-                // Add Play button intent in notification.
-                val stopServiceIntent = Intent(this, RedirectService::class.java)
-                stopServiceIntent.action = ACTION_STOP_REDIRECT
-                val stopServicePendingIntent = PendingIntent.getService(this, 0, stopServiceIntent, 0)
-                val stopAction = NotificationCompat.Action(
-                    R.drawable.ic_stop,
-                    "Stop", // TODO
-                    stopServicePendingIntent
-                )
+                startAppIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
+                startAppIntent.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP)
+                val startAppPendingIntent = PendingIntent.getActivity(this, 0, startAppIntent, 0)
 
                 val notification: Notification =
                     NotificationCompat.Builder(this, channelId)
                         .setSmallIcon(R.drawable.ic_sms_forward)
-                        .setContentTitle(baseContext.getString(R.string.app_name))
-                        .setContentText("SMS are now being forwarded from $source to $destination.")
-                        .addAction(stopAction)
+                        .setContentTitle(getString(R.string.app_name))
+                        .setContentText(getString(R.string.redirects_info_sms_now_redirected, source, destination))
                         .setContentIntent(startAppPendingIntent)
                         .setWhen(System.currentTimeMillis())
                         .setPriority(NotificationCompat.PRIORITY_DEFAULT)

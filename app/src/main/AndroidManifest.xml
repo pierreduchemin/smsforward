@@ -21,7 +21,9 @@
                 android:name=".redirects.RedirectService"
                 android:exported="false" />
 
-        <activity android:name=".redirects.RedirectsActivity">
+        <activity
+                android:name=".redirects.RedirectsActivity"
+                android:launchMode="singleTop">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -31,6 +33,7 @@
                 <action android:name="android.intent.action.VIEW" />
             </intent-filter>
         </activity>
+        <activity android:name=".about.AboutActivity" />
 
         <receiver
                 android:name=".redirects.SmsReceiver"
