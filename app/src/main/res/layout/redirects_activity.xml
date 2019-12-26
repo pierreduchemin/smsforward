@@ -1,8 +1,24 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.appcompat.widget.ContentFrameLayout
-        xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
         xmlns:tools="http://schemas.android.com/tools"
-        android:id="@+id/mainContent"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:context=".redirects.RedirectsActivity"/>
+        android:orientation="vertical"
+        tools:context=".redirects.RedirectsActivity">
+
+    <Toolbar
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/colorPrimary"
+            android:title="@string/app_name"
+            android:titleTextColor="@android:color/white"
+            app:titleTextColor="@android:color/white"
+            tools:targetApi="m" />
+
+    <androidx.appcompat.widget.ContentFrameLayout
+            android:id="@+id/mainContent"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+
+</LinearLayout>

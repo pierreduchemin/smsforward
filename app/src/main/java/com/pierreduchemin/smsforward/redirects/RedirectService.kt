@@ -53,7 +53,7 @@ class RedirectService : Service() {
 
         @JvmStatic
         fun stopActionRedirect(context: Context) {
-            context.stopService(intent)
+            context.stopService(Intent(context, RedirectService::class.java))
         }
     }
 
