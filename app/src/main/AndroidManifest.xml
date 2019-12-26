@@ -16,6 +16,7 @@
             android:roundIcon="@mipmap/ic_launcher_round"
             android:supportsRtl="true"
             android:theme="@style/AppTheme">
+
         <service
                 android:name=".redirects.RedirectService"
                 android:exported="false" />
@@ -39,6 +40,7 @@
                 <action android:name="android.provider.Telephony.SMS_RECEIVED" />
             </intent-filter>
         </receiver>
+
     </application>
 
 </manifest>

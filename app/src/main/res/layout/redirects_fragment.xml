@@ -6,11 +6,12 @@
         android:orientation="vertical"
         android:padding="30dp">
 
-    <!--    <ImageView-->
-    <!--            android:layout_width="wrap_content"-->
-    <!--            android:layout_height="wrap_content"-->
-    <!--            android:layout_marginBottom="60dp"-->
-    <!--            android:src="@drawable/img_message_forward" />-->
+    <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="60dp"
+            android:contentDescription="TODO"
+            android:src="@drawable/img_message_forward" />
 
     <TextView
             android:layout_width="wrap_content"
@@ -39,6 +40,7 @@
             android:layout_height="wrap_content"
             android:focusable="false"
             android:gravity="center_horizontal"
+            android:importantForAutofill="no"
             android:inputType="phone" />
 
     <Button
