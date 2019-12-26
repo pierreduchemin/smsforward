@@ -87,30 +87,20 @@ class RedirectService : Service() {
                 stopServiceIntent.action = ACTION_STOP_REDIRECT
                 val stopServicePendingIntent = PendingIntent.getService(this, 0, stopServiceIntent, 0)
                 val stopAction = NotificationCompat.Action(
-                    android.R.mipmap.sym_def_app_icon,
+                    R.drawable.ic_stop,
                     "Stop", // TODO
                     stopServicePendingIntent
                 )
 
                 val notification: Notification =
                     NotificationCompat.Builder(this, channelId)
-                        .setSmallIcon(android.R.drawable.ic_delete)
-                        .setLargeIcon(
-                            BitmapFactory.decodeResource(
-                                resources,
-                                android.R.mipmap.sym_def_app_icon
-                            )
-                        )
+                        .setSmallIcon(R.drawable.ic_sms_forward)
+                        .setContentTitle(baseContext.getString(R.string.app_name))
+                        .setContentText("SMS are now being forwarded from $source to $destination.")
                         .addAction(stopAction)
                         .setContentIntent(startAppPendingIntent)
                         .setWhen(System.currentTimeMillis())
                         .setPriority(NotificationCompat.PRIORITY_DEFAULT)
-                        .setStyle(
-                            NotificationCompat.BigTextStyle()
-                                .setBigContentTitle(baseContext.getString(R.string.app_name))
-                                // TODO
-                                .bigText("SMS are now being forwarded from $source to $destination.")
-                        )
                         .build()
 
                 Log.d(TAG, "Notification started")
