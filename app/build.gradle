@@ -45,7 +45,14 @@ dependencies {
 
     implementation "com.github.medyo:android-about-page:1.2.1"
 
+    // Toothpick
+    implementation 'com.github.stephanenicolas.toothpick:ktp:3.1.0'
+    kapt 'com.github.stephanenicolas.toothpick:toothpick-compiler:3.1.0'
+
     testImplementation 'junit:junit:4.12'
     androidTestImplementation 'androidx.test:runner:1.3.0-alpha03'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.3.0-alpha03'
+
+    // Toothpick
+    testImplementation 'com.github.stephanenicolas.toothpick:toothpick-testing:3.1.0'
 }

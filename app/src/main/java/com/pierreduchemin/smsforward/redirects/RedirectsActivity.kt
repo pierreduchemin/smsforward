@@ -8,10 +8,14 @@ import android.view.Menu
 import android.view.MenuItem
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
+import com.pierreduchemin.smsforward.di.ActivityModule
+import com.pierreduchemin.smsforward.App.Companion.APPSCOPE
 import com.pierreduchemin.smsforward.R
 import com.pierreduchemin.smsforward.about.AboutActivity
 import com.pierreduchemin.smsforward.data.ForwardModelRepository
 import kotlinx.android.synthetic.main.redirects_activity.*
+import toothpick.ktp.KTP
+import toothpick.ktp.delegate.inject
 
 
 const val REQUEST_CODE_SMS_PERMISSION = 9954
@@ -22,6 +26,8 @@ class RedirectsActivity : AppCompatActivity() {
         private val TAG by lazy { RedirectsActivity::class.java.simpleName }
     }
 
+    private val forwardModelRepository: ForwardModelRepository by inject()
+
     private lateinit var presenter: RedirectsPresenter
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -30,6 +36,12 @@ class RedirectsActivity : AppCompatActivity() {
 
         setSupportActionBar(toolbar)
 
+        KTP.openRootScope()
+            .openSubScope(APPSCOPE)
+            .openSubScope(this)
+            .installModules(ActivityModule(this))
+            .inject(this)
+
         val view = supportFragmentManager.findFragmentById(R.id.mainContent) as RedirectsFragment?
             ?: RedirectsFragment.newInstance().also {
                 supportFragmentManager.beginTransaction().apply {
@@ -37,8 +49,6 @@ class RedirectsActivity : AppCompatActivity() {
                 }.commit()
             }
 
-        // TODO inject with DI
-        val forwardModelRepository = ForwardModelRepository(this)
         presenter = RedirectsPresenter(this, forwardModelRepository, view)
 
         ActivityCompat.requestPermissions(

@@ -4,7 +4,6 @@ import android.app.*
 import android.content.Context
 import android.content.Intent
 import android.content.IntentFilter
-import android.graphics.BitmapFactory
 import android.graphics.Color
 import android.os.Build
 import android.os.IBinder
@@ -13,7 +12,12 @@ import android.telephony.TelephonyManager
 import android.util.Log
 import androidx.annotation.RequiresApi
 import androidx.core.app.NotificationCompat
+import com.pierreduchemin.smsforward.App
 import com.pierreduchemin.smsforward.R
+import com.pierreduchemin.smsforward.data.ForwardModelRepository
+import com.pierreduchemin.smsforward.di.ActivityModule
+import toothpick.ktp.KTP
+import toothpick.ktp.delegate.inject
 
 
 private const val ACTION_START_REDIRECT =
@@ -28,6 +32,7 @@ private const val REDIRECT_NOTIFICATION_ID: Int = 1
 
 class RedirectService : Service() {
 
+    private val forwardModelRepository: ForwardModelRepository by inject()
     private var smsReceiver: SmsReceiver = SmsReceiver()
 
     companion object {
@@ -60,14 +65,22 @@ class RedirectService : Service() {
     override fun onCreate() {
         super.onCreate()
         Log.d(TAG, "RedirectService created")
+
+        KTP.openRootScope()
+            .openSubScope(App.APPSCOPE)
+            .openSubScope(this)
+            .installModules(ActivityModule(this))
+            .inject(this)
     }
 
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
         when (intent?.action) {
             ACTION_START_REDIRECT -> {
-                val source = intent.getStringExtra(EXTRA_SOURCE)
-                val destination = intent.getStringExtra(EXTRA_DESTINATION)
+                val forwardModel = forwardModelRepository.getForwardModel()
+
+                val source = forwardModel?.from!!
                 // TODO: call safely
+                val destination = forwardModel.to
                 handleActionRedirect(source, destination)
 
                 val channelId = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
@@ -87,7 +100,13 @@ class RedirectService : Service() {
                     NotificationCompat.Builder(this, channelId)
                         .setSmallIcon(R.drawable.ic_sms_forward)
                         .setContentTitle(getString(R.string.app_name))
-                        .setContentText(getString(R.string.redirects_info_sms_now_redirected, source, destination))
+                        .setContentText(
+                            getString(
+                                R.string.redirects_info_sms_now_redirected,
+                                source,
+                                destination
+                            )
+                        )
                         .setContentIntent(startAppPendingIntent)
                         .setWhen(System.currentTimeMillis())
                         .setPriority(NotificationCompat.PRIORITY_DEFAULT)
