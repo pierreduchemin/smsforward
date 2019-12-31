@@ -106,7 +106,7 @@ class RedirectsPresenter(
                 }
 
                 forwardModel.activated = true
-                RedirectService.startActionRedirect(activity, forwardModel.from, forwardModel.to)
+                RedirectService.startActionRedirect(activity)
                 view.setButtonState(RedirectsFragment.ButtonState.STOP)
 
                 forwardModelRepository.insertForwardModel(forwardModel)

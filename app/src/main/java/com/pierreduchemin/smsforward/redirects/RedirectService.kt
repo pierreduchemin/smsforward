@@ -25,9 +25,6 @@ private const val ACTION_START_REDIRECT =
 private const val ACTION_STOP_REDIRECT =
     "com.pierreduchemin.smsforward.redirects.action.STOP_REDIRECT"
 
-private const val EXTRA_SOURCE = "com.pierreduchemin.smsforward.redirects.extra.SOURCE"
-private const val EXTRA_DESTINATION = "com.pierreduchemin.smsforward.redirects.extra.DESTINATION"
-
 private const val REDIRECT_NOTIFICATION_ID: Int = 1
 
 class RedirectService : Service() {
@@ -47,13 +44,16 @@ class RedirectService : Service() {
          * @see IntentService
          */
         @JvmStatic
-        fun startActionRedirect(context: Context, source: String, destination: String) {
+        fun startActionRedirect(context: Context) {
             intent = Intent(context, RedirectService::class.java).apply {
                 action = ACTION_START_REDIRECT
-                putExtra(EXTRA_SOURCE, source)
-                putExtra(EXTRA_DESTINATION, destination)
             }
-            context.startService(intent)
+
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                context.startForegroundService(intent)
+            } else {
+                context.startService(intent)
+            }
         }
 
         @JvmStatic
