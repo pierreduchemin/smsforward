@@ -17,7 +17,6 @@ class SmsReceiver : BroadcastReceiver() {
 
     private var callback: OnSmsReceivedListener? = null
     private var phoneNumberFilter: String? = null
-    private var filter: String? = null
 
     fun setCallback(callback: OnSmsReceivedListener) {
         this.callback = callback
@@ -25,10 +24,6 @@ class SmsReceiver : BroadcastReceiver() {
 
     fun setPhoneNumberFilter(phoneNumberFilter: String?) {
         this.phoneNumberFilter = phoneNumberFilter
-    }
-
-    fun setFilter(filter: String?) {
-        this.filter = filter
     }
 
     override fun onReceive(context: Context, intent: Intent) {
@@ -56,11 +51,6 @@ class SmsReceiver : BroadcastReceiver() {
                     return
                 }
                 val message = currentMessage.displayMessageBody
-                val currentFilter = filter
-                if (currentFilter != null && !message.matches(currentFilter.toRegex())) {
-                    return
-                }
-
                 smsReceivedListener.onSmsReceived(phoneNumber, message)
             }
         } catch (e: Exception) {

@@ -115,6 +115,10 @@ class RedirectsPresenter(
                 view.showError(R.string.redirects_error_empty_destination)
                 return
             }
+            if (forwardModel.from == forwardModel.to) {
+                view.showError(R.string.redirects_error_source_and_redirection_must_be_different)
+                return
+            }
 
             try {
                 if (!view.hasPermission(Manifest.permission.SEND_SMS)) {
