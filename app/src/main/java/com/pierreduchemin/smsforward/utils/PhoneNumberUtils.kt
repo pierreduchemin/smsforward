@@ -20,9 +20,14 @@ class PhoneNumberUtils {
             return phoneUtil.parse(phoneNumber, countryCode)
         }
 
-        fun toFormattedNumber(context: Context, phoneNumber: String): String? {
+        fun toUnifiedNumber(context: Context, phoneNumber: String): String? {
             val proto = getProto(context, phoneNumber) ?: return null
             return phoneUtil.format(proto, PhoneNumberUtil.PhoneNumberFormat.E164)
+        }
+
+        fun toVisualNumber(context: Context, phoneNumber: String): String? {
+            val proto = getProto(context, phoneNumber) ?: return null
+            return phoneUtil.format(proto, PhoneNumberUtil.PhoneNumberFormat.NATIONAL)
         }
     }
 }

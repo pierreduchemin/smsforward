@@ -23,6 +23,14 @@ class SmsReceiver : BroadcastReceiver() {
         this.callback = callback
     }
 
+    fun setPhoneNumberFilter(phoneNumberFilter: String?) {
+        this.phoneNumberFilter = phoneNumberFilter
+    }
+
+    fun setFilter(filter: String?) {
+        this.filter = filter
+    }
+
     override fun onReceive(context: Context, intent: Intent) {
         val smsReceivedListener = callback
         if (smsReceivedListener == null) {
@@ -37,7 +45,7 @@ class SmsReceiver : BroadcastReceiver() {
                     continue
                 }
                 val currentMessage = getIncomingMessage(o, bundle)
-                val phoneNumber = PhoneNumberUtils.toFormattedNumber(context, currentMessage.displayOriginatingAddress)
+                val phoneNumber = PhoneNumberUtils.toUnifiedNumber(context, currentMessage.displayOriginatingAddress)
                 if (phoneNumber == null) {
                     Log.e(TAG, "Received SMS from invalid number (???): $phoneNumber")
                     return
@@ -70,9 +78,5 @@ class SmsReceiver : BroadcastReceiver() {
             currentSMS = SmsMessage.createFromPdu(aObject as ByteArray)
         }
         return currentSMS
-    }
-
-    fun setPhoneNumberFilter(phoneNumberFilter: String?) {
-        this.phoneNumberFilter = phoneNumberFilter
     }
 }

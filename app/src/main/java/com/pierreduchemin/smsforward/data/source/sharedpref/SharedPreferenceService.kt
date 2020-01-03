@@ -10,6 +10,8 @@ import com.securepreferences.SecurePreferences
 const val KEY_FM_ID = "KEY_FM_ID"
 const val KEY_FM_FROM = "KEY_FM_FROM"
 const val KEY_FM_TO = "KEY_FM_TO"
+const val KEY_FM_VFROM = "KEY_FM_VFROM"
+const val KEY_FM_VTO = "KEY_FM_VTO"
 const val KEY_FM_ACTIVATED = "KEY_FM_ACTIVATED"
 
 
@@ -27,8 +29,10 @@ class SharedPreferenceService(
 
         val from = sp.getString(KEY_FM_FROM, "")!!
         val to = sp.getString(KEY_FM_TO, "")!!
+        val vfrom = sp.getString(KEY_FM_VFROM, "")!!
+        val vto = sp.getString(KEY_FM_VTO, "")!!
         val activated = sp.getBoolean(KEY_FM_ACTIVATED, false)
-        return ForwardModel(id, from, to, activated)
+        return ForwardModel(id, from, to, vfrom, vto, activated)
     }
 
     override fun countForwardModel(): Long {
@@ -40,6 +44,8 @@ class SharedPreferenceService(
             .putLong(KEY_FM_ID, forwardModel.id)
             .putString(KEY_FM_FROM, forwardModel.from)
             .putString(KEY_FM_TO, forwardModel.to)
+            .putString(KEY_FM_VFROM, forwardModel.vfrom)
+            .putString(KEY_FM_VTO, forwardModel.vto)
             .putBoolean(KEY_FM_ACTIVATED, forwardModel.activated)
             .apply()
     }

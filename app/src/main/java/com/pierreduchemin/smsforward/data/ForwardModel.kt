@@ -19,5 +19,11 @@ data class ForwardModel(
     var to: String,
 
     @ColumnInfo
+    var vfrom: String,
+
+    @ColumnInfo
+    var vto: String,
+
+    @ColumnInfo
     var activated: Boolean
 )

@@ -26,8 +26,8 @@ class RedirectsPresenter(
     override fun onViewCreated() {
         val forwardModel = forwardModelRepository.getForwardModel()
         if (forwardModel != null) {
-            view.setSource(forwardModel.from)
-            view.setDestination(forwardModel.to)
+            view.setSource(forwardModel.vfrom)
+            view.setDestination(forwardModel.vto)
             onNumberPicked()
         }
     }
@@ -38,21 +38,29 @@ class RedirectsPresenter(
             return
         }
 
-        val fSource = PhoneNumberUtils.toFormattedNumber(activity, source)
-        if (fSource == null) {
+        val uSource = PhoneNumberUtils.toUnifiedNumber(activity, source)
+        if (uSource == null) {
             view.showError(R.string.redirects_error_invalid_source)
             return
         }
-        view.setSource(fSource)
+
+        val vSource = PhoneNumberUtils.toVisualNumber(activity, source)
+        if (vSource == null) {
+            view.showError(R.string.redirects_error_invalid_source)
+            return
+        }
 
         var forwardModel = forwardModelRepository.getForwardModel()
         forwardModel = if (forwardModel == null) {
-            ForwardModel(0, fSource, "", false)
+            ForwardModel(0, uSource, "", vSource, "", false)
         } else {
-            forwardModel.from = fSource
+            forwardModel.from = uSource
+            forwardModel.vfrom = vSource
             forwardModel
         }
         forwardModelRepository.insertForwardModel(forwardModel)
+
+        view.setSource(vSource)
     }
 
     override fun onDestinationRetreived(destination: String?) {
@@ -61,27 +69,35 @@ class RedirectsPresenter(
             return
         }
 
-        val fDestination = PhoneNumberUtils.toFormattedNumber(activity, destination)
-        if (fDestination == null) {
+        val uDestination = PhoneNumberUtils.toUnifiedNumber(activity, destination)
+        if (uDestination == null) {
             view.showError(R.string.redirects_error_invalid_destination)
             return
         }
-        view.setDestination(fDestination)
+
+        val vDestination = PhoneNumberUtils.toVisualNumber(activity, destination)
+        if (vDestination == null) {
+            view.showError(R.string.redirects_error_invalid_destination)
+            return
+        }
 
         var forwardModel = forwardModelRepository.getForwardModel()
         forwardModel = if (forwardModel == null) {
-            ForwardModel(0, "", fDestination, false)
+            ForwardModel(0, "", uDestination, "", vDestination, false)
         } else {
-            forwardModel.to = fDestination
+            forwardModel.to = uDestination
+            forwardModel.vto = vDestination
             forwardModel
         }
         forwardModelRepository.insertForwardModel(forwardModel)
+
+        view.setDestination(vDestination)
     }
 
     override fun onButtonClicked(source: String, destination: String) {
         var forwardModel = forwardModelRepository.getForwardModel()
         if (forwardModel == null) {
-            forwardModel = ForwardModel(0, "", "", false)
+            forwardModel = ForwardModel(0, "", "", "", "", false)
         }
 
         if (forwardModel.activated) {
