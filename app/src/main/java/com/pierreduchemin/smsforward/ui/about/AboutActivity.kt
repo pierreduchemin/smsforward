@@ -1,4 +1,4 @@
-package com.pierreduchemin.smsforward.about
+package com.pierreduchemin.smsforward.ui.about
 
 import android.content.Intent
 import android.net.Uri

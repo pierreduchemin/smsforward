@@ -16,26 +16,30 @@
 
 package com.pierreduchemin.smsforward.data.source.database
 
-import androidx.room.Dao
-import androidx.room.Insert
-import androidx.room.OnConflictStrategy
-import androidx.room.Query
+import androidx.lifecycle.LiveData
+import androidx.room.*
 import com.pierreduchemin.smsforward.data.ForwardModel
 
 /**
  * Data Access Object for the tasks table.
  */
 @Dao
-interface ForwardsDao {
+interface ForwardModelDao {
 
-    @Query("SELECT * FROM ForwardModel WHERE id = 0")
+    @Query("SELECT * FROM ForwardModel WHERE id = 1")
+    fun observeForwardModel(): LiveData<ForwardModel?>
+
+    @Query("SELECT * FROM ForwardModel WHERE id = 1")
     fun getForwardModel(): ForwardModel?
 
     @Query("SELECT COUNT(*) FROM ForwardModel")
-    fun countForwardModel(): Long
+    fun countForwardModel(): LiveData<Long>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    fun insertForwardModel(forwardModel: ForwardModel)
+    fun insertForwardModel(forwardModel: ForwardModel): Long
+
+    @Update
+    fun updateForwardModel(forwardModel: ForwardModel)
 
     @Query("DELETE FROM ForwardModel WHERE id = :id")
     fun deleteForwardModelById(id: Long): Int

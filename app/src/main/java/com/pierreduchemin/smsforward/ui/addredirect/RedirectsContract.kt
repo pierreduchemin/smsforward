@@ -1,11 +1,8 @@
-package com.pierreduchemin.smsforward.redirects
-
-import com.pierreduchemin.smsforward.BasePresenter
-import com.pierreduchemin.smsforward.BaseView
+package com.pierreduchemin.smsforward.ui.addredirect
 
 interface RedirectsContract {
 
-    interface View : BaseView<Presenter> {
+    interface View {
         fun showError(message: Int)
         fun hasPermission(permissionString: String): Boolean
         fun askPermission(permissionString: String)
@@ -17,11 +14,11 @@ interface RedirectsContract {
         fun showRedirectMessage(source: String, destination: String)
     }
 
-    interface Presenter : BasePresenter {
-        fun onButtonClicked(source: String, destination: String)
-        fun onNumberPicked()
-        fun onSourceRetreived(source: String?)
-        fun onDestinationRetreived(destination: String?)
-        fun onViewCreated()
-    }
+//    interface Presenter : BasePresenter {
+//        fun onButtonClicked(source: String, destination: String)
+//        fun onNumberPicked()
+//        fun onSourceRetreived(source: String?)
+//        fun onDestinationRetreived(destination: String?)
+//        fun onViewCreated()
+//    }
 }

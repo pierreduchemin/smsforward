@@ -1,4 +1,4 @@
-package com.pierreduchemin.smsforward.redirects
+package com.pierreduchemin.smsforward.ui.addredirect
 
 import android.content.BroadcastReceiver
 import android.content.Context

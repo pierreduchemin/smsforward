@@ -1,27 +1,26 @@
 package com.pierreduchemin.smsforward.data
 
-import android.content.Context
-import com.pierreduchemin.smsforward.data.source.sharedpref.SharedPreferenceService
+import com.pierreduchemin.smsforward.data.source.database.ForwardModelDao
 
-class ForwardModelRepository(
-    context: Context
-) : ForwardModelDataSource {
+class ForwardModelRepository(private val forwardModelDao: ForwardModelDao) :
+    ForwardModelDataSource {
 
-    private val sharedPreferenceService = SharedPreferenceService(context)
+    override fun observeForwardModel() =
+        forwardModelDao.observeForwardModel()
 
-    override fun getForwardModel(): ForwardModel? {
-        return sharedPreferenceService.getForwardModel()
-    }
+    override fun getForwardModel() =
+        forwardModelDao.getForwardModel()
 
-    override fun countForwardModel(): Long {
-        return sharedPreferenceService.countForwardModel()
+    override fun countForwardModel() =
+        forwardModelDao.countForwardModel()
+
+    override fun updateForwardModel(forwardModel: ForwardModel) {
+        forwardModelDao.updateForwardModel(forwardModel)
     }
 
     override fun insertForwardModel(forwardModel: ForwardModel) {
-        return sharedPreferenceService.insertForwardModel(forwardModel)
+        forwardModelDao.insertForwardModel(forwardModel)
     }
 
-    override fun deleteForwardModelById(id: Long): Int {
-        return sharedPreferenceService.deleteForwardModelById(id)
-    }
+    override fun deleteForwardModelById(id: Long): Int = forwardModelDao.deleteForwardModelById(id)
 }

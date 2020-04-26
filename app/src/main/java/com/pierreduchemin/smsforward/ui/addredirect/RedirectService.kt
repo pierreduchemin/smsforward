@@ -1,10 +1,9 @@
-package com.pierreduchemin.smsforward.redirects
+package com.pierreduchemin.smsforward.ui.addredirect
 
 import android.app.*
 import android.content.Context
 import android.content.Intent
 import android.content.IntentFilter
-import android.graphics.Color
 import android.os.Build
 import android.os.IBinder
 import android.telephony.SmsManager
@@ -12,24 +11,28 @@ import android.telephony.TelephonyManager
 import android.util.Log
 import androidx.annotation.RequiresApi
 import androidx.core.app.NotificationCompat
+import androidx.core.content.ContextCompat
 import com.pierreduchemin.smsforward.App
 import com.pierreduchemin.smsforward.R
 import com.pierreduchemin.smsforward.data.ForwardModelRepository
 import com.pierreduchemin.smsforward.di.ActivityModule
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 import toothpick.ktp.KTP
 import toothpick.ktp.delegate.inject
 
 
 private const val ACTION_START_REDIRECT =
-    "com.pierreduchemin.smsforward.redirects.action.START_REDIRECT"
+    "com.pierreduchemin.smsforward.buisiness.redirects.action.START_REDIRECT"
 private const val ACTION_STOP_REDIRECT =
-    "com.pierreduchemin.smsforward.redirects.action.STOP_REDIRECT"
+    "com.pierreduchemin.smsforward.buisiness.redirects.action.STOP_REDIRECT"
 
 private const val REDIRECT_NOTIFICATION_ID: Int = 1
 
 class RedirectService : Service() {
 
-    private val forwardModelRepository: ForwardModelRepository by inject()
+    private val forwardModelRepository: ForwardModelRepository by inject<ForwardModelRepository>()
     private var smsReceiver: SmsReceiver = SmsReceiver()
 
     companion object {
@@ -76,45 +79,45 @@ class RedirectService : Service() {
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
         when (intent?.action) {
             ACTION_START_REDIRECT -> {
-                val forwardModel = forwardModelRepository.getForwardModel()
+                CoroutineScope(Dispatchers.IO).launch {
+                    val forwardModel = forwardModelRepository.getForwardModel()
+                    if (forwardModel == null) {
+                        Log.e(TAG, "Invalid model in database. Not able to continue.")
+                        return@launch
+                    }
 
-                val source = forwardModel?.from!!
-                // TODO: call safely
-                val destination = forwardModel.to
-                handleActionRedirect(source, destination)
+                    val source = forwardModel.from
+                    val destination = forwardModel.to
+                    handleActionRedirect(source, destination)
 
-                val channelId = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-                    createNotificationChannel("REDIRECT_CHANNEL_ID", "SMS redirection")
-                } else {
-                    // If earlier version channel ID is not used
-                    // https://developer.android.com/reference/android/support/v4/app/NotificationCompat.Builder.html#NotificationCompat.Builder(android.content.Context)
-                    "REDIRECT_CHANNEL_ID"
+                    val channelId = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                        createNotificationChannel("REDIRECT_CHANNEL_ID", "SMS redirection")
+                    } else {
+                        // If earlier version channel ID is not used
+                        // https://developer.android.com/reference/android/support/v4/app/NotificationCompat.Builder.html#NotificationCompat.Builder(android.content.Context)
+                        "REDIRECT_CHANNEL_ID"
+                    }
+
+                    val startAppIntent = Intent(this@RedirectService, RedirectsActivity::class.java)
+                    startAppIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
+                    startAppIntent.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP)
+                    val startAppPendingIntent =
+                        PendingIntent.getActivity(this@RedirectService, 0, startAppIntent, 0)
+
+                    val notification: Notification =
+                        NotificationCompat.Builder(this@RedirectService, channelId)
+                            .setSmallIcon(R.drawable.ic_sms_forward)
+                            .setContentTitle(getString(R.string.app_name))
+                            .setContentText(getString(R.string.redirects_info_sms_now_redirected))
+                            .setContentIntent(startAppPendingIntent)
+                            .setWhen(System.currentTimeMillis())
+                            .setPriority(NotificationCompat.PRIORITY_LOW)
+                            .build()
+
+                    Log.d(TAG, "Notification started")
+
+                    startForeground(REDIRECT_NOTIFICATION_ID, notification)
                 }
-
-                val startAppIntent = Intent(this, RedirectsActivity::class.java)
-                startAppIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
-                startAppIntent.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP)
-                val startAppPendingIntent = PendingIntent.getActivity(this, 0, startAppIntent, 0)
-
-                val notification: Notification =
-                    NotificationCompat.Builder(this, channelId)
-                        .setSmallIcon(R.drawable.ic_sms_forward)
-                        .setContentTitle(getString(R.string.app_name))
-                        .setContentText(
-                            getString(
-                                R.string.redirects_info_sms_now_redirected,
-                                source,
-                                destination
-                            )
-                        )
-                        .setContentIntent(startAppPendingIntent)
-                        .setWhen(System.currentTimeMillis())
-                        .setPriority(NotificationCompat.PRIORITY_DEFAULT)
-                        .build()
-
-                Log.d(TAG, "Notification started")
-
-                startForeground(REDIRECT_NOTIFICATION_ID, notification)
             }
             ACTION_STOP_REDIRECT -> {
                 unregisterReceiver(smsReceiver)
@@ -160,7 +163,7 @@ class RedirectService : Service() {
     private fun createNotificationChannel(channelId: String, channelName: String): String {
         val notificationChannel =
             NotificationChannel(channelId, channelName, NotificationManager.IMPORTANCE_NONE)
-        notificationChannel.lightColor = Color.BLUE
+        notificationChannel.lightColor = ContextCompat.getColor(this, R.color.colorPrimary)
         notificationChannel.lockscreenVisibility = Notification.VISIBILITY_PRIVATE
         val service = getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
         service.createNotificationChannel(notificationChannel)

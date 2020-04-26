@@ -6,9 +6,9 @@
     <string name="redirects_info_enable">Enable</string>
     <string name="redirects_info_stop">Stop</string>
     <string name="redirects_info_forwarding_from_to">Redirection set from %s to %s</string>
-    <string name="redirects_info_sms_received_from">SMS received from %s: %s</string>
+    <string name="redirects_info_sms_received_from">[%s]: %s</string>
     <string name="redirects_info_sms_redirect_confirmation">SMS redirected from %s to %s</string>
-    <string name="redirects_info_sms_now_redirected">SMS are now being forwarded from %s to %s.</string>
+    <string name="redirects_info_sms_now_redirected">SMS are now being forwarded.</string>
     <string name="redirects_error_source_and_redirection_must_be_different">Source and destination must differs</string>
     <string name="redirects_error_empty_source">Empty source</string>
     <string name="redirects_error_invalid_source">Invalid source</string>

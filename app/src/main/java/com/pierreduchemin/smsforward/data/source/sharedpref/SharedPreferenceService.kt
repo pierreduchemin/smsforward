@@ -3,6 +3,8 @@ package com.pierreduchemin.smsforward.data.source.sharedpref
 
 import android.content.Context
 import android.os.Build
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
 import com.pierreduchemin.smsforward.data.ForwardModel
 import com.pierreduchemin.smsforward.data.ForwardModelDataSource
 import com.securepreferences.SecurePreferences
@@ -21,6 +23,10 @@ class SharedPreferenceService(
 
     private val sp = SecurePreferences(context, Build.FINGERPRINT, null)
 
+    override fun observeForwardModel(): LiveData<ForwardModel?> {
+        TODO("Not yet implemented")
+    }
+
     override fun getForwardModel(): ForwardModel? {
         val id = sp.getLong(KEY_FM_ID, -1L)
         if (id == -1L) {
@@ -35,8 +41,9 @@ class SharedPreferenceService(
         return ForwardModel(id, from, to, vfrom, vto, activated)
     }
 
-    override fun countForwardModel(): Long {
-        return if (sp.getLong(KEY_FM_ID, -1L) == -1L) 1 else 0
+    override fun countForwardModel(): LiveData<Long> {
+        val count = if (sp.getLong(KEY_FM_ID, -1L) == -1L) 1 else 0
+        return MutableLiveData(count.toLong())
     }
 
     override fun insertForwardModel(forwardModel: ForwardModel) {
@@ -53,5 +60,9 @@ class SharedPreferenceService(
     override fun deleteForwardModelById(id: Long): Int {
         sp.edit().clear().apply()
         return 0
+    }
+
+    override fun updateForwardModel(forwardModel: ForwardModel) {
+
     }
 }

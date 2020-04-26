@@ -19,12 +19,14 @@
             android:supportsRtl="true"
             android:theme="@style/AppTheme">
 
+        <activity android:name=".ui.redirectlist.RedirectListActivity" />
+
         <service
-                android:name=".redirects.RedirectService"
+                android:name=".ui.addredirect.RedirectService"
                 android:exported="false" />
 
         <activity
-                android:name=".redirects.RedirectsActivity"
+                android:name=".ui.addredirect.RedirectsActivity"
                 android:launchMode="singleTop">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -35,24 +37,21 @@
                 <action android:name="android.intent.action.VIEW" />
             </intent-filter>
         </activity>
-        <activity android:name=".about.AboutActivity" />
+        <activity android:name=".ui.about.AboutActivity" />
 
         <receiver
-                android:name=".redirects.SmsReceiver"
+                android:name=".ui.addredirect.SmsReceiver"
                 android:exported="true"
                 android:permission="android.permission.BROADCAST_SMS">
             <intent-filter>
                 <action android:name="android.provider.Telephony.SMS_RECEIVED" />
             </intent-filter>
         </receiver>
-
-        <receiver
-            android:name=".redirects.BootDeviceReceiver">
+        <receiver android:name=".ui.addredirect.BootDeviceReceiver">
             <intent-filter>
-                <action android:name="android.intent.action.BOOT_COMPLETED"/>
+                <action android:name="android.intent.action.BOOT_COMPLETED" />
             </intent-filter>
         </receiver>
-
     </application>
 
 </manifest>

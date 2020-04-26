@@ -13,12 +13,14 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.pierreduchemin.smsforward.redirects
+package com.pierreduchemin.smsforward.ui.addredirect
 
+import android.Manifest
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.os.Bundle
 import android.provider.ContactsContract
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -29,6 +31,8 @@ import android.widget.Toast
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProvider
 import com.pierreduchemin.smsforward.R
 
 const val PERMISSIONS_REQUEST_SEND_SMS = 1654
@@ -37,22 +41,23 @@ const val CONTACT_PICKER_DESTINATION_REQUEST_CODE = 1896
 
 class RedirectsFragment : Fragment(), RedirectsContract.View {
 
+    companion object {
+        private val TAG by lazy { RedirectsFragment::class.java.simpleName }
+        fun newInstance() = RedirectsFragment()
+    }
+
     enum class ButtonState {
         DISABLED,
         ENABLED,
         STOP
     }
 
-    override lateinit var presenter: RedirectsContract.Presenter
+    private lateinit var viewModel: AddRedirectViewModel
 
     private lateinit var root: View
     private lateinit var btnEnable: Button
     private lateinit var etSource: EditText
     private lateinit var etDestination: EditText
-
-    companion object {
-        fun newInstance() = RedirectsFragment()
-    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -66,13 +71,37 @@ class RedirectsFragment : Fragment(), RedirectsContract.View {
         etDestination = root.findViewById(R.id.etDestination)
         etDestination.setOnClickListener { pickNumber(CONTACT_PICKER_DESTINATION_REQUEST_CODE) }
         btnEnable.setOnClickListener {
-            presenter.onButtonClicked(
+            if (!hasPermission(Manifest.permission.SEND_SMS)) {
+                askPermission(Manifest.permission.SEND_SMS)
+                return@setOnClickListener
+            }
+            viewModel.onButtonClicked(
                 etSource.text.trim().toString(),
                 etDestination.text.trim().toString()
             )
         }
 
-        presenter.onViewCreated()
+        viewModel = ViewModelProvider(this).get(AddRedirectViewModel::class.java)
+        viewModel.buttonState.observe(requireActivity(), Observer {
+            setButtonState(it)
+        })
+        viewModel.errorMessageRes.observe(requireActivity(), Observer {
+            showError(it)
+        })
+        viewModel.sourceText.observe(requireActivity(), Observer {
+            setSource(it)
+        })
+        viewModel.destinationText.observe(requireActivity(), Observer {
+            setDestination(it)
+        })
+
+        viewModel.onViewCreated()
+
+        ActivityCompat.requestPermissions(
+            requireActivity(),
+            arrayOf(Manifest.permission.RECEIVE_SMS),
+            REQUEST_CODE_SMS_PERMISSION
+        )
 
         return root
     }
@@ -116,15 +145,15 @@ class RedirectsFragment : Fragment(), RedirectsContract.View {
             phoneNo = cursor.getString(phoneIndex)
         }
 
-        if (requestCode == CONTACT_PICKER_SOURCE_REQUEST_CODE) {
-            presenter.onSourceRetreived(phoneNo)
-        } else if (requestCode == CONTACT_PICKER_DESTINATION_REQUEST_CODE) {
-            presenter.onDestinationRetreived(phoneNo)
-        }
-
         cursor.close()
 
-        presenter.onNumberPicked()
+        if (requestCode == CONTACT_PICKER_SOURCE_REQUEST_CODE) {
+            viewModel.onSourceRetrieved(phoneNo)
+        } else if (requestCode == CONTACT_PICKER_DESTINATION_REQUEST_CODE) {
+            viewModel.onDestinationRetrieved(phoneNo)
+        }
+
+        viewModel.onNumberPicked()
     }
 
     override fun setButtonState(buttonState: ButtonState) {
@@ -173,5 +202,17 @@ class RedirectsFragment : Fragment(), RedirectsContract.View {
             ),
             Toast.LENGTH_SHORT
         ).show()
+    }
+
+    override fun onRequestPermissionsResult(
+        requestCode: Int,
+        permissions: Array<out String>,
+        grantResults: IntArray
+    ) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
+        if (requestCode == REQUEST_CODE_SMS_PERMISSION) {
+            Log.i(TAG, "REQUEST_CODE_SMS_PERMISSION ok")
+            viewModel.onViewCreated()
+        }
     }
 }
