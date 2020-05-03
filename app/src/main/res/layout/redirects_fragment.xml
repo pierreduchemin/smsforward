@@ -20,6 +20,7 @@
         <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:gravity="center_horizontal"
                 android:labelFor="@id/etSource"
                 android:text="@string/redirects_info_automatically_redirect_sms_from" />
 
