@@ -1,9 +1,8 @@
 package com.pierreduchemin.smsforward.ui.redirectlist
 
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import androidx.appcompat.app.AppCompatActivity
 import com.pierreduchemin.smsforward.R
-import com.pierreduchemin.smsforward.ui.redirectlist.RedirectListFragment
 
 class RedirectListActivity : AppCompatActivity() {
 

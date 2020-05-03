@@ -13,12 +13,4 @@ interface RedirectsContract {
         fun resetFields()
         fun showRedirectMessage(source: String, destination: String)
     }
-
-//    interface Presenter : BasePresenter {
-//        fun onButtonClicked(source: String, destination: String)
-//        fun onNumberPicked()
-//        fun onSourceRetreived(source: String?)
-//        fun onDestinationRetreived(destination: String?)
-//        fun onViewCreated()
-//    }
 }

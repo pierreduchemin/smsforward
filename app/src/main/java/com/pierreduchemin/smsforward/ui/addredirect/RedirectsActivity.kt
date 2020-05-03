@@ -12,7 +12,6 @@ import com.pierreduchemin.smsforward.ui.about.AboutActivity
 import kotlinx.android.synthetic.main.redirects_activity.*
 import toothpick.ktp.KTP
 
-
 const val REQUEST_CODE_SMS_PERMISSION = 9954
 
 class RedirectsActivity : AppCompatActivity() {

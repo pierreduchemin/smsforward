@@ -40,7 +40,10 @@ class SmsReceiver : BroadcastReceiver() {
                     continue
                 }
                 val currentMessage = getIncomingMessage(o, bundle)
-                val phoneNumber = PhoneNumberUtils.toUnifiedNumber(context, currentMessage.displayOriginatingAddress)
+                val phoneNumber = PhoneNumberUtils.toUnifiedNumber(
+                    context,
+                    currentMessage.displayOriginatingAddress
+                )
                 if (phoneNumber == null) {
                     Log.e(TAG, "Received SMS from invalid number (???): $phoneNumber")
                     return

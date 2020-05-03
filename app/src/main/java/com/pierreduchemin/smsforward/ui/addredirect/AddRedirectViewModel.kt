@@ -25,7 +25,7 @@ class AddRedirectViewModel(application: Application) : AndroidViewModel(applicat
 
     private val repository: ForwardModelRepository by inject<ForwardModelRepository>()
 
-    var forwardModel: ForwardModel? = null
+    private var forwardModel: ForwardModel? = null
 
     init {
         KTP.openRootScope()
