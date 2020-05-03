@@ -2,6 +2,7 @@ package com.pierreduchemin.smsforward.ui.addredirect
 
 import android.content.Intent
 import android.os.Bundle
+import android.provider.ContactsContract
 import android.view.Menu
 import android.view.MenuItem
 import androidx.appcompat.app.AppCompatActivity
@@ -11,6 +12,7 @@ import com.pierreduchemin.smsforward.di.ActivityModule
 import com.pierreduchemin.smsforward.ui.about.AboutActivity
 import kotlinx.android.synthetic.main.redirects_activity.*
 import toothpick.ktp.KTP
+
 
 const val REQUEST_CODE_SMS_PERMISSION = 9954
 
@@ -46,6 +48,11 @@ class RedirectsActivity : AppCompatActivity() {
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        if (item.itemId == R.id.miContact) {
+            val intent = Intent(Intent.ACTION_INSERT_OR_EDIT)
+            intent.type = ContactsContract.Contacts.CONTENT_ITEM_TYPE
+            startActivity(intent)
+        }
         if (item.itemId == R.id.miAbout) {
             startActivity(Intent(this, AboutActivity::class.java))
         }

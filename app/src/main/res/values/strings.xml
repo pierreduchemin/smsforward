@@ -1,6 +1,8 @@
 <resources>
     <string name="app_name" translatable="false">SMS Forward</string>
 
+    <string name="contact_info_title">Manage contacts</string>
+
     <string name="redirects_info_automatically_redirect_sms_from">Automatically redirect SMS from</string>
     <string name="redirects_info_to">to</string>
     <string name="redirects_info_enable">Enable</string>
