@@ -21,4 +21,13 @@
     <string name="about_info_license">Sous license GNU GPLv3</string>
     <string name="about_info_app_description">SMS Forward est une application qui vous permet de transférer automatiquement des SMS</string>
     <string name="about_info_title">À propos</string>
+    <string name="about_FAQ_title">FAQ</string>
+    <string name="about_question1">Quel est le but de cette application ?</string>
+    <string name="about_answer1">Cette application a été développée pour contourner des limitations régionales. Par exemple, si un service dans un pays A requiert un numéro de téléphone de ce même pays, mais que vous avez un numéro de téléphone du pays B, vous pouvez demander à un ami qui a un numéro du pays A d\'installer cette application pour vous rediriger les SMS et vous pourrez les recevoir.\nToutefois, comme cette application est assez basique, vous pouvez y trouver d\'autres usages.</string>
+    <string name="about_question2">Dois-je faire attention à quelque chose ?</string>
+    <string name="about_answer2">Oui :\n- Si vous êtes sur le point de demander à quelqu\'un d\'installer cette application, notez que vous devez faire confiance à cette personne. Elle sera en mesure de lire les messages.\n- Il est possible de créer des boucles de redirection entre plusieurs appareils. Il est hautement recommendé d\'éviter cela malgré les sécurités implémentées dans Android.\nCe programme est distribué dans l’espoir qu’il vous sera utile, mais SANS AUCUNE GARANTIE : sans même la garantie implicite de COMMERCIALISABILITÉ ni d’ADÉQUATION À UN OBJECTIF PARTICULIER. Consultez la Licence Générale Publique GNU pour plus de détails.</string>
+    <string name="about_question3">Est-il possible de masquer la notification indiquant que la redirection est active ?</string>
+    <string name="about_answer3">Oui, dans les versions récentes d\'Android, vous pouvez rester appuyé sur la notification pour accéder à l\'option \"masquer la notification\".</string>
+    <string name="about_question4">Je ne veux plus recevoir de notification quand je reçoit un SMS et qu\'il est redirigé. Comment désactiver les notifications pour certains contact uniquement?</string>
+    <string name="about_answer4">Tout dépend de votre application SMS. Avec Silence ou Signal, par exemple, vous pouvez désactiver les notifications dans les paramètres de la conversation.</string>
 </resources>

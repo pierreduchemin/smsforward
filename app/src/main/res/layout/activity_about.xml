@@ -13,14 +13,94 @@
             android:background="?attr/colorPrimary"
             android:minHeight="?attr/actionBarSize"
             android:title="@string/app_name"
-      app:theme="@style/ToolBarStyle"
             android:titleTextColor="@android:color/white"
+            app:theme="@style/ToolBarStyle"
             app:titleTextColor="@android:color/white"
             tools:targetApi="m" />
 
     <ScrollView
             android:id="@+id/svAbout"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
+            android:layout_height="wrap_content">
 
+        <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+            <FrameLayout
+                    android:id="@+id/flAbout"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+
+            <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="5dp"
+                    android:orientation="vertical"
+                    android:padding="5dp">
+
+                <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="center_horizontal"
+                        android:text="@string/about_FAQ_title"
+                        android:textSize="15sp"
+                        android:textStyle="bold" />
+
+                <TextView
+                        android:layout_marginTop="4dp"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="@string/about_question1"
+                        android:textStyle="bold" />
+
+                <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="@string/about_answer1"
+                        android:textStyle="italic" />
+
+                <TextView
+                        android:layout_marginTop="4dp"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="@string/about_question2"
+                        android:textStyle="bold" />
+
+                <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="@string/about_answer2"
+                        android:textStyle="italic" />
+
+                <TextView
+                        android:layout_marginTop="4dp"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="@string/about_question3"
+                        android:textStyle="bold" />
+
+                <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="@string/about_answer3"
+                        android:textStyle="italic" />
+
+                <TextView
+                        android:layout_marginTop="4dp"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="@string/about_question4"
+                        android:textStyle="bold" />
+
+                <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="@string/about_answer4"
+                        android:textStyle="italic" />
+
+            </LinearLayout>
+        </LinearLayout>
+    </ScrollView>
 </LinearLayout>

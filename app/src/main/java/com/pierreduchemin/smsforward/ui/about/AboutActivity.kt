@@ -71,6 +71,6 @@ class AboutActivity : AppCompatActivity() {
             .addItem(gitlabElement)
             .create()
 
-        svAbout.addView(aboutPage)
+        flAbout.addView(aboutPage)
     }
 }
