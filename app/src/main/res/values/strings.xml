@@ -28,8 +28,8 @@
     <string name="about_answer1">This application have been developed to bypass regional limitations. For example, a service in country A requires a phone number from country A, but your phone number is from country B. You ask a friend from country A to install this app and you will be able to receive SMS from the service in country B.\nHowever, since this is a pretty simple application, it can also serve other purposes.</string>
     <string name="about_question2">Should I be careful about something in particular?</string>
     <string name="about_answer2">Yes, a few things:\n- If you are about to ask someone to install this app, you have to trust your contact. This person will be able to read the messages.\n- It\'s possible to create redirection loops between 2+ devices. It\'s highly recommended to avoid this even if Android has built-in securities.\nThis program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.</string>
-    <string name="about_question3">Can I remove the notification when redirection is enabled?</string>
-    <string name="about_answer3">Yes, in recent Android versions, you have to do a long press on the notification to access the \"hide notification\" feature.</string>
+    <string name="about_question3">Can I remove the notification in status bar when redirection is enabled?</string>
+    <string name="about_answer3">Yes, in recent Android versions (9+), you have to do a long press on the notification to access the \"hide notification\" feature.</string>
     <string name="about_question4">I don\'t want to be notified about redirected SMS. How to disable notifications for specific contacts?</string>
     <string name="about_answer4">This depends on the SMS application you are using. With Silence or Signal, you can disable notifications in conversation parameters.</string>
 </resources>

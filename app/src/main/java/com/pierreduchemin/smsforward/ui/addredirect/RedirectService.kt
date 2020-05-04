@@ -111,7 +111,7 @@ class RedirectService : Service() {
                             .setContentText(getString(R.string.redirects_info_sms_now_redirected))
                             .setContentIntent(startAppPendingIntent)
                             .setWhen(System.currentTimeMillis())
-                            .setPriority(NotificationCompat.PRIORITY_LOW)
+                            .setPriority(NotificationCompat.PRIORITY_MIN)
                             .build()
 
                     Log.d(TAG, "Notification started")
