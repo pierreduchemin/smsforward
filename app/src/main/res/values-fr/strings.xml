@@ -2,7 +2,7 @@
 
     <string name="contact_info_title">Gérer les contacts</string>
 
-    <string name="redirects_info_automatically_redirect_sms_from">Transférer automatiquement les SMS en provenence de</string>
+    <string name="redirects_info_automatically_redirect_sms_from">Transférer automatiquement les SMS en provenance de</string>
     <string name="redirects_info_to">vers</string>
     <string name="redirects_info_enable">Activer</string>
     <string name="redirects_info_stop">Stop</string>
