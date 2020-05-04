@@ -80,8 +80,6 @@ class RedirectsFragment : Fragment(), RedirectsContract.View {
             setDestination(it)
         })
 
-        viewModel.onViewCreated()
-
         ActivityCompat.requestPermissions(
             requireActivity(),
             arrayOf(Manifest.permission.RECEIVE_SMS),
@@ -187,17 +185,5 @@ class RedirectsFragment : Fragment(), RedirectsContract.View {
             ),
             Toast.LENGTH_SHORT
         ).show()
-    }
-
-    override fun onRequestPermissionsResult(
-        requestCode: Int,
-        permissions: Array<out String>,
-        grantResults: IntArray
-    ) {
-        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
-        if (requestCode == REQUEST_CODE_SMS_PERMISSION) {
-            Log.i(TAG, "REQUEST_CODE_SMS_PERMISSION ok")
-            viewModel.onViewCreated()
-        }
     }
 }

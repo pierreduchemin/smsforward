@@ -37,9 +37,6 @@ class AddRedirectViewModel(application: Application) : AndroidViewModel(applicat
         viewModelScope.launch(Dispatchers.IO) {
             forwardModel = repository.getForwardModel()
         }
-    }
-
-    fun onViewCreated() {
         repository.observeForwardModel().observeForever {
             forwardModel = it
             notifyUpdate(forwardModel)
@@ -145,7 +142,6 @@ class AddRedirectViewModel(application: Application) : AndroidViewModel(applicat
 
             try {
                 localForwardModel.activated = true
-                buttonState.value = RedirectsFragment.ButtonState.STOP
 
                 viewModelScope.launch(Dispatchers.IO) {
                     repository.insertForwardModel(localForwardModel)
