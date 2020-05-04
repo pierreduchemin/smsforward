@@ -5,7 +5,6 @@ import android.content.Intent
 import android.content.pm.PackageManager
 import android.os.Bundle
 import android.provider.ContactsContract
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -121,14 +120,14 @@ class RedirectsFragment : Fragment(), RedirectsContract.View {
         }
         var phoneNo: String? = null
         val uri = data.data!!
-        val cursor = requireActivity().contentResolver.query(uri, null, null, null, null)!!
-
-        if (cursor.moveToFirst()) {
-            val phoneIndex = cursor.getColumnIndex(ContactsContract.CommonDataKinds.Phone.NUMBER)
-            phoneNo = cursor.getString(phoneIndex)
+        requireContext().contentResolver.query(uri, null, null, null, null)?.use { cursor ->
+            if (cursor.moveToFirst()) {
+                val phoneIndex =
+                    cursor.getColumnIndex(ContactsContract.CommonDataKinds.Phone.NUMBER)
+                phoneNo = cursor.getString(phoneIndex)
+            }
+            cursor.close()
         }
-
-        cursor.close()
 
         if (requestCode == CONTACT_PICKER_SOURCE_REQUEST_CODE) {
             viewModel.onSourceRetrieved(phoneNo)

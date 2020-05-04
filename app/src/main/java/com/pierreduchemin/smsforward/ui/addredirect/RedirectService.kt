@@ -91,7 +91,7 @@ class RedirectService : Service() {
                     handleActionRedirect(source, destination)
 
                     val channelId = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-                        createNotificationChannel("REDIRECT_CHANNEL_ID", "SMS redirection")
+                        createNotificationChannel()
                     } else {
                         // If earlier version channel ID is not used
                         // https://developer.android.com/reference/android/support/v4/app/NotificationCompat.Builder.html#NotificationCompat.Builder(android.content.Context)
@@ -160,9 +160,10 @@ class RedirectService : Service() {
     }
 
     @RequiresApi(Build.VERSION_CODES.O)
-    private fun createNotificationChannel(channelId: String, channelName: String): String {
+    private fun createNotificationChannel(): String {
+        val channelId = "REDIRECT_CHANNEL_ID"
         val notificationChannel =
-            NotificationChannel(channelId, channelName, NotificationManager.IMPORTANCE_NONE)
+            NotificationChannel(channelId, "SMS redirection", NotificationManager.IMPORTANCE_NONE)
         notificationChannel.lightColor = ContextCompat.getColor(this, R.color.colorPrimary)
         notificationChannel.lockscreenVisibility = Notification.VISIBILITY_PRIVATE
         val service = getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager

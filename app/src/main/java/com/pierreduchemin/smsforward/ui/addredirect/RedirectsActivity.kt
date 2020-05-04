@@ -18,10 +18,6 @@ const val REQUEST_CODE_SMS_PERMISSION = 9954
 
 class RedirectsActivity : AppCompatActivity() {
 
-    companion object {
-        private val TAG by lazy { RedirectsActivity::class.java.simpleName }
-    }
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.redirects_activity)

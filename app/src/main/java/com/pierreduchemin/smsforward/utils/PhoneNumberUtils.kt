@@ -10,7 +10,6 @@ class PhoneNumberUtils {
 
     companion object {
 
-        private val TAG by lazy { PhoneNumberUtils::class.java.simpleName }
         private val phoneUtil = PhoneNumberUtil.getInstance()
 
         private fun getProto(context: Context, phoneNumber: String): Phonenumber.PhoneNumber? {
