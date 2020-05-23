@@ -5,7 +5,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical"
-        tools:context=".ui.addredirect.RedirectsActivity">
+        tools:context=".ui.addredirect.AddRedirectActivity">
 
     <androidx.appcompat.widget.Toolbar
             android:id="@+id/toolbar"
@@ -15,6 +15,7 @@
             android:minHeight="?attr/actionBarSize"
             android:title="@string/app_name"
             android:titleTextColor="@android:color/white"
+            app:theme="@style/ToolBarStyle"
             app:titleTextColor="@android:color/white"
             tools:targetApi="m" />
 

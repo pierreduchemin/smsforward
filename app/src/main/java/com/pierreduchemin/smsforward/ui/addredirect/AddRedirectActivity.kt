@@ -6,32 +6,21 @@ import android.provider.ContactsContract
 import android.view.Menu
 import android.view.MenuItem
 import androidx.appcompat.app.AppCompatActivity
-import com.pierreduchemin.smsforward.App.Companion.APPSCOPE
 import com.pierreduchemin.smsforward.R
-import com.pierreduchemin.smsforward.di.ActivityModule
-import com.pierreduchemin.smsforward.ui.about.AboutActivity
 import kotlinx.android.synthetic.main.redirects_activity.*
-import toothpick.ktp.KTP
 
 
-const val REQUEST_CODE_SMS_PERMISSION = 9954
-
-class RedirectsActivity : AppCompatActivity() {
+class AddRedirectActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.redirects_activity)
 
         setSupportActionBar(toolbar)
+        supportActionBar?.setDisplayHomeAsUpEnabled(true)
 
-        KTP.openRootScope()
-            .openSubScope(APPSCOPE)
-            .openSubScope(this)
-            .installModules(ActivityModule(this))
-            .inject(this)
-
-        supportFragmentManager.findFragmentById(R.id.mainContent) as RedirectsFragment?
-            ?: RedirectsFragment.newInstance().also {
+        supportFragmentManager.findFragmentById(R.id.mainContent) as AddRedirectFragment?
+            ?: AddRedirectFragment.newInstance().also {
                 supportFragmentManager.beginTransaction().apply {
                     replace(R.id.mainContent, it)
                 }.commit()
@@ -39,7 +28,7 @@ class RedirectsActivity : AppCompatActivity() {
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
-        menuInflater.inflate(R.menu.menu_main, menu)
+        menuInflater.inflate(R.menu.menu_addredirect, menu)
         return super.onCreateOptionsMenu(menu)
     }
 
@@ -48,9 +37,8 @@ class RedirectsActivity : AppCompatActivity() {
             val intent = Intent(Intent.ACTION_INSERT_OR_EDIT)
             intent.type = ContactsContract.Contacts.CONTENT_ITEM_TYPE
             startActivity(intent)
-        }
-        if (item.itemId == R.id.miAbout) {
-            startActivity(Intent(this, AboutActivity::class.java))
+        } else {
+            onBackPressed()
         }
         return super.onOptionsItemSelected(item)
     }

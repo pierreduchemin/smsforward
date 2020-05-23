@@ -1,6 +1,5 @@
 package com.pierreduchemin.smsforward.data
 
-import androidx.annotation.NonNull
 import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
@@ -9,21 +8,17 @@ import androidx.room.PrimaryKey
 data class ForwardModel(
 
     @PrimaryKey(autoGenerate = true)
-    @NonNull
-    val id: Long,
+    var id: Long? = null,
 
     @ColumnInfo
-    var from: String,
+    var from: String = "",
 
     @ColumnInfo
-    var to: String,
+    var to: String = "",
 
     @ColumnInfo
-    var vfrom: String,
+    var vfrom: String = "",
 
     @ColumnInfo
-    var vto: String,
-
-    @ColumnInfo
-    var activated: Boolean
+    var vto: String = ""
 )

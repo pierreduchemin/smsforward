@@ -8,8 +8,6 @@ import android.provider.ContactsContract
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Button
-import android.widget.EditText
 import android.widget.TextView
 import android.widget.Toast
 import androidx.core.app.ActivityCompat
@@ -17,54 +15,37 @@ import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
+import com.pierreduchemin.smsforward.App
 import com.pierreduchemin.smsforward.R
+import com.pierreduchemin.smsforward.di.FragmentModule
+import com.pierreduchemin.smsforward.ui.redirectlist.RedirectListViewModel
+import kotlinx.android.synthetic.main.redirects_fragment.*
+import toothpick.ktp.KTP
+import toothpick.ktp.delegate.inject
 
-const val PERMISSIONS_REQUEST_SEND_SMS = 1654
-const val CONTACT_PICKER_SOURCE_REQUEST_CODE = 1456
-const val CONTACT_PICKER_DESTINATION_REQUEST_CODE = 1896
-
-class RedirectsFragment : Fragment(), RedirectsContract.View {
+class AddRedirectFragment : Fragment(), RedirectsContract.View {
 
     companion object {
-        private val TAG by lazy { RedirectsFragment::class.java.simpleName }
-        fun newInstance() = RedirectsFragment()
+        private val TAG by lazy { AddRedirectFragment::class.java.simpleName }
+        fun newInstance() = AddRedirectFragment()
+
+        const val PERMISSIONS_REQUEST_SEND_SMS = 1654
+        const val CONTACT_PICKER_SOURCE_REQUEST_CODE = 1456
+        const val CONTACT_PICKER_DESTINATION_REQUEST_CODE = 1896
     }
 
     enum class ButtonState {
         DISABLED,
-        ENABLED,
-        STOP
+        ENABLED
     }
 
     private lateinit var viewModel: AddRedirectViewModel
-
-    private lateinit var root: View
-    private lateinit var btnEnable: Button
-    private lateinit var etSource: EditText
-    private lateinit var etDestination: EditText
+    private val viewModelRef by inject<RedirectListViewModel>()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        root = inflater.inflate(R.layout.redirects_fragment, container, false)
-
-        btnEnable = root.findViewById(R.id.btnEnable)
-        etSource = root.findViewById(R.id.etSource)
-        etSource.setOnClickListener { pickNumber(CONTACT_PICKER_SOURCE_REQUEST_CODE) }
-        etDestination = root.findViewById(R.id.etDestination)
-        etDestination.setOnClickListener { pickNumber(CONTACT_PICKER_DESTINATION_REQUEST_CODE) }
-        btnEnable.setOnClickListener {
-            if (!hasPermission(Manifest.permission.SEND_SMS)) {
-                askPermission(Manifest.permission.SEND_SMS)
-                return@setOnClickListener
-            }
-            viewModel.onButtonClicked(
-                etSource.text.trim().toString(),
-                etDestination.text.trim().toString()
-            )
-        }
-
         viewModel = ViewModelProvider(this).get(AddRedirectViewModel::class.java)
         viewModel.buttonState.observe(requireActivity(), Observer {
             setButtonState(it)
@@ -78,14 +59,35 @@ class RedirectsFragment : Fragment(), RedirectsContract.View {
         viewModel.destinationText.observe(requireActivity(), Observer {
             setDestination(it)
         })
+        viewModel.isComplete.observe(requireActivity(), Observer {
+            if (it) {
+                requireActivity().finish()
+            }
+        })
 
-        ActivityCompat.requestPermissions(
-            requireActivity(),
-            arrayOf(Manifest.permission.RECEIVE_SMS),
-            REQUEST_CODE_SMS_PERMISSION
-        )
+        return inflater.inflate(R.layout.redirects_fragment, container, false)
+    }
 
-        return root
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+        KTP.openRootScope()
+            .openSubScope(App.APPSCOPE)
+            .installModules(FragmentModule(this))
+            .inject(this)
+
+        etSource.setOnClickListener { pickNumber(CONTACT_PICKER_SOURCE_REQUEST_CODE) }
+        etDestination.setOnClickListener { pickNumber(CONTACT_PICKER_DESTINATION_REQUEST_CODE) }
+        btnAdd.setOnClickListener {
+            if (!hasPermission(Manifest.permission.SEND_SMS)) {
+                askPermission(Manifest.permission.SEND_SMS)
+                return@setOnClickListener
+            }
+            viewModel.onButtonClicked(
+                etSource.text.trim().toString(),
+                etDestination.text.trim().toString()
+            )
+        }
     }
 
     override fun hasPermission(permissionString: String): Boolean {
@@ -134,8 +136,6 @@ class RedirectsFragment : Fragment(), RedirectsContract.View {
         } else if (requestCode == CONTACT_PICKER_DESTINATION_REQUEST_CODE) {
             viewModel.onDestinationRetrieved(phoneNo)
         }
-
-        viewModel.onNumberPicked()
     }
 
     override fun setButtonState(buttonState: ButtonState) {
@@ -143,20 +143,14 @@ class RedirectsFragment : Fragment(), RedirectsContract.View {
             ButtonState.DISABLED -> {
                 etSource.isEnabled = true
                 etDestination.isEnabled = true
-                btnEnable.isEnabled = false
-                btnEnable.text = getString(R.string.redirects_info_enable)
+                btnAdd.isEnabled = false
+                btnAdd.text = getString(R.string.redirects_info_add)
             }
             ButtonState.ENABLED -> {
                 etSource.isEnabled = true
                 etDestination.isEnabled = true
-                btnEnable.isEnabled = true
-                btnEnable.text = getString(R.string.redirects_info_enable)
-            }
-            ButtonState.STOP -> {
-                etSource.isEnabled = false
-                etDestination.isEnabled = false
-                btnEnable.isEnabled = true
-                btnEnable.text = getString(R.string.redirects_info_stop)
+                btnAdd.isEnabled = true
+                btnAdd.text = getString(R.string.redirects_info_add)
             }
         }
     }

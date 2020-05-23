@@ -19,25 +19,30 @@
             android:supportsRtl="true"
             android:theme="@style/AppTheme">
 
-        <activity android:name=".ui.redirectlist.RedirectListActivity" />
+        <activity
+                android:name=".ui.redirectlist.RedirectListActivity"
+                android:launchMode="singleTop">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
 
         <service
                 android:name=".ui.addredirect.RedirectService"
                 android:exported="false" />
 
         <activity
-                android:name=".ui.addredirect.RedirectsActivity"
+                android:name=".ui.addredirect.AddRedirectActivity"
                 android:launchMode="singleTop">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
             </intent-filter>
         </activity>
-        <activity android:name=".ui.about.AboutActivity" />
+
+        <activity
+                android:name=".ui.about.AboutActivity"
+                android:launchMode="singleTop" />
 
         <receiver
                 android:name=".ui.addredirect.SmsReceiver"

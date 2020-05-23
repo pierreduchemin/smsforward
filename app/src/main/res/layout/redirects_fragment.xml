@@ -15,7 +15,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="60dp"
                 android:contentDescription="@string/app_name"
-                android:src="@drawable/img_message_forward" />
+                android:src="@drawable/ic_undraw_post_online_dkuk" />
 
         <TextView
                 android:layout_width="wrap_content"
@@ -49,11 +49,11 @@
                 android:inputType="phone" />
 
         <Button
-                android:id="@+id/btnEnable"
+                android:id="@+id/btnAdd"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:enabled="false"
-                android:text="@string/redirects_info_enable" />
+                android:text="@string/redirects_info_add" />
 
     </LinearLayout>
 </ScrollView>

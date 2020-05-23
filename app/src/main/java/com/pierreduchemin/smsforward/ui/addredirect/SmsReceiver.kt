@@ -7,6 +7,7 @@ import android.os.Build
 import android.os.Bundle
 import android.telephony.SmsMessage
 import android.util.Log
+import com.pierreduchemin.smsforward.data.ForwardModel
 import com.pierreduchemin.smsforward.utils.PhoneNumberUtils
 
 class SmsReceiver : BroadcastReceiver() {
@@ -16,13 +17,13 @@ class SmsReceiver : BroadcastReceiver() {
     }
 
     private var callback: OnSmsReceivedListener? = null
-    private var phoneNumberFilter: String? = null
+    private var phoneNumberFilter: List<ForwardModel>? = null
 
     fun setCallback(callback: OnSmsReceivedListener) {
         this.callback = callback
     }
 
-    fun setPhoneNumberFilter(phoneNumberFilter: String?) {
+    fun setPhoneNumberFilter(phoneNumberFilter: List<ForwardModel>) {
         this.phoneNumberFilter = phoneNumberFilter
     }
 
@@ -49,12 +50,12 @@ class SmsReceiver : BroadcastReceiver() {
                     return
                 }
 
-                if (phoneNumberFilter != null && phoneNumber != phoneNumberFilter) {
-                    Log.d(TAG, "Not the target: $phoneNumberFilter, was: $phoneNumber")
-                    return
+                phoneNumberFilter?.filter {
+                    it.from == phoneNumber
+                }?.map {
+                    val message = currentMessage.displayMessageBody
+                    smsReceivedListener.onSmsReceived(it, message)
                 }
-                val message = currentMessage.displayMessageBody
-                smsReceivedListener.onSmsReceived(phoneNumber, message)
             }
         } catch (e: Exception) {
             Log.e(TAG, "Exception in smsReceiver $e")

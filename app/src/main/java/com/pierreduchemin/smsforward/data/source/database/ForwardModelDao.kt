@@ -10,11 +10,11 @@ import com.pierreduchemin.smsforward.data.ForwardModel
 @Dao
 interface ForwardModelDao {
 
-    @Query("SELECT * FROM ForwardModel WHERE id = 1")
-    fun observeForwardModel(): LiveData<ForwardModel?>
+    @Query("SELECT * FROM ForwardModel")
+    fun observeForwardModels(): LiveData<List<ForwardModel>>
 
-    @Query("SELECT * FROM ForwardModel WHERE id = 1")
-    fun getForwardModel(): ForwardModel?
+    @Query("SELECT * FROM ForwardModel")
+    fun getForwardModels(): List<ForwardModel>
 
     @Query("SELECT COUNT(*) FROM ForwardModel")
     fun countForwardModel(): LiveData<Long>

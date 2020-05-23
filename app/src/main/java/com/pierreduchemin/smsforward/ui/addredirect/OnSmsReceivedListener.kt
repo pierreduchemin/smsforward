@@ -1,5 +1,7 @@
 package com.pierreduchemin.smsforward.ui.addredirect
 
+import com.pierreduchemin.smsforward.data.ForwardModel
+
 interface OnSmsReceivedListener {
-    fun onSmsReceived(source: String, message: String)
+    fun onSmsReceived(forwardModel: ForwardModel, message: String)
 }

@@ -14,21 +14,14 @@ import androidx.core.app.NotificationCompat
 import androidx.core.content.ContextCompat
 import com.pierreduchemin.smsforward.App
 import com.pierreduchemin.smsforward.R
+import com.pierreduchemin.smsforward.data.ForwardModel
 import com.pierreduchemin.smsforward.data.ForwardModelRepository
-import com.pierreduchemin.smsforward.di.ActivityModule
+import com.pierreduchemin.smsforward.di.ViewModelModule
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import toothpick.ktp.KTP
 import toothpick.ktp.delegate.inject
-
-
-private const val ACTION_START_REDIRECT =
-    "com.pierreduchemin.smsforward.buisiness.redirects.action.START_REDIRECT"
-private const val ACTION_STOP_REDIRECT =
-    "com.pierreduchemin.smsforward.buisiness.redirects.action.STOP_REDIRECT"
-
-private const val REDIRECT_NOTIFICATION_ID: Int = 1
 
 class RedirectService : Service() {
 
@@ -36,9 +29,15 @@ class RedirectService : Service() {
     private var smsReceiver: SmsReceiver = SmsReceiver()
 
     companion object {
-
         private val TAG by lazy { RedirectService::class.java.simpleName }
         private var intent: Intent? = null
+
+        private const val ACTION_START_REDIRECT =
+            "com.pierreduchemin.smsforward.buisiness.redirects.action.START_REDIRECT"
+        private const val ACTION_STOP_REDIRECT =
+            "com.pierreduchemin.smsforward.buisiness.redirects.action.STOP_REDIRECT"
+
+        private const val REDIRECT_NOTIFICATION_ID: Int = 1
 
         /**
          * Starts this service to perform action Redirect with the given parameters. If
@@ -72,7 +71,7 @@ class RedirectService : Service() {
         KTP.openRootScope()
             .openSubScope(App.APPSCOPE)
             .openSubScope(this)
-            .installModules(ActivityModule(this))
+            .installModules(ViewModelModule(this))
             .inject(this)
     }
 
@@ -80,15 +79,8 @@ class RedirectService : Service() {
         when (intent?.action) {
             ACTION_START_REDIRECT -> {
                 CoroutineScope(Dispatchers.IO).launch {
-                    val forwardModel = forwardModelRepository.getForwardModel()
-                    if (forwardModel == null) {
-                        Log.e(TAG, "Invalid model in database. Not able to continue.")
-                        return@launch
-                    }
-
-                    val source = forwardModel.from
-                    val destination = forwardModel.to
-                    handleActionRedirect(source, destination)
+                    val forwardModels = forwardModelRepository.getForwardModels()
+                    handleActionRedirect(forwardModels)
 
                     val channelId = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
                         createNotificationChannel()
@@ -98,7 +90,8 @@ class RedirectService : Service() {
                         "REDIRECT_CHANNEL_ID"
                     }
 
-                    val startAppIntent = Intent(this@RedirectService, RedirectsActivity::class.java)
+                    val startAppIntent =
+                        Intent(this@RedirectService, AddRedirectActivity::class.java)
                     startAppIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
                     startAppIntent.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP)
                     val startAppPendingIntent =
@@ -131,20 +124,24 @@ class RedirectService : Service() {
      * Handle action Redirect in the provided background thread with the provided
      * parameters.
      */
-    private fun handleActionRedirect(source: String, destination: String) {
+    private fun handleActionRedirect(forwardModels: List<ForwardModel>) {
         smsReceiver.setCallback(object : OnSmsReceivedListener {
-            override fun onSmsReceived(source: String, message: String) {
-                Log.d(TAG, "Caught a SMS from $source")
-                sendSMS(
-                    destination, getString(
-                        R.string.redirects_info_sms_received_from,
-                        source,
-                        message
+            override fun onSmsReceived(forwardModel: ForwardModel, message: String) {
+                forwardModels.filter {
+                    it.from == forwardModel.from
+                }.map {
+                    Log.d(TAG, "Caught a SMS from ${it.from}")
+                    sendSMS(
+                        it.to, getString(
+                            R.string.redirects_info_sms_received_from,
+                            it.from,
+                            message
+                        )
                     )
-                )
+                }
             }
         })
-        smsReceiver.setPhoneNumberFilter(source)
+        smsReceiver.setPhoneNumberFilter(forwardModels)
 
         val filter = IntentFilter()
         filter.addAction("android.provider.Telephony.SMS_RECEIVED")

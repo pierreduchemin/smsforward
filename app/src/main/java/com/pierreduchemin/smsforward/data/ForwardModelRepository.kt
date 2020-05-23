@@ -5,11 +5,11 @@ import com.pierreduchemin.smsforward.data.source.database.ForwardModelDao
 class ForwardModelRepository(private val forwardModelDao: ForwardModelDao) :
     ForwardModelDataSource {
 
-    override fun observeForwardModel() =
-        forwardModelDao.observeForwardModel()
+    override fun observeForwardModels() =
+        forwardModelDao.observeForwardModels()
 
-    override fun getForwardModel() =
-        forwardModelDao.getForwardModel()
+    override fun getForwardModels() =
+        forwardModelDao.getForwardModels()
 
     override fun countForwardModel() =
         forwardModelDao.countForwardModel()
@@ -18,9 +18,8 @@ class ForwardModelRepository(private val forwardModelDao: ForwardModelDao) :
         forwardModelDao.updateForwardModel(forwardModel)
     }
 
-    override fun insertForwardModel(forwardModel: ForwardModel) {
+    override fun insertForwardModel(forwardModel: ForwardModel) =
         forwardModelDao.insertForwardModel(forwardModel)
-    }
 
     override fun deleteForwardModelById(id: Long): Int = forwardModelDao.deleteForwardModelById(id)
 }

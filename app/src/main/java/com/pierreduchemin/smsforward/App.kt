@@ -2,6 +2,7 @@ package com.pierreduchemin.smsforward
 
 import android.app.Application
 import com.pierreduchemin.smsforward.di.AppModule
+import com.pierreduchemin.smsforward.ui.redirectlist.RedirectListViewModel
 import toothpick.ktp.KTP
 
 class App : Application() {

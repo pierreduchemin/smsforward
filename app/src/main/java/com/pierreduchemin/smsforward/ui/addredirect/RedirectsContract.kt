@@ -9,7 +9,7 @@ interface RedirectsContract {
         fun pickNumber(requestCode: Int)
         fun setSource(source: String)
         fun setDestination(destination: String)
-        fun setButtonState(buttonState: RedirectsFragment.ButtonState)
+        fun setButtonState(buttonState: AddRedirectFragment.ButtonState)
         fun resetFields()
         fun showRedirectMessage(source: String, destination: String)
     }
