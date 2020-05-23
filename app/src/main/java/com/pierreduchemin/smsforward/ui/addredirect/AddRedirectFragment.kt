@@ -15,13 +15,8 @@ import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
-import com.pierreduchemin.smsforward.App
 import com.pierreduchemin.smsforward.R
-import com.pierreduchemin.smsforward.di.FragmentModule
-import com.pierreduchemin.smsforward.ui.redirectlist.RedirectListViewModel
 import kotlinx.android.synthetic.main.redirects_fragment.*
-import toothpick.ktp.KTP
-import toothpick.ktp.delegate.inject
 
 class AddRedirectFragment : Fragment(), RedirectsContract.View {
 
@@ -40,7 +35,6 @@ class AddRedirectFragment : Fragment(), RedirectsContract.View {
     }
 
     private lateinit var viewModel: AddRedirectViewModel
-    private val viewModelRef by inject<RedirectListViewModel>()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -70,11 +64,6 @@ class AddRedirectFragment : Fragment(), RedirectsContract.View {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
-        KTP.openRootScope()
-            .openSubScope(App.APPSCOPE)
-            .installModules(FragmentModule(this))
-            .inject(this)
 
         etSource.setOnClickListener { pickNumber(CONTACT_PICKER_SOURCE_REQUEST_CODE) }
         etDestination.setOnClickListener { pickNumber(CONTACT_PICKER_DESTINATION_REQUEST_CODE) }
@@ -144,13 +133,13 @@ class AddRedirectFragment : Fragment(), RedirectsContract.View {
                 etSource.isEnabled = true
                 etDestination.isEnabled = true
                 btnAdd.isEnabled = false
-                btnAdd.text = getString(R.string.redirects_info_add)
+                btnAdd.text = getString(R.string.addredirect_info_add)
             }
             ButtonState.ENABLED -> {
                 etSource.isEnabled = true
                 etDestination.isEnabled = true
                 btnAdd.isEnabled = true
-                btnAdd.text = getString(R.string.redirects_info_add)
+                btnAdd.text = getString(R.string.addredirect_info_add)
             }
         }
     }
@@ -172,7 +161,7 @@ class AddRedirectFragment : Fragment(), RedirectsContract.View {
         Toast.makeText(
             requireActivity().applicationContext,
             requireContext().getString(
-                R.string.redirects_info_sms_redirect_confirmation,
+                R.string.addredirect_info_sms_redirect_confirmation,
                 source,
                 destination
             ),

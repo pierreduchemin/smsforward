@@ -1,22 +1,26 @@
 <resources>
     <string name="app_name" translatable="false">SMS Forward</string>
 
-    <string name="contact_info_title">Manage contacts</string>
+    <string name="menu_info_contact">Manage contacts</string>
 
-    <string name="redirects_info_automatically_redirect_sms_from">Automatically redirect SMS from</string>
-    <string name="redirects_info_to">to</string>
-    <string name="redirects_info_add">Add</string>
-    <string name="redirects_info_stop">Stop</string>
-    <string name="redirects_info_forwarding_from_to">Redirection set from %s to %s</string>
-    <string name="redirects_info_sms_received_from">[%s]: %s</string>
-    <string name="redirects_info_sms_redirect_confirmation">SMS redirected from %s to %s</string>
-    <string name="redirects_info_sms_now_redirected">SMS are now being forwarded.</string>
-    <string name="redirects_error_source_and_redirection_must_be_different">Source and destination must differs</string>
-    <string name="redirects_error_empty_source">Empty source</string>
-    <string name="redirects_error_invalid_source">Invalid source</string>
-    <string name="redirects_error_empty_destination">Empty destination</string>
-    <string name="redirects_error_invalid_destination">Invalid destination</string>
-    <string name="redirects_error_invalid_phone_number">Invalid phone number</string>
+    <string name="redirectlist_info_delete_title">Delete redirection</string>
+    <string name="redirectlist_info_delete_content">Are you sure you want to delete this redirection?</string>
+    <string name="redirectlist_empty_redirection_list">Empty redirection list</string>
+    <string name="redirectlist_redirection_deactivated">Redirection deactivated</string>
+    <string name="redirectlist_redirection_activated">Redirection activated</string>
+
+    <string name="addredirect_info_automatically_redirect_sms_from">Automatically redirect SMS from</string>
+    <string name="addredirect_info_to">to</string>
+    <string name="addredirect_info_add">Add</string>
+    <string name="addredirect_info_sms_redirect_confirmation">SMS redirected from %s to %s</string>
+    <string name="addredirect_error_source_and_redirection_must_be_different">Source and destination must differs</string>
+    <string name="addredirect_error_empty_source">Empty source</string>
+    <string name="addredirect_error_invalid_source">Invalid source</string>
+    <string name="addredirect_error_empty_destination">Empty destination</string>
+    <string name="addredirect_error_invalid_destination">Invalid destination</string>
+
+    <string name="notification_info_sms_received_from">[%s]: %s</string>
+    <string name="notification_info_sms_now_redirected">SMS are now being forwarded.</string>
 
     <string name="about_info_title">About</string>
     <string name="about_info_version">Version %s</string>
@@ -32,7 +36,5 @@
     <string name="about_answer3">Yes, in recent Android versions (9+), you have to do a long press on the notification to access the \"hide notification\" feature.</string>
     <string name="about_question4">I don\'t want to be notified about redirected SMS. How to disable notifications for specific contacts?</string>
     <string name="about_answer4">This depends on the SMS application you are using. With Silence or Signal, you can disable notifications in conversation parameters.</string>
-    <string name="info_dialog_delete_title">Delete redirection</string>
-    <string name="info_dialog_delete_content">Are you sure you want to delete this redirection?</string>
-    <string name="empty_redirection_list">Empty redirection list</string>
+
 </resources>

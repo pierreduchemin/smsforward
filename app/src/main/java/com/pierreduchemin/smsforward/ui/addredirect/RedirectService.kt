@@ -16,16 +16,16 @@ import com.pierreduchemin.smsforward.App
 import com.pierreduchemin.smsforward.R
 import com.pierreduchemin.smsforward.data.ForwardModel
 import com.pierreduchemin.smsforward.data.ForwardModelRepository
-import com.pierreduchemin.smsforward.di.ViewModelModule
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-import toothpick.ktp.KTP
-import toothpick.ktp.delegate.inject
+import javax.inject.Inject
 
 class RedirectService : Service() {
 
-    private val forwardModelRepository: ForwardModelRepository by inject<ForwardModelRepository>()
+    @Inject
+    lateinit var forwardModelRepository: ForwardModelRepository
+
     private var smsReceiver: SmsReceiver = SmsReceiver()
 
     companion object {
@@ -67,12 +67,7 @@ class RedirectService : Service() {
     override fun onCreate() {
         super.onCreate()
         Log.d(TAG, "RedirectService created")
-
-        KTP.openRootScope()
-            .openSubScope(App.APPSCOPE)
-            .openSubScope(this)
-            .installModules(ViewModelModule(this))
-            .inject(this)
+        (application as App).component.inject(this)
     }
 
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
@@ -101,7 +96,7 @@ class RedirectService : Service() {
                         NotificationCompat.Builder(this@RedirectService, channelId)
                             .setSmallIcon(R.drawable.ic_sms_forward)
                             .setContentTitle(getString(R.string.app_name))
-                            .setContentText(getString(R.string.redirects_info_sms_now_redirected))
+                            .setContentText(getString(R.string.notification_info_sms_now_redirected))
                             .setContentIntent(startAppPendingIntent)
                             .setWhen(System.currentTimeMillis())
                             .setPriority(NotificationCompat.PRIORITY_MIN)
@@ -133,7 +128,7 @@ class RedirectService : Service() {
                     Log.d(TAG, "Caught a SMS from ${it.from}")
                     sendSMS(
                         it.to, getString(
-                            R.string.redirects_info_sms_received_from,
+                            R.string.notification_info_sms_received_from,
                             it.from,
                             message
                         )

@@ -3,4 +3,7 @@
     <color name="colorPrimary">#008577</color>
     <color name="colorPrimaryDark">#00574B</color>
     <color name="colorAccent">#6C63FF</color>
+
+    <color name="activatedGreen">#388E3C</color>
+    <color name="deactivatedRed">#D32F2F</color>
 </resources>

@@ -8,12 +8,10 @@ import com.pierreduchemin.smsforward.App
 import com.pierreduchemin.smsforward.R
 import com.pierreduchemin.smsforward.data.ForwardModel
 import com.pierreduchemin.smsforward.data.ForwardModelRepository
-import com.pierreduchemin.smsforward.di.ViewModelModule
 import com.pierreduchemin.smsforward.utils.PhoneNumberUtils
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-import toothpick.ktp.KTP
-import toothpick.ktp.delegate.inject
+import javax.inject.Inject
 
 class AddRedirectViewModel(application: Application) : AndroidViewModel(application) {
 
@@ -23,22 +21,19 @@ class AddRedirectViewModel(application: Application) : AndroidViewModel(applicat
     val errorMessageRes = MutableLiveData<Int>()
     val isComplete = MutableLiveData<Boolean>()
 
-    private val forwardModelRepository by inject<ForwardModelRepository>()
+    @Inject
+    lateinit var forwardModelRepository: ForwardModelRepository
 
     private var forwardModel: ForwardModel? = null
 
     init {
-        KTP.openRootScope()
-            .openSubScope(App.APPSCOPE)
-            .installModules(ViewModelModule(application))
-            .inject(this)
-
+        getApplication<App>().component.inject(this)
         forwardModel = ForwardModel()
     }
 
     fun onSourceRetrieved(source: String?) {
         if (source == null) {
-            errorMessageRes.value = R.string.redirects_error_invalid_source
+            errorMessageRes.value = R.string.addredirect_error_invalid_source
             return
         }
 
@@ -52,7 +47,8 @@ class AddRedirectViewModel(application: Application) : AndroidViewModel(applicat
 
     fun onDestinationRetrieved(destination: String?) {
         if (destination == null) {
-            errorMessageRes.value = R.string.redirects_error_invalid_destination
+            errorMessageRes.value = R.string.
+            addredirect_error_invalid_destination
             return
         }
 
@@ -67,16 +63,16 @@ class AddRedirectViewModel(application: Application) : AndroidViewModel(applicat
     fun onButtonClicked(source: String, destination: String) {
         val localForwardModel = forwardModel!!
         if (source.isEmpty()) {
-            errorMessageRes.value = R.string.redirects_error_empty_source
+            errorMessageRes.value = R.string.addredirect_error_empty_source
             return
         }
         if (destination.isEmpty()) {
-            errorMessageRes.value = R.string.redirects_error_empty_destination
+            errorMessageRes.value = R.string.addredirect_error_empty_destination
             return
         }
         if (localForwardModel.from == localForwardModel.to) {
             errorMessageRes.value =
-                R.string.redirects_error_source_and_redirection_must_be_different
+                R.string.addredirect_error_source_and_redirection_must_be_different
             return
         }
 

@@ -10,12 +10,10 @@ import com.pierreduchemin.smsforward.data.ForwardModel
 import com.pierreduchemin.smsforward.data.ForwardModelRepository
 import com.pierreduchemin.smsforward.data.GlobalModel
 import com.pierreduchemin.smsforward.data.GlobalModelRepository
-import com.pierreduchemin.smsforward.di.ViewModelModule
 import com.pierreduchemin.smsforward.ui.addredirect.RedirectService
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-import toothpick.ktp.KTP
-import toothpick.ktp.delegate.inject
+import javax.inject.Inject
 
 class RedirectListViewModel(application: Application) : AndroidViewModel(application) {
 
@@ -27,18 +25,17 @@ class RedirectListViewModel(application: Application) : AndroidViewModel(applica
     val buttonState = MutableLiveData<RedirectListFragment.SwitchState>()
     val errorMessageRes = MutableLiveData<Int>()
 
-    private val globalModelRepository by inject<GlobalModelRepository>()
-    private val forwardModelRepository by inject<ForwardModelRepository>()
+    @Inject
+    lateinit var globalModelRepository: GlobalModelRepository
+
+    @Inject
+    lateinit var forwardModelRepository: ForwardModelRepository
 
     private var forwardModels: List<ForwardModel> = arrayListOf()
     private var globalModel: GlobalModel? = null
 
     init {
-        KTP.openRootScope()
-            .openSubScope(App.APPSCOPE)
-            .openSubScope(this)
-            .installModules(ViewModelModule(application))
-            .inject(this)
+        getApplication<App>().component.inject(this)
 
         viewModelScope.launch(Dispatchers.IO) {
             forwardModels = forwardModelRepository.getForwardModels()
@@ -81,10 +78,10 @@ class RedirectListViewModel(application: Application) : AndroidViewModel(applica
         return localGlobalModel
     }
 
-    fun notifyUpdate() {
+    private fun notifyUpdate() {
         forwardsList.value = forwardModels
         if (forwardModels.isEmpty()) {
-            buttonState.value = RedirectListFragment.SwitchState.DISABLED
+            buttonState.value = RedirectListFragment.SwitchState.STOP
             return
         }
 

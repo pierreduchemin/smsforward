@@ -6,7 +6,7 @@
             android:id="@+id/miContact"
             android:icon="@drawable/ic_account_plus"
             app:showAsAction="ifRoom"
-            android:title="@string/contact_info_title">
+            android:title="@string/menu_info_contact">
     </item>
 
 </menu>

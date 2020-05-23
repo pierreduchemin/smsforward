@@ -22,7 +22,7 @@
                 android:layout_height="wrap_content"
                 android:gravity="center_horizontal"
                 android:labelFor="@id/etSource"
-                android:text="@string/redirects_info_automatically_redirect_sms_from" />
+                android:text="@string/addredirect_info_automatically_redirect_sms_from" />
 
         <EditText
                 android:id="@+id/etSource"
@@ -37,7 +37,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:labelFor="@id/etDestination"
-                android:text="@string/redirects_info_to" />
+                android:text="@string/addredirect_info_to" />
 
         <EditText
                 android:id="@+id/etDestination"
@@ -53,7 +53,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:enabled="false"
-                android:text="@string/redirects_info_add" />
+                android:text="@string/addredirect_info_add" />
 
     </LinearLayout>
 </ScrollView>
