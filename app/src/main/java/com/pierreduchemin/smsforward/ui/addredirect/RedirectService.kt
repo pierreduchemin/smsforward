@@ -16,6 +16,7 @@ import com.pierreduchemin.smsforward.App
 import com.pierreduchemin.smsforward.R
 import com.pierreduchemin.smsforward.data.ForwardModel
 import com.pierreduchemin.smsforward.data.ForwardModelRepository
+import com.pierreduchemin.smsforward.ui.redirectlist.RedirectListActivity
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -86,7 +87,7 @@ class RedirectService : Service() {
                     }
 
                     val startAppIntent =
-                        Intent(this@RedirectService, AddRedirectActivity::class.java)
+                        Intent(this@RedirectService, RedirectListActivity::class.java)
                     startAppIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
                     startAppIntent.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP)
                     val startAppPendingIntent =
