@@ -21,9 +21,8 @@ class RedirectListViewModel(application: Application) : AndroidViewModel(applica
         private val TAG by lazy { RedirectListViewModel::class.java.simpleName }
     }
 
-    val forwardsList = MutableLiveData<List<ForwardModel>>()
-    val buttonState = MutableLiveData<RedirectListFragment.SwitchState>()
-    val errorMessageRes = MutableLiveData<Int>()
+    val ldForwardsList = MutableLiveData<List<ForwardModel>>()
+    val ldButtonState = MutableLiveData<RedirectListFragment.SwitchState>()
 
     @Inject
     lateinit var globalModelRepository: GlobalModelRepository
@@ -64,6 +63,7 @@ class RedirectListViewModel(application: Application) : AndroidViewModel(applica
             }
         } else {
             localGlobalModel.activated = true
+            ldButtonState.value = RedirectListFragment.SwitchState.JUSTENABLED
             viewModelScope.launch(Dispatchers.IO) {
                 globalModelRepository.updateGlobalModel(localGlobalModel)
             }
@@ -79,18 +79,18 @@ class RedirectListViewModel(application: Application) : AndroidViewModel(applica
     }
 
     private fun notifyUpdate() {
-        forwardsList.value = forwardModels
+        ldForwardsList.value = forwardModels
         if (forwardModels.isEmpty()) {
-            buttonState.value = RedirectListFragment.SwitchState.STOP
+            ldButtonState.value = RedirectListFragment.SwitchState.STOP
             return
         }
 
         val localActivated = globalModel?.activated ?: false
         if (localActivated) {
-            buttonState.value = RedirectListFragment.SwitchState.ENABLED
+            ldButtonState.value = RedirectListFragment.SwitchState.ENABLED
             RedirectService.startActionRedirect(getApplication())
         } else {
-            buttonState.value = RedirectListFragment.SwitchState.STOP
+            ldButtonState.value = RedirectListFragment.SwitchState.STOP
             RedirectService.stopActionRedirect(getApplication())
         }
     }

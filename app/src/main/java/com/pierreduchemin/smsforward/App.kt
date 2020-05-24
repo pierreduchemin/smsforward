@@ -13,11 +13,4 @@ class App : Application() {
             .appModule(AppModule(this))
             .build()
     }
-
-    override fun onCreate() {
-        super.onCreate()
-
-        // utile ?
-        component.inject(this)
-    }
 }

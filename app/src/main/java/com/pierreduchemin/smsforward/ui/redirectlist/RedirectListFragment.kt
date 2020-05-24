@@ -1,7 +1,11 @@
 package com.pierreduchemin.smsforward.ui.redirectlist
 
+import android.content.Context.VIBRATOR_SERVICE
 import android.content.Intent
+import android.os.Build
 import android.os.Bundle
+import android.os.VibrationEffect
+import android.os.Vibrator
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -24,6 +28,7 @@ class RedirectListFragment : Fragment() {
     }
 
     enum class SwitchState {
+        JUSTENABLED,
         ENABLED,
         STOP
     }
@@ -49,27 +54,42 @@ class RedirectListFragment : Fragment() {
             viewModel.onRedirectionToggled()
         }
 
-        viewModel.buttonState.observe(requireActivity(), Observer {
+
+        viewModel.ldButtonState.observe(requireActivity(), Observer {
+            if (it == SwitchState.JUSTENABLED) {
+                vibrate()
+            }
             setSwitchState(it)
         })
-        viewModel.forwardsList.observe(requireActivity(), Observer {
+        viewModel.ldForwardsList.observe(requireActivity(), Observer {
             setList(it)
         })
     }
 
     private fun setSwitchState(switchState: SwitchState) {
         when (switchState) {
+            SwitchState.JUSTENABLED,
             SwitchState.ENABLED -> {
                 swActivate.isEnabled = true
                 swActivate.isChecked = true
                 tvActivationMessage.text = getString(R.string.redirectlist_redirection_activated)
-                tvActivationMessage.setTextColor(ContextCompat.getColor(requireContext(), R.color.activatedGreen))
+                tvActivationMessage.setTextColor(
+                    ContextCompat.getColor(
+                        requireContext(),
+                        R.color.activatedGreen
+                    )
+                )
             }
             SwitchState.STOP -> {
                 swActivate.isEnabled = true
                 swActivate.isChecked = false
                 tvActivationMessage.text = getString(R.string.redirectlist_redirection_deactivated)
-                tvActivationMessage.setTextColor(ContextCompat.getColor(requireContext(), R.color.deactivatedRed))
+                tvActivationMessage.setTextColor(
+                    ContextCompat.getColor(
+                        requireContext(),
+                        R.color.deactivatedRed
+                    )
+                )
             }
         }
     }
@@ -99,5 +119,16 @@ class RedirectListFragment : Fragment() {
                 .setIcon(R.drawable.ic_alert)
                 .show()
         })
+    }
+
+    private fun vibrate() {
+        if (Build.VERSION.SDK_INT >= 26) {
+            (requireContext().getSystemService(VIBRATOR_SERVICE) as Vibrator).vibrate(
+                VibrationEffect.createOneShot(150, VibrationEffect.DEFAULT_AMPLITUDE)
+            )
+        } else {
+            @Suppress("DEPRECATION")
+            (requireContext().getSystemService(VIBRATOR_SERVICE) as Vibrator).vibrate(150)
+        }
     }
 }

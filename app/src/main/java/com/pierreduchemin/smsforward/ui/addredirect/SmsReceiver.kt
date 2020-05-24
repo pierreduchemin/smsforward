@@ -45,10 +45,6 @@ class SmsReceiver : BroadcastReceiver() {
                     context,
                     currentMessage.displayOriginatingAddress
                 )
-                if (phoneNumber == null) {
-                    Log.e(TAG, "Received SMS from invalid number (???): $phoneNumber")
-                    return
-                }
 
                 phoneNumberFilter?.filter {
                     it.from == phoneNumber
