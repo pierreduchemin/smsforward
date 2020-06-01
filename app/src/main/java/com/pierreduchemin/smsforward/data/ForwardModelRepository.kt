@@ -14,6 +14,9 @@ class ForwardModelRepository(private val forwardModelDao: ForwardModelDao) :
     override fun countForwardModel() =
         forwardModelDao.countForwardModel()
 
+    override fun countSameForwardModel(from: String, to: String) =
+        forwardModelDao.countSameForwardModel(from, to)
+
     override fun updateForwardModel(forwardModel: ForwardModel) {
         forwardModelDao.updateForwardModel(forwardModel)
     }

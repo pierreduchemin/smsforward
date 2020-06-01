@@ -19,6 +19,9 @@ interface ForwardModelDao {
     @Query("SELECT COUNT(*) FROM ForwardModel")
     fun countForwardModel(): LiveData<Long>
 
+    @Query("SELECT COUNT(*) FROM ForwardModel WHERE `vfrom` = :from AND `vto` = :to")
+    fun countSameForwardModel(from: String, to: String): Long
+
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun insertForwardModel(forwardModel: ForwardModel): Long
 

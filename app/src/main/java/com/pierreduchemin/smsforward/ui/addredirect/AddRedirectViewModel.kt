@@ -11,6 +11,7 @@ import com.pierreduchemin.smsforward.data.ForwardModelRepository
 import com.pierreduchemin.smsforward.utils.PhoneNumberUtils
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.runBlocking
 import javax.inject.Inject
 
 class AddRedirectViewModel(application: Application) : AndroidViewModel(application) {
@@ -47,8 +48,7 @@ class AddRedirectViewModel(application: Application) : AndroidViewModel(applicat
 
     fun onDestinationRetrieved(destination: String?) {
         if (destination == null) {
-            errorMessageRes.value = R.string.
-            addredirect_error_invalid_destination
+            errorMessageRes.value = R.string.addredirect_error_invalid_destination
             return
         }
 
@@ -76,10 +76,18 @@ class AddRedirectViewModel(application: Application) : AndroidViewModel(applicat
             return
         }
 
-        viewModelScope.launch(Dispatchers.IO) {
-            forwardModelRepository.insertForwardModel(localForwardModel)
+        runBlocking(Dispatchers.IO) {
+            val value = forwardModelRepository.countSameForwardModel(source, destination)
+            if (value > 0L) {
+                errorMessageRes.postValue(R.string.addredirect_error_source_and_redirection_must_be_different)
+                return@runBlocking
+            }
+
+            viewModelScope.launch(Dispatchers.IO) {
+                forwardModelRepository.insertForwardModel(localForwardModel)
+                isComplete.postValue(true)
+            }
         }
-        isComplete.value = true
     }
 
     private fun notifyUpdate() {
