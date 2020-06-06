@@ -34,7 +34,9 @@
     <string name="about_answer3">Oui, dans les versions récentes d\'Android (9 et ultérieures), vous pouvez rester appuyé sur la notification pour accéder à l\'option \"masquer la notification\".</string>
     <string name="about_question4">Je ne veux plus recevoir de notification quand je reçoit un SMS et qu\'il est redirigé. Comment désactiver les notifications pour certains contact uniquement?</string>
     <string name="about_answer4">Tout dépend de votre application SMS. Avec Silence ou Signal, par exemple, vous pouvez désactiver les notifications dans les paramètres de la conversation.</string>
-    <string name="empty_illustration">Empty illustration</string>
-    <string name="right_arrow">Right arrow</string>
-    <string name="delete_icon">delete icon</string>
+
+    <string name="description_empty_illustration">Empty illustration</string>
+    <string name="description_right_arrow">Right arrow</string>
+    <string name="description_delete_icon">delete icon</string>
+    <string name="description_send_sms_illustration">Send SMS illustration</string>
 </resources>

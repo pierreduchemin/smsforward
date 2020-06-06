@@ -36,8 +36,10 @@
     <string name="about_answer3">Yes, in recent Android versions (9+), you have to do a long press on the notification to access the \"hide notification\" feature.</string>
     <string name="about_question4">I don\'t want to be notified about redirected SMS. How to disable notifications for specific contacts?</string>
     <string name="about_answer4">This depends on the SMS application you are using. With Silence or Signal, you can disable notifications in conversation parameters.</string>
-    <string name="empty_illustration">Empty illustration</string>
-    <string name="right_arrow">Right arrow</string>
-    <string name="delete_icon">delete icon</string>
+
+    <string name="description_empty_illustration">Empty illustration</string>
+    <string name="description_right_arrow">Right arrow</string>
+    <string name="description_delete_icon">Delete icon</string>
+    <string name="description_send_sms_illustration">Send SMS illustration</string>
 
 </resources>
