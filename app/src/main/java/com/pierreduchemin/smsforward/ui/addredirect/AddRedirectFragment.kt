@@ -72,6 +72,10 @@ class AddRedirectFragment : Fragment(), RedirectsContract.View {
                 askPermission(Manifest.permission.SEND_SMS)
                 return@setOnClickListener
             }
+            if (!hasPermission(Manifest.permission.RECEIVE_SMS)) {
+                askPermission(Manifest.permission.RECEIVE_SMS)
+                return@setOnClickListener
+            }
             viewModel.onButtonClicked(
                 etSource.text.trim().toString(),
                 etDestination.text.trim().toString()

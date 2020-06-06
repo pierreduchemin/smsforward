@@ -123,6 +123,7 @@ class RedirectService : Service() {
     private fun handleActionRedirect(forwardModels: List<ForwardModel>) {
         smsReceiver.setCallback(object : OnSmsReceivedListener {
             override fun onSmsReceived(forwardModel: ForwardModel, message: String) {
+                Log.d(TAG, "onSmsReceived")
                 forwardModels.filter {
                     it.from == forwardModel.from
                 }.map {

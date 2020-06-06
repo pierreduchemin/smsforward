@@ -28,6 +28,7 @@ class SmsReceiver : BroadcastReceiver() {
     }
 
     override fun onReceive(context: Context, intent: Intent) {
+        Log.d(TAG, "onReceive")
         val smsReceivedListener = callback
         if (smsReceivedListener == null) {
             Log.d(TAG, "No callback defined")
