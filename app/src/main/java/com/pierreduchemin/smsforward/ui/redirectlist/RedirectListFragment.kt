@@ -18,7 +18,9 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.pierreduchemin.smsforward.R
 import com.pierreduchemin.smsforward.data.ForwardModel
 import com.pierreduchemin.smsforward.ui.addredirect.AddRedirectActivity
+import kotlinx.android.synthetic.main.redirect_fragment_list_empty.*
 import kotlinx.android.synthetic.main.redirect_list_fragment.*
+import kotlinx.android.synthetic.main.redirect_list_fragment_content.*
 
 class RedirectListFragment : Fragment() {
 
@@ -31,6 +33,11 @@ class RedirectListFragment : Fragment() {
         JUSTENABLED,
         ENABLED,
         STOP
+    }
+
+    private object Flipper {
+        const val EMPTY = 0
+        const val CONTENT = 1
     }
 
     private lateinit var viewModel: RedirectListViewModel
@@ -47,13 +54,15 @@ class RedirectListFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         rvForwards.layoutManager = LinearLayoutManager(requireContext())
+        fabAddRedirectEmpty.setOnClickListener {
+            startActivity(Intent(requireActivity(), AddRedirectActivity::class.java))
+        }
         fabAddRedirect.setOnClickListener {
             startActivity(Intent(requireActivity(), AddRedirectActivity::class.java))
         }
         swActivate.setOnClickListener {
             viewModel.onRedirectionToggled()
         }
-
 
         viewModel.ldButtonState.observe(requireActivity(), Observer {
             if (it == SwitchState.JUSTENABLED) {
@@ -96,15 +105,10 @@ class RedirectListFragment : Fragment() {
 
     private fun setList(forwardsList: List<ForwardModel>) {
         if (forwardsList.isEmpty()) {
-            phEmpty.visibility = View.VISIBLE
-            rvForwards.visibility = View.GONE
-            llActivate.visibility = View.GONE
+            viewFlipper.displayedChild = Flipper.EMPTY
             return
         }
-
-        phEmpty.visibility = View.GONE
-        rvForwards.visibility = View.VISIBLE
-        llActivate.visibility = View.VISIBLE
+        viewFlipper.displayedChild = Flipper.CONTENT
 
         // TODO update adapter instead of replacing it
         rvForwards.adapter = ForwardModelAdapter(forwardsList, View.OnClickListener { v ->
