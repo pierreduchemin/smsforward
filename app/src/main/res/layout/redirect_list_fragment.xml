@@ -67,8 +67,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/redirectlist_redirection_deactivated"
-                android:textColor="@android:color/holo_red_dark"
-                android:textAlignment="center" />
+                android:textAlignment="center"
+                android:textColor="@android:color/holo_red_dark" />
     </LinearLayout>
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
@@ -82,6 +82,7 @@
             app:backgroundTint="@color/colorPrimary"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:srcCompat="@drawable/ic_add_black_24dp" />
+            app:srcCompat="@drawable/ic_add_black_24dp"
+            app:tint="@android:color/white" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
