@@ -8,7 +8,7 @@
     <string name="redirectlist_redirection_deactivated">Redirection désactivée</string>
     <string name="redirectlist_redirection_activated">Redirection activée</string>
 
-    <string name="notification_info_sms_received_from">[%s]: %s</string>
+    <string name="notification_info_sms_received_from">[%1$s]: %2$s</string>
     <string name="notification_info_sms_now_redirected">Les SMS sont actuellement redirigés.</string>
 
     <string name="addredirect_info_automatically_redirect_sms_from">Transférer automatiquement les SMS en provenance de</string>

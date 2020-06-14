@@ -19,7 +19,7 @@
     <string name="addredirect_error_empty_destination">Empty destination</string>
     <string name="addredirect_error_invalid_destination">Invalid destination</string>
 
-    <string name="notification_info_sms_received_from">[%s]: %s</string>
+    <string name="notification_info_sms_received_from">[%1$s]: %2$s</string>
     <string name="notification_info_sms_now_redirected">SMS are now being forwarded.</string>
 
     <string name="about_info_title">About</string>
