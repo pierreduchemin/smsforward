@@ -14,7 +14,7 @@
     <string name="addredirect_info_automatically_redirect_sms_from">Transférer automatiquement les SMS en provenance de</string>
     <string name="addredirect_info_to">vers</string>
     <string name="addredirect_info_add">Ajouter</string>
-    <string name="addredirect_info_sms_redirect_confirmation">SMS redirigé de %s vers %s</string>
+    <string name="addredirect_info_sms_redirect_confirmation">SMS redirigé de %1$s vers %2$s</string>
     <string name="addredirect_error_source_and_redirection_must_be_different">La source et la destination doivent être différentes</string>
     <string name="addredirect_error_empty_source">Source vide</string>
     <string name="addredirect_error_invalid_source">Source invalide</string>

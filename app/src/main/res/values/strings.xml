@@ -12,7 +12,7 @@
     <string name="addredirect_info_automatically_redirect_sms_from">Automatically redirect SMS from</string>
     <string name="addredirect_info_to">to</string>
     <string name="addredirect_info_add">Add</string>
-    <string name="addredirect_info_sms_redirect_confirmation">SMS redirected from %s to %s</string>
+    <string name="addredirect_info_sms_redirect_confirmation">SMS redirected from %1$s to %2$s</string>
     <string name="addredirect_error_source_and_redirection_must_be_different">Source and destination must differs</string>
     <string name="addredirect_error_empty_source">Empty source</string>
     <string name="addredirect_error_invalid_source">Invalid source</string>
