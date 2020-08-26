@@ -2,9 +2,9 @@
 
     <string name="menu_info_contact">Gérer les contacts</string>
 
-    <string name="redirectlist_info_delete_title">Delete redirection</string>
-    <string name="redirectlist_info_delete_content">Are you sure you want to delete this redirection?</string>
-    <string name="redirectlist_empty_redirection_list">Empty redirection list</string>
+    <string name="redirectlist_info_delete_title">Supprimer la redirection</string>
+    <string name="redirectlist_info_delete_content">Êtes vous sûr de vouloir supprimer cette redirection ?</string>
+    <string name="redirectlist_empty_redirection_list">Liste de redirection vide</string>
     <string name="redirectlist_redirection_deactivated">Redirection désactivée</string>
     <string name="redirectlist_redirection_activated">Redirection activée</string>
 
@@ -35,8 +35,8 @@
     <string name="about_question4">Je ne veux plus recevoir de notification quand je reçoit un SMS et qu\'il est redirigé. Comment désactiver les notifications pour certains contact uniquement?</string>
     <string name="about_answer4">Tout dépend de votre application SMS. Avec Silence ou Signal, par exemple, vous pouvez désactiver les notifications dans les paramètres de la conversation.</string>
 
-    <string name="description_empty_illustration">Empty illustration</string>
-    <string name="description_right_arrow">Right arrow</string>
-    <string name="description_delete_icon">delete icon</string>
-    <string name="description_send_sms_illustration">Send SMS illustration</string>
+    <string name="description_empty_illustration">Liste vide</string>
+    <string name="description_right_arrow">Flêche vers la droite</string>
+    <string name="description_delete_icon">Supprimer</string>
+    <string name="description_send_sms_illustration">Envoyer un SMS</string>
 </resources>
