@@ -12,7 +12,6 @@ import android.view.ViewGroup
 import androidx.appcompat.app.AlertDialog
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.pierreduchemin.smsforward.R
@@ -25,7 +24,6 @@ import kotlinx.android.synthetic.main.redirect_list_fragment_content.*
 class RedirectListFragment : Fragment() {
 
     companion object {
-        private val TAG by lazy { RedirectListFragment::class.java.simpleName }
         fun newInstance() = RedirectListFragment()
     }
 
@@ -64,13 +62,13 @@ class RedirectListFragment : Fragment() {
             viewModel.onRedirectionToggled()
         }
 
-        viewModel.ldButtonState.observe(requireActivity(), Observer {
+        viewModel.ldButtonState.observe(requireActivity(), {
             if (it == SwitchState.JUSTENABLED) {
                 vibrate()
             }
             setSwitchState(it)
         })
-        viewModel.ldForwardsList.observe(requireActivity(), Observer {
+        viewModel.ldForwardsList.observe(requireActivity(), {
             setList(it)
         })
     }
@@ -111,7 +109,7 @@ class RedirectListFragment : Fragment() {
         viewFlipper.displayedChild = Flipper.CONTENT
 
         // TODO update adapter instead of replacing it
-        rvForwards.adapter = ForwardModelAdapter(forwardsList, View.OnClickListener { v ->
+        rvForwards.adapter = ForwardModelAdapter(forwardsList) { v ->
             AlertDialog.Builder(requireContext())
                 .setTitle(getString(R.string.redirectlist_info_delete_title))
                 .setMessage(getString(R.string.redirectlist_info_delete_content))
@@ -122,7 +120,7 @@ class RedirectListFragment : Fragment() {
                 .setNegativeButton(android.R.string.no, null)
                 .setIcon(R.drawable.ic_alert)
                 .show()
-        })
+        }
     }
 
     private fun vibrate() {

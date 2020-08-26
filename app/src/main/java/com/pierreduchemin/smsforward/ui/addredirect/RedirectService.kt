@@ -16,13 +16,18 @@ import com.pierreduchemin.smsforward.App
 import com.pierreduchemin.smsforward.R
 import com.pierreduchemin.smsforward.data.ForwardModel
 import com.pierreduchemin.smsforward.data.ForwardModelRepository
+import com.pierreduchemin.smsforward.data.GlobalModelRepository
 import com.pierreduchemin.smsforward.ui.redirectlist.RedirectListActivity
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import java.lang.IllegalArgumentException
 import javax.inject.Inject
 
 class RedirectService : Service() {
+
+    @Inject
+    lateinit var globalRepository: GlobalModelRepository
 
     @Inject
     lateinit var forwardModelRepository: ForwardModelRepository
@@ -75,7 +80,17 @@ class RedirectService : Service() {
         when (intent?.action) {
             ACTION_START_REDIRECT -> {
                 CoroutineScope(Dispatchers.IO).launch {
+                    val globalModel = globalRepository.getGlobalModel()
+                    if (globalModel == null || !globalModel.activated) {
+                        Log.i(TAG, "Redirection not activated")
+                        return@launch
+                    }
+
                     val forwardModels = forwardModelRepository.getForwardModels()
+                    if (forwardModels.isEmpty()) {
+                        Log.i(TAG, "Nothing to redirect")
+                        return@launch
+                    }
                     handleActionRedirect(forwardModels)
 
                     val channelId = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
@@ -171,6 +186,10 @@ class RedirectService : Service() {
 
     override fun onDestroy() {
         super.onDestroy()
-        unregisterReceiver(smsReceiver)
+        try {
+            unregisterReceiver(smsReceiver)
+        } catch (e: IllegalArgumentException) {
+            Log.i(TAG, "Receiver was not registered")
+        }
     }
 }

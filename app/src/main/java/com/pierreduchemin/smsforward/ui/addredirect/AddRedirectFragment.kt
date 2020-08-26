@@ -13,7 +13,6 @@ import android.widget.Toast
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import com.pierreduchemin.smsforward.R
 import kotlinx.android.synthetic.main.redirects_fragment.*
@@ -21,7 +20,6 @@ import kotlinx.android.synthetic.main.redirects_fragment.*
 class AddRedirectFragment : Fragment(), RedirectsContract.View {
 
     companion object {
-        private val TAG by lazy { AddRedirectFragment::class.java.simpleName }
         fun newInstance() = AddRedirectFragment()
 
         const val PERMISSIONS_REQUEST_SEND_SMS = 1654
@@ -41,19 +39,19 @@ class AddRedirectFragment : Fragment(), RedirectsContract.View {
         savedInstanceState: Bundle?
     ): View? {
         viewModel = ViewModelProvider(this).get(AddRedirectViewModel::class.java)
-        viewModel.buttonState.observe(requireActivity(), Observer {
+        viewModel.buttonState.observe(requireActivity(), {
             setButtonState(it)
         })
-        viewModel.errorMessageRes.observe(requireActivity(), Observer {
+        viewModel.errorMessageRes.observe(requireActivity(), {
             showError(it)
         })
-        viewModel.sourceText.observe(requireActivity(), Observer {
+        viewModel.sourceText.observe(requireActivity(), {
             setSource(it)
         })
-        viewModel.destinationText.observe(requireActivity(), Observer {
+        viewModel.destinationText.observe(requireActivity(), {
             setDestination(it)
         })
-        viewModel.isComplete.observe(requireActivity(), Observer {
+        viewModel.isComplete.observe(requireActivity(), {
             if (it) {
                 requireActivity().finish()
             }

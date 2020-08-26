@@ -35,7 +35,7 @@ class ForwardModelAdapter(
 
     override fun getItemCount(): Int = values.size
 
-    inner class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
+    class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
         val tvFrom: TextView = view.tvFrom
         val tvTo: TextView = view.tvTo
         val ivDelete: ImageView = view.ivDelete
