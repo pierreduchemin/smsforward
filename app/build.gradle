@@ -10,8 +10,8 @@ android {
         applicationId "com.pierreduchemin.smsforward"
         minSdkVersion 21
         targetSdkVersion 29
-        versionCode 9
-        versionName "1.4.4"
+        versionCode 10
+        versionName "1.4.5"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
     buildTypes {
