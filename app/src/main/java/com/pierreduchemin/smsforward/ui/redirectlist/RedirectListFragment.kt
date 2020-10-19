@@ -118,7 +118,7 @@ class RedirectListFragment : Fragment() {
                     viewModel.onDeleteConfirmed(forwardModel)
                 }
                 .setNegativeButton(android.R.string.no, null)
-                .setIcon(R.drawable.ic_alert)
+                .setIcon(R.drawable.ic_alert_24dp)
                 .show()
         }
     }

@@ -10,7 +10,7 @@
             android:id="@+id/ivSend"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_margin="16dp"
+            android:layout_margin="48dp"
             android:contentDescription="@string/description_send_sms_illustration"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -21,7 +21,8 @@
             android:id="@+id/rvForwards"
             android:layout_width="0dp"
             android:layout_height="0dp"
-            android:layout_marginTop="16dp"
+            android:layout_marginTop="32dp"
+            android:layout_marginStart="4dp"
             android:layout_marginBottom="16dp"
             android:scrollbars="vertical"
             app:layout_constraintBottom_toTopOf="@+id/llActivate"
@@ -40,7 +41,7 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent">
 
-        <Switch
+        <com.google.android.material.switchmaterial.SwitchMaterial
                 android:id="@+id/swActivate"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -64,6 +65,7 @@
             android:layout_marginEnd="24dp"
             android:layout_marginBottom="24dp"
             android:clickable="true"
+            android:contentDescription="@string/description_add_redirection_button"
             android:focusable="true"
             app:backgroundTint="@color/colorPrimary"
             app:layout_constraintBottom_toBottomOf="parent"

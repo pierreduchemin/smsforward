@@ -40,7 +40,7 @@ class AboutActivity : AppCompatActivity() {
 
         val gitlabElement = Element(
             getString(R.string.about_info_gitlab),
-            R.drawable.ic_gitlab
+            R.drawable.ic_gitlab_24dp
         )
             .setAutoApplyIconTint(false)
             .setIntent(
@@ -52,7 +52,7 @@ class AboutActivity : AppCompatActivity() {
 
         val licensesElement = Element(
             getString(R.string.about_info_license),
-            R.drawable.ic_gnu
+            R.drawable.ic_gnu_24dp
         )
             .setAutoApplyIconTint(false)
             .setIntent(

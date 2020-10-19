@@ -4,7 +4,7 @@
 
     <item
             android:id="@+id/miContact"
-            android:icon="@drawable/ic_account_plus"
+            android:icon="@drawable/ic_account_plus_24dp"
             app:showAsAction="ifRoom"
             android:title="@string/menu_info_contact">
     </item>

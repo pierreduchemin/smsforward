@@ -41,5 +41,7 @@
     <string name="description_right_arrow">Right arrow</string>
     <string name="description_delete_icon">Delete</string>
     <string name="description_send_sms_illustration">Send SMS</string>
+    <string name="description_add_redirection_button">Add a redirection button</string>
+    <string name="addredirect_warning_permission_refused">The application need to access and send SMS in order to redirect</string>
 
 </resources>
