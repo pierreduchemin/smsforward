@@ -12,7 +12,7 @@
             android:layout_height="wrap_content"
             android:layout_margin="32dp"
             android:contentDescription="@string/description_send_sms_illustration"
-            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:srcCompat="@drawable/img_undraw_mailbox" />
@@ -27,8 +27,8 @@
             android:scrollbars="vertical"
             app:layout_constraintBottom_toTopOf="@+id/llActivate"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/ivSend"
+            app:layout_constraintStart_toEndOf="@id/ivSend"
+            app:layout_constraintTop_toTopOf="parent"
             tools:listitem="@layout/redirect_adapter" />
 
     <LinearLayout
