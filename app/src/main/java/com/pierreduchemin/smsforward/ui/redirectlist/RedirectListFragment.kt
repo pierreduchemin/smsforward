@@ -126,11 +126,11 @@ class RedirectListFragment : Fragment() {
     private fun vibrate() {
         if (Build.VERSION.SDK_INT >= 26) {
             (requireContext().getSystemService(VIBRATOR_SERVICE) as Vibrator).vibrate(
-                VibrationEffect.createOneShot(150, VibrationEffect.DEFAULT_AMPLITUDE)
+                VibrationEffect.createOneShot(50, VibrationEffect.DEFAULT_AMPLITUDE)
             )
         } else {
             @Suppress("DEPRECATION")
-            (requireContext().getSystemService(VIBRATOR_SERVICE) as Vibrator).vibrate(150)
+            (requireContext().getSystemService(VIBRATOR_SERVICE) as Vibrator).vibrate(50)
         }
     }
 }
