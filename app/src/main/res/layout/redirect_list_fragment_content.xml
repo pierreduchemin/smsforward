@@ -10,12 +10,12 @@
             android:id="@+id/ivSend"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_margin="48dp"
+            android:layout_margin="32dp"
             android:contentDescription="@string/description_send_sms_illustration"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:srcCompat="@drawable/img_message_forward" />
+            app:srcCompat="@drawable/img_undraw_mailbox" />
 
     <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/rvForwards"
@@ -37,7 +37,8 @@
             android:layout_height="wrap_content"
             android:gravity="center"
             android:orientation="vertical"
-            app:layout_constraintBottom_toTopOf="@+id/fabAddRedirect"
+            android:layout_marginBottom="20dp"
+            app:layout_constraintBottom_toBottomOf="@+id/fabAddRedirect"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent">
 
