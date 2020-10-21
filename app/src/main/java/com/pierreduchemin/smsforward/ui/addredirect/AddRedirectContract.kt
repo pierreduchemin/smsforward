@@ -1,6 +1,6 @@
 package com.pierreduchemin.smsforward.ui.addredirect
 
-interface RedirectsContract {
+interface AddRedirectContract {
 
     interface View {
         fun showError(message: Int)
@@ -11,6 +11,5 @@ interface RedirectsContract {
         fun setDestination(destination: String)
         fun setButtonState(buttonState: AddRedirectFragment.ButtonState)
         fun resetFields()
-        fun showRedirectMessage(source: String, destination: String)
     }
 }

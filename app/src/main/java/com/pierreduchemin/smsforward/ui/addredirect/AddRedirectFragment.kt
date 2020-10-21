@@ -9,14 +9,14 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
-import android.widget.Toast
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
+import com.google.android.material.snackbar.Snackbar
 import com.pierreduchemin.smsforward.R
-import kotlinx.android.synthetic.main.redirects_fragment.*
+import kotlinx.android.synthetic.main.add_redirects_fragment.*
 
-class AddRedirectFragment : Fragment(), RedirectsContract.View {
+class AddRedirectFragment : Fragment(), AddRedirectContract.View {
 
     companion object {
         fun newInstance() = AddRedirectFragment()
@@ -56,7 +56,7 @@ class AddRedirectFragment : Fragment(), RedirectsContract.View {
             }
         })
 
-        return inflater.inflate(R.layout.redirects_fragment, container, false)
+        return inflater.inflate(R.layout.add_redirects_fragment, container, false)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -116,7 +116,7 @@ class AddRedirectFragment : Fragment(), RedirectsContract.View {
     }
 
     override fun showError(message: Int) {
-        Toast.makeText(requireContext(), message, Toast.LENGTH_LONG).show()
+        Snackbar.make(addredirectContainer, message, Snackbar.LENGTH_LONG).show()
     }
 
     override fun pickNumber(requestCode: Int) {
@@ -176,17 +176,5 @@ class AddRedirectFragment : Fragment(), RedirectsContract.View {
     override fun resetFields() {
         etSource.setText("", TextView.BufferType.EDITABLE)
         etDestination.setText("", TextView.BufferType.EDITABLE)
-    }
-
-    override fun showRedirectMessage(source: String, destination: String) {
-        Toast.makeText(
-            requireActivity().applicationContext,
-            requireContext().getString(
-                R.string.addredirect_info_sms_redirect_confirmation,
-                source,
-                destination
-            ),
-            Toast.LENGTH_SHORT
-        ).show()
     }
 }
