@@ -1,4 +1,4 @@
-package com.pierreduchemin.smsforward.ui.addredirect
+package com.pierreduchemin.smsforward.ui.redirectlist
 
 import android.content.BroadcastReceiver
 import android.content.Context
@@ -8,6 +8,7 @@ import android.os.Bundle
 import android.telephony.SmsMessage
 import android.util.Log
 import com.pierreduchemin.smsforward.data.ForwardModel
+import com.pierreduchemin.smsforward.ui.addredirect.OnSmsReceivedListener
 import com.pierreduchemin.smsforward.utils.PhoneNumberUtils
 
 class SmsReceiver : BroadcastReceiver() {

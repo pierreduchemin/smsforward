@@ -1,7 +1,7 @@
 package com.pierreduchemin.smsforward.di
 
 import com.pierreduchemin.smsforward.ui.addredirect.AddRedirectViewModel
-import com.pierreduchemin.smsforward.ui.addredirect.RedirectService
+import com.pierreduchemin.smsforward.ui.redirectlist.RedirectService
 import com.pierreduchemin.smsforward.ui.redirectlist.RedirectListViewModel
 import dagger.Component
 import javax.inject.Singleton

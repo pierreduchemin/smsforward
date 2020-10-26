@@ -16,9 +16,6 @@ interface ForwardModelDao {
     @Query("SELECT * FROM ForwardModel")
     fun getForwardModels(): List<ForwardModel>
 
-    @Query("SELECT COUNT(*) FROM ForwardModel")
-    fun countForwardModel(): LiveData<Long>
-
     @Query("SELECT COUNT(*) FROM ForwardModel WHERE `vfrom` = :from AND `vto` = :to")
     fun countSameForwardModel(from: String, to: String): Long
 

@@ -10,7 +10,6 @@ import com.pierreduchemin.smsforward.data.ForwardModel
 import com.pierreduchemin.smsforward.data.ForwardModelRepository
 import com.pierreduchemin.smsforward.data.GlobalModel
 import com.pierreduchemin.smsforward.data.GlobalModelRepository
-import com.pierreduchemin.smsforward.ui.addredirect.RedirectService
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -38,6 +37,11 @@ class RedirectListViewModel(application: Application) : AndroidViewModel(applica
 
         viewModelScope.launch(Dispatchers.IO) {
             forwardModels = forwardModelRepository.getForwardModels()
+
+            globalModel = globalModelRepository.getGlobalModel()
+            if (globalModel == null) {
+                globalModel = setDefaultGlobalModel()
+            }
         }
 
         globalModelRepository.observeGlobalModel().observeForever {
@@ -51,10 +55,6 @@ class RedirectListViewModel(application: Application) : AndroidViewModel(applica
     }
 
     fun onRedirectionToggled() {
-        if (globalModel == null) {
-            globalModel = setDefaultGlobalModel()
-        }
-
         val localGlobalModel = globalModel!!
         if (localGlobalModel.activated) {
             localGlobalModel.activated = false
@@ -71,7 +71,7 @@ class RedirectListViewModel(application: Application) : AndroidViewModel(applica
     }
 
     private fun setDefaultGlobalModel(): GlobalModel {
-        val localGlobalModel = GlobalModel(1, false)
+        val localGlobalModel = GlobalModel(1, activated = false, advancedMode = false)
         viewModelScope.launch(Dispatchers.IO) {
             globalModelRepository.insertGlobalModel(localGlobalModel)
         }
@@ -102,6 +102,14 @@ class RedirectListViewModel(application: Application) : AndroidViewModel(applica
             return
         }
         viewModelScope.launch(Dispatchers.IO) {
+            // deactivate redirection if list is going to be empty
+            val currentGlobalModel = globalModel
+            if (currentGlobalModel != null && forwardModels.size == 1) {
+                RedirectService.stopActionRedirect(getApplication())
+                currentGlobalModel.activated = false
+                globalModelRepository.updateGlobalModel(currentGlobalModel)
+            }
+
             forwardModelRepository.deleteForwardModelById(id)
         }
     }

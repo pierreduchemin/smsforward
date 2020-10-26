@@ -6,7 +6,7 @@ import com.pierreduchemin.smsforward.data.ForwardModel
 import com.pierreduchemin.smsforward.data.GlobalModel
 
 
-@Database(entities = [GlobalModel::class, ForwardModel::class], version = 2, exportSchema = false)
+@Database(entities = [GlobalModel::class, ForwardModel::class], version = 3, exportSchema = false)
 abstract class SMSForwardDatabase : RoomDatabase() {
 
     abstract fun globalModelDao(): GlobalModelDao

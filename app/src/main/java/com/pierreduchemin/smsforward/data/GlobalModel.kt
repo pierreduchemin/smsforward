@@ -13,5 +13,8 @@ data class GlobalModel(
     val id: Long,
 
     @ColumnInfo
-    var activated: Boolean
+    var activated: Boolean,
+
+    @ColumnInfo
+    var advancedMode: Boolean
 )

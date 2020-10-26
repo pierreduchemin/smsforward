@@ -8,6 +8,8 @@ import com.pierreduchemin.smsforward.App
 import com.pierreduchemin.smsforward.R
 import com.pierreduchemin.smsforward.data.ForwardModel
 import com.pierreduchemin.smsforward.data.ForwardModelRepository
+import com.pierreduchemin.smsforward.data.GlobalModel
+import com.pierreduchemin.smsforward.data.GlobalModelRepository
 import com.pierreduchemin.smsforward.utils.PhoneNumberUtils
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -21,15 +23,24 @@ class AddRedirectViewModel(application: Application) : AndroidViewModel(applicat
     val destinationText = MutableLiveData<String>()
     val errorMessageRes = MutableLiveData<Int>()
     val isComplete = MutableLiveData<Boolean>()
+    val isAdvancedModeEnabled = MutableLiveData<Boolean>()
+
+    @Inject
+    lateinit var globalModelRepository: GlobalModelRepository
 
     @Inject
     lateinit var forwardModelRepository: ForwardModelRepository
 
+    private var globalModel: GlobalModel? = null
     private var forwardModel: ForwardModel? = null
 
     init {
         getApplication<App>().component.inject(this)
         forwardModel = ForwardModel()
+        viewModelScope.launch(Dispatchers.IO) {
+            globalModel = globalModelRepository.getGlobalModel()
+            isAdvancedModeEnabled.postValue(globalModel?.advancedMode)
+        }
     }
 
     fun onSourceRetrieved(source: String?) {
@@ -106,6 +117,18 @@ class AddRedirectViewModel(application: Application) : AndroidViewModel(applicat
             buttonState.value = AddRedirectFragment.ButtonState.ENABLED
         } else {
             buttonState.value = AddRedirectFragment.ButtonState.DISABLED
+        }
+    }
+
+    fun toggleMode() {
+        val enabled = !(isAdvancedModeEnabled.value as Boolean)
+        isAdvancedModeEnabled.postValue(enabled)
+        viewModelScope.launch(Dispatchers.IO) {
+            val currentGlobalModel = globalModel
+            if (currentGlobalModel != null) {
+                currentGlobalModel.advancedMode = enabled
+                globalModelRepository.updateGlobalModel(currentGlobalModel)
+            }
         }
     }
 }

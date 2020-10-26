@@ -1,4 +1,4 @@
-package com.pierreduchemin.smsforward.ui.addredirect
+package com.pierreduchemin.smsforward.ui.redirectlist
 
 import android.app.*
 import android.content.Context
@@ -17,7 +17,7 @@ import com.pierreduchemin.smsforward.R
 import com.pierreduchemin.smsforward.data.ForwardModel
 import com.pierreduchemin.smsforward.data.ForwardModelRepository
 import com.pierreduchemin.smsforward.data.GlobalModelRepository
-import com.pierreduchemin.smsforward.ui.redirectlist.RedirectListActivity
+import com.pierreduchemin.smsforward.ui.addredirect.OnSmsReceivedListener
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -27,7 +27,7 @@ import javax.inject.Inject
 class RedirectService : Service() {
 
     @Inject
-    lateinit var globalRepository: GlobalModelRepository
+    lateinit var globalModelRepository: GlobalModelRepository
 
     @Inject
     lateinit var forwardModelRepository: ForwardModelRepository
@@ -80,7 +80,7 @@ class RedirectService : Service() {
         when (intent?.action) {
             ACTION_START_REDIRECT -> {
                 CoroutineScope(Dispatchers.IO).launch {
-                    val globalModel = globalRepository.getGlobalModel()
+                    val globalModel = globalModelRepository.getGlobalModel()
                     if (globalModel == null || !globalModel.activated) {
                         Log.i(TAG, "Redirection not activated")
                         return@launch

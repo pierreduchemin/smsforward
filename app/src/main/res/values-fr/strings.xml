@@ -15,6 +15,7 @@
     <string name="addredirect_info_to">vers</string>
     <string name="addredirect_info_add">Ajouter</string>
     <string name="addredirect_info_sms_redirect_confirmation">SMS redirigé de %1$s vers %2$s</string>
+    <string name="addredirect_info_enable_regex_mode">Activer le mode expression rationnelle</string>
     <string name="addredirect_warning_permission_refused">L\'application a besoin de lire et envoyer des SMS pour fonctionner</string>
     <string name="addredirect_error_source_and_redirection_must_be_different">La source et la destination doivent être différentes</string>
     <string name="addredirect_error_empty_source">Source vide</string>

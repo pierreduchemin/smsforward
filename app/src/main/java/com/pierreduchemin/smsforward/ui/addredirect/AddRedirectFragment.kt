@@ -1,6 +1,7 @@
 package com.pierreduchemin.smsforward.ui.addredirect
 
 import android.Manifest
+import android.app.Activity
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.os.Bundle
@@ -8,6 +9,8 @@ import android.provider.ContactsContract
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.inputmethod.EditorInfo
+import android.view.inputmethod.InputMethodManager
 import android.widget.TextView
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
@@ -55,6 +58,13 @@ class AddRedirectFragment : Fragment(), AddRedirectContract.View {
                 requireActivity().finish()
             }
         })
+        viewModel.isAdvancedModeEnabled.observe(requireActivity(), {
+            if (it != null && it) {
+                setAdvancedMode()
+            } else {
+                setNormalMode()
+            }
+        })
 
         return inflater.inflate(R.layout.add_redirects_fragment, container, false)
     }
@@ -81,6 +91,9 @@ class AddRedirectFragment : Fragment(), AddRedirectContract.View {
                 etSource.text.trim().toString(),
                 etDestination.text.trim().toString()
             )
+        }
+        btnAdvancedMode.setOnClickListener {
+            viewModel.toggleMode()
         }
     }
 
@@ -176,5 +189,28 @@ class AddRedirectFragment : Fragment(), AddRedirectContract.View {
     override fun resetFields() {
         etSource.setText("", TextView.BufferType.EDITABLE)
         etDestination.setText("", TextView.BufferType.EDITABLE)
+    }
+
+    private fun setNormalMode() {
+        etSource.setOnClickListener { pickNumber(CONTACT_PICKER_SOURCE_REQUEST_CODE) }
+        etSource.isFocusableInTouchMode = false
+        etSource.clearFocus()
+        etSource.inputType = EditorInfo.TYPE_CLASS_PHONE
+        hideKeyboardFrom(etSource)
+        btnAdvancedMode.setImageResource(R.drawable.ic_regex_grey_24dp)
+    }
+
+    private fun setAdvancedMode() {
+        etSource.setOnClickListener { }
+        etSource.isFocusableInTouchMode = true
+        etSource.requestFocus()
+        etSource.inputType = EditorInfo.TYPE_CLASS_TEXT
+        btnAdvancedMode.setImageResource(R.drawable.ic_regex_black_24dp)
+    }
+
+    private fun hideKeyboardFrom(view: View) {
+        val imm: InputMethodManager =
+            requireContext().getSystemService(Activity.INPUT_METHOD_SERVICE) as InputMethodManager
+        imm.hideSoftInputFromWindow(view.windowToken, 0)
     }
 }

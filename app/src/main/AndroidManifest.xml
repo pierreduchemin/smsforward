@@ -30,7 +30,7 @@
         </activity>
 
         <service
-                android:name=".ui.addredirect.RedirectService"
+                android:name=".ui.redirectlist.RedirectService"
                 android:exported="false" />
 
         <activity
@@ -46,7 +46,7 @@
                 android:launchMode="singleTop" />
 
         <receiver
-                android:name=".ui.addredirect.SmsReceiver"
+                android:name=".ui.redirectlist.SmsReceiver"
                 android:exported="true"
                 android:permission="android.permission.BROADCAST_SMS">
             <intent-filter>

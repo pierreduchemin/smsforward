@@ -13,6 +13,8 @@
     <string name="addredirect_info_to">to</string>
     <string name="addredirect_info_add">Add</string>
     <string name="addredirect_info_sms_redirect_confirmation">SMS redirected from %1$s to %2$s</string>
+    <string name="addredirect_info_enable_regex_mode">Enable regex mode</string>
+    <string name="addredirect_warning_permission_refused">The application need to access and send SMS in order to redirect</string>
     <string name="addredirect_error_source_and_redirection_must_be_different">Source and destination must differs</string>
     <string name="addredirect_error_empty_source">Empty source</string>
     <string name="addredirect_error_invalid_source">Invalid source</string>
@@ -42,6 +44,5 @@
     <string name="description_delete_icon">Delete</string>
     <string name="description_send_sms_illustration">Send SMS</string>
     <string name="description_add_redirection_button">Add a redirection button</string>
-    <string name="addredirect_warning_permission_refused">The application need to access and send SMS in order to redirect</string>
 
 </resources>
