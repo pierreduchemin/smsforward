@@ -22,6 +22,8 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import java.lang.IllegalArgumentException
+import java.util.regex.Pattern
+import java.util.regex.PatternSyntaxException
 import javax.inject.Inject
 
 class RedirectService : Service() {
@@ -135,25 +137,34 @@ class RedirectService : Service() {
      * Handle action Redirect in the provided background thread with the provided
      * parameters.
      */
-    private fun handleActionRedirect(forwardModels: List<ForwardModel>) {
+    private fun handleActionRedirect(dbForwardModels: List<ForwardModel>) {
         smsReceiver.setCallback(object : OnSmsReceivedListener {
-            override fun onSmsReceived(forwardModel: ForwardModel, message: String) {
+            override fun onSmsReceived(phoneNumberFrom: String, message: String) {
                 Log.d(TAG, "onSmsReceived")
-                forwardModels.filter {
-                    it.from == forwardModel.from
+                dbForwardModels.filter { dbForwardModel ->
+                    if (dbForwardModel.isRegex) {
+                        try {
+                            Pattern.compile(dbForwardModel.from).matcher(phoneNumberFrom).matches()
+                        } catch (e: PatternSyntaxException) {
+                            Log.e(TAG, "Invalid pattern. This should not happen as regex are supposed to be already validated.")
+                            false
+                        }
+                    } else {
+                        dbForwardModel.from == phoneNumberFrom
+                    }
                 }.map {
-                    Log.d(TAG, "Caught a SMS from ${it.from}")
+                    Log.d(TAG, "Caught a SMS from $phoneNumberFrom that matches ${it.from}")
                     sendSMS(
                         it.to, getString(
                             R.string.notification_info_sms_received_from,
-                            it.from,
+                            phoneNumberFrom,
                             message
                         )
                     )
                 }
             }
         })
-        smsReceiver.setPhoneNumberFilter(forwardModels)
+        smsReceiver.setPhoneNumberFilter(dbForwardModels)
 
         val filter = IntentFilter()
         filter.addAction("android.provider.Telephony.SMS_RECEIVED")

@@ -18,14 +18,14 @@ class SmsReceiver : BroadcastReceiver() {
     }
 
     private var callback: OnSmsReceivedListener? = null
-    private var phoneNumberFilter: List<ForwardModel>? = null
+    private var forwardModels: List<ForwardModel>? = null
 
     fun setCallback(callback: OnSmsReceivedListener) {
         this.callback = callback
     }
 
-    fun setPhoneNumberFilter(phoneNumberFilter: List<ForwardModel>) {
-        this.phoneNumberFilter = phoneNumberFilter
+    fun setPhoneNumberFilter(forwardModels: List<ForwardModel>) {
+        this.forwardModels = forwardModels
     }
 
     override fun onReceive(context: Context, intent: Intent) {
@@ -43,17 +43,13 @@ class SmsReceiver : BroadcastReceiver() {
                     continue
                 }
                 val currentMessage = getIncomingMessage(o, bundle)
-                val phoneNumber = PhoneNumberUtils.toUnifiedNumber(
+                val phoneNumberFrom = PhoneNumberUtils.toUnifiedNumber(
                     context,
                     currentMessage.displayOriginatingAddress
                 )
 
-                phoneNumberFilter?.filter {
-                    it.from == phoneNumber
-                }?.map {
-                    val message = currentMessage.displayMessageBody
-                    smsReceivedListener.onSmsReceived(it, message)
-                }
+                val message = currentMessage.displayMessageBody
+                smsReceivedListener.onSmsReceived(phoneNumberFrom, message)
             }
         } catch (e: Exception) {
             Log.e(TAG, "Exception in smsReceiver $e")

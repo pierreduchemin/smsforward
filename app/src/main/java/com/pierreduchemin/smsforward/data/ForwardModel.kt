@@ -20,5 +20,8 @@ data class ForwardModel(
     var vfrom: String = "",
 
     @ColumnInfo
-    var vto: String = ""
+    var vto: String = "",
+
+    @ColumnInfo
+    var isRegex: Boolean = false
 )

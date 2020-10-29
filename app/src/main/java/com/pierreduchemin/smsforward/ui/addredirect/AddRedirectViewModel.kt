@@ -14,6 +14,8 @@ import com.pierreduchemin.smsforward.utils.PhoneNumberUtils
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
+import java.util.regex.Pattern
+import java.util.regex.PatternSyntaxException
 import javax.inject.Inject
 
 class AddRedirectViewModel(application: Application) : AndroidViewModel(application) {
@@ -49,11 +51,13 @@ class AddRedirectViewModel(application: Application) : AndroidViewModel(applicat
             return
         }
 
-        val uSource = PhoneNumberUtils.toUnifiedNumber(getApplication(), source)
-        val vSource = PhoneNumberUtils.toVisualNumber(getApplication(), source)
-        forwardModel?.from = uSource
-        forwardModel?.vfrom = vSource
-
+        val advancedMode = globalModel?.advancedMode ?: false
+        if (!advancedMode) {
+            val uSource = PhoneNumberUtils.toUnifiedNumber(getApplication(), source)
+            val vSource = PhoneNumberUtils.toVisualNumber(getApplication(), source)
+            forwardModel?.from = uSource
+            forwardModel?.vfrom = vSource
+        }
         notifyUpdate()
     }
 
@@ -87,6 +91,19 @@ class AddRedirectViewModel(application: Application) : AndroidViewModel(applicat
             return
         }
 
+        val advancedMode = globalModel?.advancedMode ?: false
+        if (advancedMode) {
+            try {
+                Pattern.compile(source)
+            } catch (e: PatternSyntaxException) {
+                errorMessageRes.value = R.string.addredirect_error_invalid_regex
+                return
+            }
+            forwardModel?.isRegex = true
+            forwardModel?.from = source
+            forwardModel?.vfrom = source
+        }
+
         runBlocking(Dispatchers.IO) {
             val value = forwardModelRepository.countSameForwardModel(source, destination)
             if (value > 0L) {
@@ -110,9 +127,13 @@ class AddRedirectViewModel(application: Application) : AndroidViewModel(applicat
         }
 
         val localForwardModel = forwardModel!!
-        sourceText.value = localForwardModel.vfrom
+        val advancedMode = globalModel?.advancedMode ?: false
+        if (!advancedMode) {
+            sourceText.value = localForwardModel.vfrom
+        }
         destinationText.value = localForwardModel.vto
-        val enabled = localForwardModel.from.isNotEmpty() && localForwardModel.to.isNotEmpty()
+        val enabled = (advancedMode || localForwardModel.from.isNotEmpty())
+                && localForwardModel.to.isNotEmpty()
         if (enabled) {
             buttonState.value = AddRedirectFragment.ButtonState.ENABLED
         } else {
