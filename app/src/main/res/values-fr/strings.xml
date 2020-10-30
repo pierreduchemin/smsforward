@@ -34,9 +34,11 @@
     <string name="about_question2">Dois-je faire attention à quelque chose ?</string>
     <string name="about_answer2">Oui :\n- Si vous êtes sur le point de demander à quelqu\'un d\'installer cette application, notez que vous devez faire confiance à cette personne. Elle sera en mesure de lire les messages.\n- Il est possible de créer des boucles de redirection entre plusieurs appareils. Il est hautement recommendé d\'éviter cela malgré les sécurités implémentées dans Android.\nCe programme est distribué dans l’espoir qu’il vous sera utile, mais SANS AUCUNE GARANTIE : sans même la garantie implicite de COMMERCIALISABILITÉ ni d’ADÉQUATION À UN OBJECTIF PARTICULIER. Consultez la Licence Générale Publique GNU pour plus de détails.</string>
     <string name="about_question3">Est-il possible de masquer la notification indiquant que la redirection est active dans la barre d\'état ?</string>
-    <string name="about_answer3">Oui, dans les versions récentes d\'Android (9 et ultérieures), vous pouvez rester appuyé sur la notification pour accéder à l\'option \"masquer la notification\".</string>
+    <string name="about_answer3">Oui, dans les versions récentes d\'Android, vous pouvez rester appuyé sur la notification pour accéder à l\'option \"masquer la notification\".</string>
     <string name="about_question4">Je ne veux plus recevoir de notification quand je reçoit un SMS et qu\'il est redirigé. Comment désactiver les notifications pour certains contact uniquement?</string>
-    <string name="about_answer4">Tout dépend de votre application SMS. Avec Silence ou Signal, par exemple, vous pouvez désactiver les notifications dans les paramètres de la conversation.</string>
+    <string name="about_answer4">Ce paramètre dépend de votre application SMS. Avec Silence ou Signal, par exemple, vous pouvez désactiver les notifications dans les paramètres de la conversation.</string>
+    <string name="about_question5">Comment utiliser le mode avancé ?</string>
+    <string name="about_answer5">Ce mode vous permet de rediriger des SMS à l\'aide d\'expressions rationelles. Vous pouvez par exemple, rediriger tous les SMS avec .* ou rediriger tous les SMS arrivant de la Suisse avec \\+41.*\nNotez que les expressions rationelles s\'appliqurons sur des numéros de téléphone au format E164.</string>
 
     <string name="description_empty_illustration">Liste vide</string>
     <string name="description_right_arrow">Flêche vers la droite</string>

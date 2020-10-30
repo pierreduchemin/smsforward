@@ -36,9 +36,11 @@
     <string name="about_question2">Should I be careful about something in particular?</string>
     <string name="about_answer2">Yes, a few things:\n- If you are about to ask someone to install this app, you have to trust your contact. This person will be able to read the messages.\n- It\'s possible to create redirection loops between 2+ devices. It\'s highly recommended to avoid this even if Android has built-in securities.\nThis program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.</string>
     <string name="about_question3">Can I remove the notification in status bar when redirection is enabled?</string>
-    <string name="about_answer3">Yes, in recent Android versions (9+), you have to do a long press on the notification to access the \"hide notification\" feature.</string>
+    <string name="about_answer3">Yes, in recent Android versions, you have to do a long press on the notification to access the \"hide notification\" feature.</string>
     <string name="about_question4">I don\'t want to be notified about redirected SMS. How to disable notifications for specific contacts?</string>
-    <string name="about_answer4">This depends on the SMS application you are using. With Silence or Signal, you can disable notifications in conversation parameters.</string>
+    <string name="about_answer4">This setting depends on your SMS application. With Silence or Signal, you can disable notifications in conversation parameters.</string>
+    <string name="about_question5">How to use the advanced input mode?</string>
+    <string name="about_answer5">This mode allows you to redirect SMS based on regexp rules. Ie, you can redirect all incoming SMS using .* or all incoming SMS from Switzerland using \\+41.*\nPlease note that the number will be in E164 format.</string>
 
     <string name="description_empty_illustration">Empty list</string>
     <string name="description_right_arrow">Right arrow</string>

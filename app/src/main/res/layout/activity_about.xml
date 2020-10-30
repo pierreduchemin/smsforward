@@ -101,6 +101,19 @@
                         android:text="@string/about_answer4"
                         android:textStyle="italic" />
 
+                <TextView
+                        android:layout_marginTop="4dp"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="@string/about_question5"
+                        android:textStyle="bold" />
+
+                <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="@string/about_answer5"
+                        android:textStyle="italic" />
+
             </LinearLayout>
         </LinearLayout>
     </ScrollView>
