@@ -63,7 +63,7 @@ class RedirectListViewModel(application: Application) : AndroidViewModel(applica
             }
         } else {
             localGlobalModel.activated = true
-            ldButtonState.value = RedirectListFragment.SwitchState.JUSTENABLED
+            ldButtonState.value = RedirectListFragment.SwitchState.JUST_ENABLED
             viewModelScope.launch(Dispatchers.IO) {
                 globalModelRepository.updateGlobalModel(localGlobalModel)
             }

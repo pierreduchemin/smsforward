@@ -8,17 +8,21 @@ import android.view.MenuItem
 import androidx.appcompat.app.AppCompatActivity
 import com.pierreduchemin.smsforward.BuildConfig
 import com.pierreduchemin.smsforward.R
-import kotlinx.android.synthetic.main.activity_about.*
+import com.pierreduchemin.smsforward.databinding.AboutActivityBinding
 import mehdi.sakout.aboutpage.AboutPage
 import mehdi.sakout.aboutpage.Element
 
 class AboutActivity : AppCompatActivity() {
 
+    private lateinit var ui: AboutActivityBinding
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_about)
 
-        setSupportActionBar(toolbar)
+        ui = AboutActivityBinding.inflate(layoutInflater)
+        setContentView(ui.root)
+
+        setSupportActionBar(ui.toolbar)
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
         loadAbout()
     }
@@ -71,6 +75,6 @@ class AboutActivity : AppCompatActivity() {
             .addItem(gitlabElement)
             .create()
 
-        flAbout.addView(aboutPage)
+        ui.flAbout.addView(aboutPage)
     }
 }

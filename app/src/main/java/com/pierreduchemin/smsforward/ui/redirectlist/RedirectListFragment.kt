@@ -16,10 +16,8 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.pierreduchemin.smsforward.R
 import com.pierreduchemin.smsforward.data.ForwardModel
+import com.pierreduchemin.smsforward.databinding.RedirectListFragmentBinding
 import com.pierreduchemin.smsforward.ui.addredirect.AddRedirectActivity
-import kotlinx.android.synthetic.main.redirect_fragment_list_empty.*
-import kotlinx.android.synthetic.main.redirect_list_fragment.*
-import kotlinx.android.synthetic.main.redirect_list_fragment_content.*
 
 class RedirectListFragment : Fragment() {
 
@@ -28,7 +26,7 @@ class RedirectListFragment : Fragment() {
     }
 
     enum class SwitchState {
-        JUSTENABLED,
+        JUST_ENABLED,
         ENABLED,
         STOP
     }
@@ -38,32 +36,34 @@ class RedirectListFragment : Fragment() {
         const val CONTENT = 1
     }
 
+    private lateinit var ui: RedirectListFragmentBinding
     private lateinit var viewModel: RedirectListViewModel
 
     override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
+        inflater: LayoutInflater,
+        container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
+        ui = RedirectListFragmentBinding.inflate(layoutInflater, container, false)
         viewModel = ViewModelProvider(this).get(RedirectListViewModel::class.java)
-        return inflater.inflate(R.layout.redirect_list_fragment, container, false)
+        return ui.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        rvForwards.layoutManager = LinearLayoutManager(requireContext())
-        fabAddRedirectEmpty.setOnClickListener {
+        ui.vfContent.rvForwards.layoutManager = LinearLayoutManager(requireContext())
+        val fabAction: (v: View) -> Unit = {
             startActivity(Intent(requireActivity(), AddRedirectActivity::class.java))
         }
-        fabAddRedirect.setOnClickListener {
-            startActivity(Intent(requireActivity(), AddRedirectActivity::class.java))
-        }
-        swActivate.setOnClickListener {
+        ui.vfEmpty.fabAddRedirectEmpty.setOnClickListener(fabAction)
+        ui.vfContent.fabAddRedirect.setOnClickListener(fabAction)
+        ui.vfContent.swActivate.setOnClickListener {
             viewModel.onRedirectionToggled()
         }
 
         viewModel.ldButtonState.observe(requireActivity(), {
-            if (it == SwitchState.JUSTENABLED) {
+            if (it == SwitchState.JUST_ENABLED) {
                 vibrate()
             }
             setSwitchState(it)
@@ -75,12 +75,12 @@ class RedirectListFragment : Fragment() {
 
     private fun setSwitchState(switchState: SwitchState) {
         when (switchState) {
-            SwitchState.JUSTENABLED,
+            SwitchState.JUST_ENABLED,
             SwitchState.ENABLED -> {
-                swActivate.isEnabled = true
-                swActivate.isChecked = true
-                tvActivationMessage.text = getString(R.string.redirectlist_redirection_activated)
-                tvActivationMessage.setTextColor(
+                ui.vfContent.swActivate.isEnabled = true
+                ui.vfContent.swActivate.isChecked = true
+                ui.vfContent.tvActivationMessage.text = getString(R.string.redirectlist_redirection_activated)
+                ui.vfContent.tvActivationMessage.setTextColor(
                     ContextCompat.getColor(
                         requireContext(),
                         R.color.activatedGreen
@@ -88,10 +88,10 @@ class RedirectListFragment : Fragment() {
                 )
             }
             SwitchState.STOP -> {
-                swActivate.isEnabled = true
-                swActivate.isChecked = false
-                tvActivationMessage.text = getString(R.string.redirectlist_redirection_deactivated)
-                tvActivationMessage.setTextColor(
+                ui.vfContent.swActivate.isEnabled = true
+                ui.vfContent.swActivate.isChecked = false
+                ui.vfContent.tvActivationMessage.text = getString(R.string.redirectlist_redirection_deactivated)
+                ui.vfContent.tvActivationMessage.setTextColor(
                     ContextCompat.getColor(
                         requireContext(),
                         R.color.deactivatedRed
@@ -103,13 +103,13 @@ class RedirectListFragment : Fragment() {
 
     private fun setList(forwardsList: List<ForwardModel>) {
         if (forwardsList.isEmpty()) {
-            viewFlipper.displayedChild = Flipper.EMPTY
+            ui.viewFlipper.displayedChild = Flipper.EMPTY
             return
         }
-        viewFlipper.displayedChild = Flipper.CONTENT
+        ui.viewFlipper.displayedChild = Flipper.CONTENT
 
         // TODO update adapter instead of replacing it
-        rvForwards.adapter = ForwardModelAdapter(forwardsList) { v ->
+        ui.vfContent.rvForwards.adapter = ForwardModelAdapter(forwardsList) { v ->
             AlertDialog.Builder(requireContext())
                 .setTitle(getString(R.string.redirectlist_info_delete_title))
                 .setMessage(getString(R.string.redirectlist_info_delete_content))
@@ -124,13 +124,14 @@ class RedirectListFragment : Fragment() {
     }
 
     private fun vibrate() {
+        val systemService = requireContext().getSystemService(VIBRATOR_SERVICE) ?: return
         if (Build.VERSION.SDK_INT >= 26) {
-            (requireContext().getSystemService(VIBRATOR_SERVICE) as Vibrator).vibrate(
+            (systemService as Vibrator).vibrate(
                 VibrationEffect.createOneShot(50, VibrationEffect.DEFAULT_AMPLITUDE)
             )
         } else {
             @Suppress("DEPRECATION")
-            (requireContext().getSystemService(VIBRATOR_SERVICE) as Vibrator).vibrate(50)
+            (systemService as Vibrator).vibrate(50)
         }
     }
 }

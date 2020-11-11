@@ -7,16 +7,20 @@ import android.view.Menu
 import android.view.MenuItem
 import androidx.appcompat.app.AppCompatActivity
 import com.pierreduchemin.smsforward.R
-import kotlinx.android.synthetic.main.redirects_activity.*
+import com.pierreduchemin.smsforward.databinding.AddRedirectsActivityBinding
 
 
 class AddRedirectActivity : AppCompatActivity() {
 
+    private lateinit var ui: AddRedirectsActivityBinding
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.redirects_activity)
 
-        setSupportActionBar(toolbar)
+        ui = AddRedirectsActivityBinding.inflate(layoutInflater)
+        setContentView(ui.root)
+
+        setSupportActionBar(ui.toolbar)
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
 
         supportFragmentManager.findFragmentById(R.id.mainContent) as AddRedirectFragment?

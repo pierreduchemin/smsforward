@@ -4,8 +4,12 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-    <include layout="@layout/redirect_fragment_list_empty" />
+    <include
+            android:id="@+id/vfEmpty"
+            layout="@layout/redirect_fragment_list_empty" />
 
-    <include layout="@layout/redirect_list_fragment_content" />
+    <include
+            android:id="@+id/vfContent"
+            layout="@layout/redirect_list_fragment_content" />
 
 </ViewFlipper>

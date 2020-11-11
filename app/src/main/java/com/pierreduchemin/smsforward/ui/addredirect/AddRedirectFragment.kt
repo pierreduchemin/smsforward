@@ -17,7 +17,7 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import com.google.android.material.snackbar.Snackbar
 import com.pierreduchemin.smsforward.R
-import kotlinx.android.synthetic.main.add_redirects_fragment.*
+import com.pierreduchemin.smsforward.databinding.AddRedirectsFragmentBinding
 
 class AddRedirectFragment : Fragment(), AddRedirectContract.View {
 
@@ -34,12 +34,16 @@ class AddRedirectFragment : Fragment(), AddRedirectContract.View {
         ENABLED
     }
 
+    private lateinit var ui: AddRedirectsFragmentBinding
     private lateinit var viewModel: AddRedirectViewModel
 
     override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
+        inflater: LayoutInflater,
+        container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
+        ui = AddRedirectsFragmentBinding.inflate(layoutInflater, container, false)
+
         viewModel = ViewModelProvider(this).get(AddRedirectViewModel::class.java)
         viewModel.buttonState.observe(requireActivity(), {
             setButtonState(it)
@@ -66,15 +70,15 @@ class AddRedirectFragment : Fragment(), AddRedirectContract.View {
             }
         })
 
-        return inflater.inflate(R.layout.add_redirects_fragment, container, false)
+        return ui.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        etSource.setOnClickListener { pickNumber(CONTACT_PICKER_SOURCE_REQUEST_CODE) }
-        etDestination.setOnClickListener { pickNumber(CONTACT_PICKER_DESTINATION_REQUEST_CODE) }
-        btnAdd.setOnClickListener {
+        ui.etSource.setOnClickListener { pickNumber(CONTACT_PICKER_SOURCE_REQUEST_CODE) }
+        ui.etDestination.setOnClickListener { pickNumber(CONTACT_PICKER_DESTINATION_REQUEST_CODE) }
+        ui.btnAdd.setOnClickListener {
             val missingPermissions: ArrayList<String> = arrayListOf()
 
             if (!hasPermission(Manifest.permission.SEND_SMS)) {
@@ -88,11 +92,11 @@ class AddRedirectFragment : Fragment(), AddRedirectContract.View {
                 return@setOnClickListener
             }
             viewModel.onButtonClicked(
-                etSource.text.trim().toString(),
-                etDestination.text.trim().toString()
+                ui.etSource.text.trim().toString(),
+                ui.etDestination.text.trim().toString()
             )
         }
-        btnAdvancedMode.setOnClickListener {
+        ui.btnAdvancedMode.setOnClickListener {
             viewModel.toggleMode()
         }
     }
@@ -116,10 +120,11 @@ class AddRedirectFragment : Fragment(), AddRedirectContract.View {
         if (requestCode == PERMISSIONS_REQUEST_CODE) {
             // If request is cancelled, the result arrays are empty.
             if ((grantResults.isNotEmpty()
-                        && grantResults.all { p -> p == PackageManager.PERMISSION_GRANTED })) {
+                        && grantResults.all { p -> p == PackageManager.PERMISSION_GRANTED })
+            ) {
                 viewModel.onButtonClicked(
-                    etSource.text.trim().toString(),
-                    etDestination.text.trim().toString()
+                    ui.etSource.text.trim().toString(),
+                    ui.etDestination.text.trim().toString()
                 )
             } else {
                 showError(R.string.addredirect_warning_permission_refused)
@@ -129,7 +134,7 @@ class AddRedirectFragment : Fragment(), AddRedirectContract.View {
     }
 
     override fun showError(message: Int) {
-        Snackbar.make(addredirectContainer, message, Snackbar.LENGTH_LONG).show()
+        Snackbar.make(ui.addredirectContainer, message, Snackbar.LENGTH_LONG).show()
     }
 
     override fun pickNumber(requestCode: Int) {
@@ -164,48 +169,48 @@ class AddRedirectFragment : Fragment(), AddRedirectContract.View {
     override fun setButtonState(buttonState: ButtonState) {
         when (buttonState) {
             ButtonState.DISABLED -> {
-                etSource.isEnabled = true
-                etDestination.isEnabled = true
-                btnAdd.isEnabled = false
-                btnAdd.text = getString(R.string.addredirect_info_add)
+                ui.etSource.isEnabled = true
+                ui.etDestination.isEnabled = true
+                ui.btnAdd.isEnabled = false
+                ui.btnAdd.text = getString(R.string.addredirect_info_add)
             }
             ButtonState.ENABLED -> {
-                etSource.isEnabled = true
-                etDestination.isEnabled = true
-                btnAdd.isEnabled = true
-                btnAdd.text = getString(R.string.addredirect_info_add)
+                ui.etSource.isEnabled = true
+                ui.etDestination.isEnabled = true
+                ui.btnAdd.isEnabled = true
+                ui.btnAdd.text = getString(R.string.addredirect_info_add)
             }
         }
     }
 
     override fun setSource(source: String) {
-        etSource.setText(source, TextView.BufferType.EDITABLE)
+        ui.etSource.setText(source, TextView.BufferType.EDITABLE)
     }
 
     override fun setDestination(destination: String) {
-        etDestination.setText(destination, TextView.BufferType.EDITABLE)
+        ui.etDestination.setText(destination, TextView.BufferType.EDITABLE)
     }
 
     override fun resetFields() {
-        etSource.setText("", TextView.BufferType.EDITABLE)
-        etDestination.setText("", TextView.BufferType.EDITABLE)
+        ui.etSource.setText("", TextView.BufferType.EDITABLE)
+        ui.etDestination.setText("", TextView.BufferType.EDITABLE)
     }
 
     private fun setNormalMode() {
-        etSource.setOnClickListener { pickNumber(CONTACT_PICKER_SOURCE_REQUEST_CODE) }
-        etSource.isFocusableInTouchMode = false
-        etSource.clearFocus()
-        etSource.inputType = EditorInfo.TYPE_CLASS_PHONE
-        hideKeyboardFrom(etSource)
-        btnAdvancedMode.setImageResource(R.drawable.ic_regex_grey_24dp)
+        ui.etSource.setOnClickListener { pickNumber(CONTACT_PICKER_SOURCE_REQUEST_CODE) }
+        ui.etSource.isFocusableInTouchMode = false
+        ui.etSource.clearFocus()
+        ui.etSource.inputType = EditorInfo.TYPE_CLASS_PHONE
+        hideKeyboardFrom(ui.etSource)
+        ui.btnAdvancedMode.setImageResource(R.drawable.ic_regex_grey_24dp)
     }
 
     private fun setAdvancedMode() {
-        etSource.setOnClickListener { }
-        etSource.isFocusableInTouchMode = true
-        etSource.requestFocus()
-        etSource.inputType = EditorInfo.TYPE_CLASS_TEXT
-        btnAdvancedMode.setImageResource(R.drawable.ic_regex_black_24dp)
+        ui.etSource.setOnClickListener { }
+        ui.etSource.isFocusableInTouchMode = true
+        ui.etSource.requestFocus()
+        ui.etSource.inputType = EditorInfo.TYPE_CLASS_TEXT
+        ui.btnAdvancedMode.setImageResource(R.drawable.ic_regex_black_24dp)
     }
 
     private fun hideKeyboardFrom(view: View) {

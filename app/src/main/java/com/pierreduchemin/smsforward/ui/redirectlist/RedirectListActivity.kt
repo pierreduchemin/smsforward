@@ -6,16 +6,20 @@ import android.view.Menu
 import android.view.MenuItem
 import androidx.appcompat.app.AppCompatActivity
 import com.pierreduchemin.smsforward.R
+import com.pierreduchemin.smsforward.databinding.RedirectListActivityBinding
 import com.pierreduchemin.smsforward.ui.about.AboutActivity
-import kotlinx.android.synthetic.main.redirect_list_activity.*
 
 class RedirectListActivity : AppCompatActivity() {
 
+    private lateinit var ui: RedirectListActivityBinding
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.redirect_list_activity)
 
-        setSupportActionBar(toolbar)
+        ui = RedirectListActivityBinding.inflate(layoutInflater)
+        setContentView(ui.root)
+
+        setSupportActionBar(ui.toolbar)
 
         if (savedInstanceState == null) {
             supportFragmentManager.beginTransaction()

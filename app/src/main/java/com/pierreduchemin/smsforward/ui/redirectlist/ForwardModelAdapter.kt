@@ -7,19 +7,19 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
-import com.pierreduchemin.smsforward.R
 import com.pierreduchemin.smsforward.data.ForwardModel
-import kotlinx.android.synthetic.main.redirect_adapter.view.*
+import com.pierreduchemin.smsforward.databinding.RedirectAdapterBinding
 
 class ForwardModelAdapter(
     private val values: List<ForwardModel>,
     private val deleteClickListener: View.OnClickListener
 ) : RecyclerView.Adapter<ForwardModelAdapter.ViewHolder>() {
 
+    private lateinit var ui: RedirectAdapterBinding
+
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-        val view = LayoutInflater.from(parent.context)
-            .inflate(R.layout.redirect_adapter, parent, false)
-        return ViewHolder(view)
+        ui = RedirectAdapterBinding.inflate(LayoutInflater.from(parent.context), parent, false)
+        return ViewHolder(ui)
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
@@ -35,10 +35,11 @@ class ForwardModelAdapter(
 
     override fun getItemCount(): Int = values.size
 
-    class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
-        val tvFrom: TextView = view.tvFrom
-        val tvTo: TextView = view.tvTo
-        val ivDelete: ImageView = view.ivDelete
+    class ViewHolder(ui: RedirectAdapterBinding) : RecyclerView.ViewHolder(ui.root) {
+
+        val tvFrom: TextView = ui.tvFrom
+        val tvTo: TextView = ui.tvTo
+        val ivDelete: ImageView = ui.ivDelete
 
         override fun toString(): String {
             return super.toString() + " '" + tvTo.text + "'"
