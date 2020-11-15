@@ -1,0 +1,55 @@
+image: registry.gitlab.com/pierreduchemin/smsforward:latest
+
+variables:
+    GRADLE_OPTS: "-Dorg.gradle.daemon=false"
+    JAVA_OPTS: "-Dhttps.protocols=TLSv1.1,TLSv1.2"
+
+before_script:
+    - export GRADLE_USER_HOME=`pwd`/.gradle
+    - chmod +x ./gradlew
+    - export APP_VERSION=$(grep -P '^[^/]+versionName\s(.*)' app/build.gradle | grep -Po '(?<=").*(?=")')
+
+cache:
+    paths:
+        - .gradle/wrapper
+        - .gradle/caches
+
+stages:
+    - build
+    - lint
+    - artifact
+
+build:
+    stage: build
+    script:
+        - ./gradlew assemble --stacktrace
+    cache:
+        key: "$CI_COMMIT_REF_NAME"
+        paths:
+            - app/build/
+    except:
+        - tags
+
+buildLint:
+    stage: lint
+    script:
+        - ./gradlew lintRelease --stacktrace
+    except:
+        - tags
+
+artifact:
+    stage: artifact
+    script:
+        - ./gradlew assemble --stacktrace
+        - echo "$ANDROID_KEYSTORE" | base64 -d > app/smsforward_keystore.jks
+        - apksigner sign --verbose --ks app/smsforward_keystore.jks --ks-key-alias sms-forward-key --ks-pass pass:"$ANDROID_KEYSTORE_PASSWORD" --key-pass pass:"$ANDROID_KEY_PASSWORD" --out app/smsforward-app-signed-$APP_VERSION.apk app/build/outputs/apk/release/app-release-unsigned.apk
+        - mv app/smsforward-app-signed-*.apk .
+    artifacts:
+        name: "smsforward-app-signed-$CI_COMMIT_SHA"
+        paths:
+            - smsforward-app-signed-*.apk
+        when: always
+    only:
+        - master
+    when: on_success
+    allow_failure: false
