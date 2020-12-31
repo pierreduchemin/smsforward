@@ -21,7 +21,6 @@ import com.pierreduchemin.smsforward.ui.addredirect.OnSmsReceivedListener
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-import java.lang.IllegalArgumentException
 import java.util.regex.Pattern
 import java.util.regex.PatternSyntaxException
 import javax.inject.Inject
@@ -146,7 +145,10 @@ class RedirectService : Service() {
                         try {
                             Pattern.compile(dbForwardModel.from).matcher(phoneNumberFrom).matches()
                         } catch (e: PatternSyntaxException) {
-                            Log.e(TAG, "Invalid pattern. This should not happen as regex are supposed to be already validated.")
+                            Log.e(
+                                TAG,
+                                "Invalid pattern. This should not happen as regex are supposed to be already validated."
+                            )
                             false
                         }
                     } else {
@@ -176,7 +178,15 @@ class RedirectService : Service() {
     private fun sendSMS(phoneNumber: String, message: String) {
         Log.d(TAG, "Forwarding to $phoneNumber: $message")
         val smsManager = SmsManager.getDefault()
-        smsManager.sendTextMessage(phoneNumber, null, message, null, null)
+        val messageDivided = smsManager.divideMessage(message)
+
+        if (messageDivided.size == 1) {
+            Log.d(TAG, "Sending as single message")
+            smsManager.sendTextMessage(phoneNumber, null, message, null, null)
+        } else {
+            Log.d(TAG, "Sending as multipart message")
+            smsManager.sendMultipartTextMessage(phoneNumber, null, messageDivided, null, null)
+        }
     }
 
     @RequiresApi(Build.VERSION_CODES.O)

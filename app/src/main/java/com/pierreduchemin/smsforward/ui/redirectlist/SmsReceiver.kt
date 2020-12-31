@@ -38,19 +38,22 @@ class SmsReceiver : BroadcastReceiver() {
         val bundle = intent.extras ?: return
         try {
             val pdusObj = bundle.get("pdus") as Array<*>
+            var phoneNumberFrom = ""
+            var messageContent = ""
             for (o in pdusObj) {
                 if (o == null) {
                     continue
                 }
                 val currentMessage = getIncomingMessage(o, bundle)
-                val phoneNumberFrom = PhoneNumberUtils.toUnifiedNumber(
-                    context,
-                    currentMessage.displayOriginatingAddress
-                )
-
-                val message = currentMessage.displayMessageBody
-                smsReceivedListener.onSmsReceived(phoneNumberFrom, message)
+                if (phoneNumberFrom.isEmpty()) {
+                    phoneNumberFrom = PhoneNumberUtils.toUnifiedNumber(
+                        context,
+                        currentMessage.displayOriginatingAddress
+                    )
+                }
+                messageContent += currentMessage.displayMessageBody
             }
+            smsReceivedListener.onSmsReceived(phoneNumberFrom, messageContent)
         } catch (e: Exception) {
             Log.e(TAG, "Exception in smsReceiver $e")
         }

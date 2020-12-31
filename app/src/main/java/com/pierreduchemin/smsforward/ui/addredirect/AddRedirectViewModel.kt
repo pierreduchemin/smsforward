@@ -5,6 +5,7 @@ import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import com.pierreduchemin.smsforward.App
+import com.pierreduchemin.smsforward.BuildConfig
 import com.pierreduchemin.smsforward.R
 import com.pierreduchemin.smsforward.data.ForwardModel
 import com.pierreduchemin.smsforward.data.ForwardModelRepository
@@ -85,7 +86,7 @@ class AddRedirectViewModel(application: Application) : AndroidViewModel(applicat
             errorMessageRes.value = R.string.addredirect_error_empty_destination
             return
         }
-        if (localForwardModel.from == localForwardModel.to) {
+        if (!BuildConfig.DEBUG && localForwardModel.from == localForwardModel.to) {
             errorMessageRes.value =
                 R.string.addredirect_error_source_and_redirection_must_be_different
             return
@@ -106,7 +107,7 @@ class AddRedirectViewModel(application: Application) : AndroidViewModel(applicat
 
         runBlocking(Dispatchers.IO) {
             val value = forwardModelRepository.countSameForwardModel(source, destination)
-            if (value > 0L) {
+            if (!BuildConfig.DEBUG && value > 0L) {
                 errorMessageRes.postValue(R.string.addredirect_error_source_and_redirection_must_be_different)
                 return@runBlocking
             }
