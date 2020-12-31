@@ -157,7 +157,7 @@ class RedirectService : Service() {
                     sendSMS(
                         it.to, getString(
                             R.string.notification_info_sms_received_from,
-                            phoneNumberFrom,
+                            it.vfrom,
                             message
                         )
                     )
