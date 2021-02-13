@@ -2,7 +2,18 @@
 
 SMS Forward is a simple app that allows you to redirect SMS you receive on your phone to another device.
 
+This application have been developed to bypass regional limitations.
+Example: a service in country A requires a phone number from country A, but your phone number is from country B. You ask a friend from country A to install this app and you will be able to receive SMS from the service in country B. However, since this is a pretty simple application, it can also serve other purposes.
+
+Features:
+- Can handle multiple redirections
+- Global activation toggle
+
+SMS Forward is free, open source and without ads.
+
 It runs on Android 5.0 "Lollipop" (API 21) and later.
+
+This application is built using MVVM architecture.
 
 [<img src="https://fdroid.gitlab.io/artwork/badge/get-it-on.png"
      alt="Get it on F-Droid"
