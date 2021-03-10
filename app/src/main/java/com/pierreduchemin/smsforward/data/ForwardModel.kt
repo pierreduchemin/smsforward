@@ -20,6 +20,9 @@ data class ForwardModel(
     var vfrom: String = "",
 
     @ColumnInfo
+    var vfromName: String = "",
+
+    @ColumnInfo
     var vto: String = "",
 
     @ColumnInfo

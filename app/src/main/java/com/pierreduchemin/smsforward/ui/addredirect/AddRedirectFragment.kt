@@ -41,7 +41,7 @@ class AddRedirectFragment : Fragment(), AddRedirectContract.View {
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         ui = AddRedirectsFragmentBinding.inflate(layoutInflater, container, false)
 
         viewModel = ViewModelProvider(this).get(AddRedirectViewModel::class.java)
@@ -149,18 +149,26 @@ class AddRedirectFragment : Fragment(), AddRedirectContract.View {
             return
         }
         var phoneNo: String? = null
+        var displayName: String? = null
         val uri = data.data!!
         requireContext().contentResolver.query(uri, null, null, null, null)?.use { cursor ->
             if (cursor.moveToFirst()) {
                 val phoneIndex =
                     cursor.getColumnIndex(ContactsContract.CommonDataKinds.Phone.NUMBER)
+                val nameSourceIndex =
+                    cursor.getColumnIndex(ContactsContract.CommonDataKinds.Phone.DISPLAY_NAME_SOURCE)
                 phoneNo = cursor.getString(phoneIndex)
+                if (cursor.getString(nameSourceIndex) == ContactsContract.DisplayNameSources.STRUCTURED_NAME.toString()) {
+                    val nameIndex =
+                        cursor.getColumnIndex(ContactsContract.CommonDataKinds.Phone.DISPLAY_NAME)
+                    displayName = cursor.getString(nameIndex)
+                }
             }
             cursor.close()
         }
 
         if (requestCode == CONTACT_PICKER_SOURCE_REQUEST_CODE) {
-            viewModel.onSourceRetrieved(phoneNo)
+            viewModel.onSourceRetrieved(phoneNo, displayName)
         } else if (requestCode == CONTACT_PICKER_DESTINATION_REQUEST_CODE) {
             viewModel.onDestinationRetrieved(phoneNo)
         }

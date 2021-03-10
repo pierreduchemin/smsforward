@@ -156,10 +156,15 @@ class RedirectService : Service() {
                     }
                 }.map {
                     Log.d(TAG, "Caught a SMS from $phoneNumberFrom that matches ${it.from}")
+                    var source = phoneNumberFrom
+                    if (it.vfromName.isNotBlank()) {
+                        source = it.vfromName + " | " + phoneNumberFrom
+                    }
+
                     sendSMS(
                         it.to, getString(
                             R.string.notification_info_sms_received_from,
-                            phoneNumberFrom,
+                            source,
                             message
                         )
                     )

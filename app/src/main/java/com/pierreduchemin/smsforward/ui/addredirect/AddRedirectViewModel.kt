@@ -46,7 +46,7 @@ class AddRedirectViewModel(application: Application) : AndroidViewModel(applicat
         }
     }
 
-    fun onSourceRetrieved(source: String?) {
+    fun onSourceRetrieved(source: String?, displayName: String?) {
         if (source == null) {
             errorMessageRes.value = R.string.addredirect_error_invalid_source
             return
@@ -58,6 +58,8 @@ class AddRedirectViewModel(application: Application) : AndroidViewModel(applicat
             val vSource = PhoneNumberUtils.toVisualNumber(getApplication(), source)
             forwardModel?.from = uSource
             forwardModel?.vfrom = vSource
+            if (displayName != null)
+                forwardModel?.vfromName = displayName
         }
         notifyUpdate()
     }
