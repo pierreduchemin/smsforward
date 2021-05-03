@@ -12,6 +12,7 @@ import android.view.ViewGroup
 import android.view.inputmethod.EditorInfo
 import android.view.inputmethod.InputMethodManager
 import android.widget.TextView
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
@@ -24,7 +25,6 @@ class AddRedirectFragment : Fragment(), AddRedirectContract.View {
     companion object {
         fun newInstance() = AddRedirectFragment()
 
-        const val PERMISSIONS_REQUEST_CODE = 1655
         const val CONTACT_PICKER_SOURCE_REQUEST_CODE = 1456
         const val CONTACT_PICKER_DESTINATION_REQUEST_CODE = 1896
     }
@@ -33,6 +33,12 @@ class AddRedirectFragment : Fragment(), AddRedirectContract.View {
         DISABLED,
         ENABLED
     }
+
+    private val requiredPermissions = arrayOf(
+        Manifest.permission.SEND_SMS,
+        Manifest.permission.RECEIVE_SMS,
+        Manifest.permission.READ_CONTACTS
+    )
 
     private lateinit var ui: AddRedirectsFragmentBinding
     private lateinit var viewModel: AddRedirectViewModel
@@ -43,6 +49,7 @@ class AddRedirectFragment : Fragment(), AddRedirectContract.View {
         savedInstanceState: Bundle?
     ): View {
         ui = AddRedirectsFragmentBinding.inflate(layoutInflater, container, false)
+        askPermission(requiredPermissions)
 
         viewModel = ViewModelProvider(this).get(AddRedirectViewModel::class.java)
         viewModel.buttonState.observe(requireActivity(), {
@@ -76,21 +83,13 @@ class AddRedirectFragment : Fragment(), AddRedirectContract.View {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        ui.etSource.setOnClickListener { pickNumber(CONTACT_PICKER_SOURCE_REQUEST_CODE) }
-        ui.etDestination.setOnClickListener { pickNumber(CONTACT_PICKER_DESTINATION_REQUEST_CODE) }
+        ui.etSource.setOnClickListener {
+            pickNumber(CONTACT_PICKER_SOURCE_REQUEST_CODE)
+        }
+        ui.etDestination.setOnClickListener {
+            pickNumber(CONTACT_PICKER_DESTINATION_REQUEST_CODE)
+        }
         ui.btnAdd.setOnClickListener {
-            val missingPermissions: ArrayList<String> = arrayListOf()
-
-            if (!hasPermission(Manifest.permission.SEND_SMS)) {
-                missingPermissions.add(Manifest.permission.SEND_SMS)
-            }
-            if (!hasPermission(Manifest.permission.RECEIVE_SMS)) {
-                missingPermissions.add(Manifest.permission.RECEIVE_SMS)
-            }
-            if (missingPermissions.isNotEmpty()) {
-                askPermission(missingPermissions)
-                return@setOnClickListener
-            }
             viewModel.onButtonClicked(
                 ui.etSource.text.trim().toString(),
                 ui.etDestination.text.trim().toString()
@@ -108,28 +107,15 @@ class AddRedirectFragment : Fragment(), AddRedirectContract.View {
         ) == PackageManager.PERMISSION_GRANTED
     }
 
-    override fun askPermission(permissionsString: ArrayList<String>) {
-        requestPermissions(permissionsString.toTypedArray(), PERMISSIONS_REQUEST_CODE)
-    }
-
-    override fun onRequestPermissionsResult(
-        requestCode: Int,
-        permissions: Array<out String>,
-        grantResults: IntArray
-    ) {
-        if (requestCode == PERMISSIONS_REQUEST_CODE) {
-            // If request is cancelled, the result arrays are empty.
-            if ((grantResults.isNotEmpty()
-                        && grantResults.all { p -> p == PackageManager.PERMISSION_GRANTED })
-            ) {
-                viewModel.onButtonClicked(
-                    ui.etSource.text.trim().toString(),
-                    ui.etDestination.text.trim().toString()
-                )
-            } else {
-                showError(R.string.addredirect_warning_permission_refused)
-            }
-            return
+    override fun askPermission(permissionsString: Array<String>) {
+        val missingPermissions = permissionsString.filter { !hasPermission(it) }
+        if (missingPermissions.isNotEmpty()) {
+            requireActivity().registerForActivityResult(ActivityResultContracts.RequestMultiplePermissions()) { permissions ->
+                val permissionsOk = permissions.entries.all { it.value }
+                if (!permissionsOk) {
+                    showError(R.string.addredirect_warning_permission_refused)
+                }
+            }.launch(missingPermissions.toTypedArray())
         }
     }
 

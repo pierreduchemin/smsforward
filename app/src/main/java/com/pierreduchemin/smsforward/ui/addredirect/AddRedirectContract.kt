@@ -5,7 +5,7 @@ interface AddRedirectContract {
     interface View {
         fun showError(message: Int)
         fun hasPermission(permissionString: String): Boolean
-        fun askPermission(permissionsString: ArrayList<String>)
+        fun askPermission(permissionsString: Array<String>)
         fun pickNumber(requestCode: Int)
         fun setSource(source: String)
         fun setDestination(destination: String)
