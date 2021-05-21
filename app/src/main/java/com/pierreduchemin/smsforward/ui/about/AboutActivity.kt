@@ -1,6 +1,7 @@
 package com.pierreduchemin.smsforward.ui.about
 
 import android.content.Intent
+import android.content.res.Configuration
 import android.net.Uri
 import android.os.Bundle
 import android.view.Gravity
@@ -67,6 +68,7 @@ class AboutActivity : AppCompatActivity() {
             )
 
         val aboutPage = AboutPage(this)
+            .enableDarkMode(isDarkTheme())
             .isRTL(false)
             .setImage(R.mipmap.ic_launcher)
             .setDescription(getString(R.string.about_info_app_description))
@@ -76,5 +78,10 @@ class AboutActivity : AppCompatActivity() {
             .create()
 
         ui.flAbout.addView(aboutPage)
+    }
+
+    private fun isDarkTheme(): Boolean {
+        return resources.configuration.uiMode and
+                Configuration.UI_MODE_NIGHT_MASK == Configuration.UI_MODE_NIGHT_YES
     }
 }
