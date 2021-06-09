@@ -113,11 +113,11 @@ class RedirectListFragment : Fragment() {
             AlertDialog.Builder(requireContext())
                 .setTitle(getString(R.string.redirectlist_info_delete_title))
                 .setMessage(getString(R.string.redirectlist_info_delete_content))
-                .setPositiveButton(android.R.string.yes) { _, _ ->
+                .setPositiveButton(android.R.string.ok) { _, _ ->
                     val forwardModel = v.tag as ForwardModel
                     viewModel.onDeleteConfirmed(forwardModel)
                 }
-                .setNegativeButton(android.R.string.no, null)
+                .setNegativeButton(android.R.string.cancel, null)
                 .setIcon(R.drawable.ic_alert_24dp)
                 .show()
         }
