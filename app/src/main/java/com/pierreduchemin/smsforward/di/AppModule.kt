@@ -12,13 +12,10 @@ import javax.inject.Singleton
 @Module
 class AppModule(val app: App) {
 
-    private val smsForwardDatabase: SMSForwardDatabase = Room.databaseBuilder(
-        app,
-        SMSForwardDatabase::class.java,
-        "smsforward_database"
-    )
-        .fallbackToDestructiveMigration()
-        .build()
+    private val smsForwardDatabase: SMSForwardDatabase =
+        Room.databaseBuilder(app, SMSForwardDatabase::class.java, "smsforward_database")
+            .fallbackToDestructiveMigration()
+            .build()
 
     @Provides
     @Singleton
@@ -26,13 +23,12 @@ class AppModule(val app: App) {
 
     @Provides
     @Singleton
-    fun provideSmsForwardRoomDatabase(): SMSForwardDatabase {
-        return smsForwardDatabase
-    }
+    fun provideSmsForwardRoomDatabase() = smsForwardDatabase
 
     @Provides
     @Singleton
-    fun provideForwardModelRepository() = ForwardModelRepository(smsForwardDatabase.forwardModelDao())
+    fun provideForwardModelRepository() =
+        ForwardModelRepository(smsForwardDatabase.forwardModelDao())
 
     @Provides
     @Singleton
