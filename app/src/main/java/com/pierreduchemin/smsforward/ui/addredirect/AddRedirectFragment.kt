@@ -196,7 +196,7 @@ class AddRedirectFragment : Fragment(), AddRedirectContract.View {
         ui.etSource.clearFocus()
         ui.etSource.inputType = EditorInfo.TYPE_CLASS_PHONE
         hideKeyboardFrom(ui.etSource)
-        ui.btnAdvancedMode.setImageResource(R.drawable.ic_regex_grey_24dp)
+        ui.btnAdvancedMode.setImageResource(R.drawable.ic_asterisk_grey_24dp)
     }
 
     private fun setAdvancedMode() {
@@ -204,7 +204,7 @@ class AddRedirectFragment : Fragment(), AddRedirectContract.View {
         ui.etSource.isFocusableInTouchMode = true
         ui.etSource.requestFocus()
         ui.etSource.inputType = EditorInfo.TYPE_CLASS_TEXT
-        ui.btnAdvancedMode.setImageResource(R.drawable.ic_regex_black_24dp)
+        ui.btnAdvancedMode.setImageResource(R.drawable.ic_asterisk_back_24dp)
     }
 
     private fun hideKeyboardFrom(view: View) {

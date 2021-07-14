@@ -22,7 +22,6 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import java.util.regex.Pattern
-import java.util.regex.PatternSyntaxException
 import javax.inject.Inject
 
 class RedirectService : Service() {
@@ -142,15 +141,17 @@ class RedirectService : Service() {
                 Log.d(TAG, "onSmsReceived")
                 dbForwardModels.filter { dbForwardModel ->
                     if (dbForwardModel.isRegex) {
-                        try {
-                            Pattern.compile(dbForwardModel.from).matcher(phoneNumberFrom).matches()
-                        } catch (e: PatternSyntaxException) {
+                        val regexpFrom = dbForwardModel.from.replace("*", ".*").replace("+", "\\+")
+                        val matches =
+                            Pattern.compile(regexpFrom).matcher(phoneNumberFrom).matches()
+                        if (!matches) {
                             Log.e(
                                 TAG,
-                                "Invalid pattern. This should not happen as regex are supposed to be already validated."
+                                "Invalid pattern. This should not happen as expressions are already validated."
                             )
-                            false
+                            return@filter false
                         }
+                        true
                     } else {
                         dbForwardModel.from == phoneNumberFrom
                     }

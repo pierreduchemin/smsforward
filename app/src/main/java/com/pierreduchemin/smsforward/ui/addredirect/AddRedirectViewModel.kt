@@ -16,7 +16,6 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
 import java.util.regex.Pattern
-import java.util.regex.PatternSyntaxException
 import javax.inject.Inject
 
 class AddRedirectViewModel(application: Application) : AndroidViewModel(application) {
@@ -70,10 +69,8 @@ class AddRedirectViewModel(application: Application) : AndroidViewModel(applicat
             return
         }
 
-        val uDestination = PhoneNumberUtils.toUnifiedNumber(getApplication(), destination)
-        val vDestination = PhoneNumberUtils.toVisualNumber(getApplication(), destination)
-        forwardModel?.to = uDestination
-        forwardModel?.vto = vDestination
+        forwardModel?.to = PhoneNumberUtils.toUnifiedNumber(getApplication(), destination)
+        forwardModel?.vto = PhoneNumberUtils.toVisualNumber(getApplication(), destination)
 
         notifyUpdate()
     }
@@ -96,14 +93,16 @@ class AddRedirectViewModel(application: Application) : AndroidViewModel(applicat
 
         val advancedMode = globalModel?.advancedMode ?: false
         if (advancedMode) {
-            try {
-                Pattern.compile(source)
-            } catch (e: PatternSyntaxException) {
-                errorMessageRes.value = R.string.addredirect_error_invalid_regex
+            // only allow [0-9], +, *, (, ), - and space
+            val matches =
+                Pattern.compile("^((\\+|\\*|\\(|\\)|-|\\s)?(\\d*))*\$").matcher(source)
+                    .matches()
+            if (!matches) {
+                errorMessageRes.value = R.string.addredirect_error_invalid_expression
                 return
             }
             forwardModel?.isRegex = true
-            forwardModel?.from = source
+            forwardModel?.from = source.replace("\\(|\\)|-|\\s", "")
             forwardModel?.vfrom = source
         }
 

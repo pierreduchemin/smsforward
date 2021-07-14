@@ -22,7 +22,7 @@
     <string name="addredirect_error_invalid_source">Source invalide</string>
     <string name="addredirect_error_empty_destination">Destination vide</string>
     <string name="addredirect_error_invalid_destination">Destination invalide</string>
-    <string name="addredirect_error_invalid_regex">Expression rationelle invalide</string>
+    <string name="addredirect_error_invalid_expression">Expression invalide</string>
 
     <string name="about_info_version">Version %s</string>
     <string name="about_info_license">Sous license GNU GPLv3</string>
@@ -45,4 +45,6 @@
     <string name="description_delete_icon">Supprimer</string>
     <string name="description_send_sms_illustration">Envoyer un SMS</string>
     <string name="description_add_redirection_button">Ajouter une redirection</string>
+    <string name="description_enable_advanced_mode">Activer le mode avancé</string>
+
 </resources>
