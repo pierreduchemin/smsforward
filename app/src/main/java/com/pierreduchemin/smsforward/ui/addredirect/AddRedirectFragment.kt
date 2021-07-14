@@ -18,7 +18,7 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import com.google.android.material.snackbar.Snackbar
 import com.pierreduchemin.smsforward.R
-import com.pierreduchemin.smsforward.databinding.AddRedirectsFragmentBinding
+import com.pierreduchemin.smsforward.databinding.AddRedirectFragmentBinding
 
 class AddRedirectFragment : Fragment(), AddRedirectContract.View {
 
@@ -40,7 +40,7 @@ class AddRedirectFragment : Fragment(), AddRedirectContract.View {
         Manifest.permission.READ_CONTACTS
     )
 
-    private lateinit var ui: AddRedirectsFragmentBinding
+    private lateinit var ui: AddRedirectFragmentBinding
     private lateinit var viewModel: AddRedirectViewModel
 
     override fun onCreateView(
@@ -48,7 +48,7 @@ class AddRedirectFragment : Fragment(), AddRedirectContract.View {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        ui = AddRedirectsFragmentBinding.inflate(layoutInflater, container, false)
+        ui = AddRedirectFragmentBinding.inflate(layoutInflater, container, false)
         askPermission(requiredPermissions)
 
         viewModel = ViewModelProvider(this).get(AddRedirectViewModel::class.java)

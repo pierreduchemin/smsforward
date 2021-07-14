@@ -20,7 +20,7 @@
             android:theme="@style/AppTheme">
 
         <activity
-                android:name=".ui.redirectlist.RedirectListActivity"
+                android:name=".ui.MainActivity"
                 android:launchMode="singleTop">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -32,17 +32,6 @@
                 android:name=".ui.redirectlist.RedirectService"
                 android:exported="false" />
 
-        <activity
-                android:name=".ui.addredirect.AddRedirectActivity"
-                android:launchMode="singleTop">
-            <intent-filter>
-                <action android:name="android.intent.action.VIEW" />
-            </intent-filter>
-        </activity>
-
-        <activity
-                android:name=".ui.about.AboutActivity"
-                android:launchMode="singleTop" />
         <receiver android:name=".ui.addredirect.BootDeviceReceiver">
             <intent-filter>
                 <action android:name="android.intent.action.BOOT_COMPLETED" />
