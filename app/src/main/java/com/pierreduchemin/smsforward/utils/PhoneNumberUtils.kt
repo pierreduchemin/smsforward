@@ -5,7 +5,6 @@ import android.telephony.TelephonyManager
 import com.google.i18n.phonenumbers.NumberParseException
 import com.google.i18n.phonenumbers.PhoneNumberUtil
 import com.google.i18n.phonenumbers.Phonenumber
-import java.util.*
 
 class PhoneNumberUtils {
 
@@ -16,7 +15,7 @@ class PhoneNumberUtils {
         private fun getProto(context: Context, phoneNumber: String): Phonenumber.PhoneNumber? {
             val telephonyManager =
                 context.getSystemService(Context.TELEPHONY_SERVICE) as TelephonyManager?
-            val countryCode = telephonyManager?.simCountryIso?.toUpperCase(Locale.ROOT) ?: "FR"
+            val countryCode = telephonyManager?.simCountryIso?.uppercase() ?: "FR"
             return try {
                 phoneUtil.parse(phoneNumber, countryCode)
             } catch (e: RuntimeException) {
