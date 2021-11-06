@@ -6,6 +6,7 @@ ENV TZ=Etc/UTC
 
 RUN dpkg --add-architecture i386
 RUN apt-get update
+RUN DEBIAN_FRONTEND="noninteractive" apt-get -y install tzdata
 RUN apt-get install -y --no-install-recommends \
     build-essential \
     ruby2.7-dev \
@@ -32,12 +33,12 @@ RUN wget -O /tmp/android-tools.zip https://dl.google.com/android/repository/sdk-
 	chown -R root:root /opt/android-sdk
 ENV ANDROID_HOME=/opt/android-sdk
 ENV ANDROID_SDK=/opt/android-sdk
-ENV PATH=${ANDROID_HOME}/tools/bin:${ANDROID_HOME}/build-tools/29.0.3:${PATH}
+ENV PATH=${ANDROID_HOME}/tools/bin:${ANDROID_HOME}/build-tools/31.0.0:${PATH}
 
 # Android SDK libraries, NDK
 ENV ANDROID_DEPS='platform-tools \
- build-tools;29.0.3 \
- platforms;android-29 \
+ build-tools;31.0.0 \
+ platforms;android-31 \
  extras;android;m2repository \
  extras;google;m2repository'
 RUN (while sleep 1; do echo "y"; done) | sdkmanager $ANDROID_DEPS
