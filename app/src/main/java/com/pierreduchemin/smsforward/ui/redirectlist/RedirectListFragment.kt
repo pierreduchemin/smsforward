@@ -1,11 +1,9 @@
 package com.pierreduchemin.smsforward.ui.redirectlist
 
+import android.content.Context
 import android.content.Context.VIBRATOR_SERVICE
 import android.content.Intent
-import android.os.Build
-import android.os.Bundle
-import android.os.VibrationEffect
-import android.os.Vibrator
+import android.os.*
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -79,7 +77,8 @@ class RedirectListFragment : Fragment() {
             SwitchState.ENABLED -> {
                 ui.vfContent.swActivate.isEnabled = true
                 ui.vfContent.swActivate.isChecked = true
-                ui.vfContent.tvActivationMessage.text = getString(R.string.redirectlist_redirection_activated)
+                ui.vfContent.tvActivationMessage.text =
+                    getString(R.string.redirectlist_redirection_activated)
                 ui.vfContent.tvActivationMessage.setTextColor(
                     ContextCompat.getColor(
                         requireContext(),
@@ -90,7 +89,8 @@ class RedirectListFragment : Fragment() {
             SwitchState.STOP -> {
                 ui.vfContent.swActivate.isEnabled = true
                 ui.vfContent.swActivate.isChecked = false
-                ui.vfContent.tvActivationMessage.text = getString(R.string.redirectlist_redirection_deactivated)
+                ui.vfContent.tvActivationMessage.text =
+                    getString(R.string.redirectlist_redirection_deactivated)
                 ui.vfContent.tvActivationMessage.setTextColor(
                     ContextCompat.getColor(
                         requireContext(),
@@ -123,15 +123,26 @@ class RedirectListFragment : Fragment() {
         }
     }
 
+    @Suppress("DEPRECATION")
     private fun vibrate() {
-        val systemService = requireContext().getSystemService(VIBRATOR_SERVICE) ?: return
-        if (Build.VERSION.SDK_INT >= 26) {
-            (systemService as Vibrator).vibrate(
-                VibrationEffect.createOneShot(50, VibrationEffect.DEFAULT_AMPLITUDE)
-            )
-        } else {
-            @Suppress("DEPRECATION")
-            (systemService as Vibrator).vibrate(50)
+        when {
+            Build.VERSION.SDK_INT >= Build.VERSION_CODES.S -> {
+                val vibratorManager =
+                    requireContext().getSystemService(Context.VIBRATOR_MANAGER_SERVICE) as VibratorManager
+                vibratorManager.defaultVibrator.vibrate(
+                    VibrationEffect.createOneShot(50, VibrationEffect.DEFAULT_AMPLITUDE)
+                )
+            }
+            Build.VERSION.SDK_INT >= Build.VERSION_CODES.O -> {
+                val systemService = requireContext().getSystemService(VIBRATOR_SERVICE) ?: return
+                (systemService as Vibrator).vibrate(
+                    VibrationEffect.createOneShot(50, VibrationEffect.DEFAULT_AMPLITUDE)
+                )
+            }
+            else -> {
+                val systemService = requireContext().getSystemService(VIBRATOR_SERVICE) ?: return
+                (systemService as Vibrator).vibrate(50)
+            }
         }
     }
 }
