@@ -31,7 +31,7 @@ class AddRedirectActivity : AppCompatActivity() {
             }
     }
 
-    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+    override fun onCreateOptionsMenu(menu: Menu): Boolean {
         menuInflater.inflate(R.menu.menu_addredirect, menu)
         return super.onCreateOptionsMenu(menu)
     }

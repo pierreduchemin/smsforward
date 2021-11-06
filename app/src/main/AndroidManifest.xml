@@ -21,6 +21,7 @@
 
         <activity
                 android:name=".ui.redirectlist.RedirectListActivity"
+                android:exported="true"
                 android:launchMode="singleTop">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -34,7 +35,8 @@
 
         <activity
                 android:name=".ui.addredirect.AddRedirectActivity"
-                android:launchMode="singleTop">
+                android:launchMode="singleTop"
+                android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
             </intent-filter>
@@ -43,7 +45,9 @@
         <activity
                 android:name=".ui.about.AboutActivity"
                 android:launchMode="singleTop" />
-        <receiver android:name=".ui.addredirect.BootDeviceReceiver">
+        <receiver
+                android:name=".ui.addredirect.BootDeviceReceiver"
+                android:exported="false">
             <intent-filter>
                 <action android:name="android.intent.action.BOOT_COMPLETED" />
             </intent-filter>
