@@ -45,4 +45,6 @@
     <string name="description_delete_icon">Supprimer</string>
     <string name="description_send_sms_illustration">Envoyer un SMS</string>
     <string name="description_add_redirection_button">Ajouter une redirection</string>
+
+    <string name="pref_keep_redirection_history">Garder l\'historique des redirections</string>
 </resources>
