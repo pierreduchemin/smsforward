@@ -3,11 +3,11 @@ apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-kapt'
 
 android {
-    compileSdkVersion 30
+    compileSdkVersion 32
     defaultConfig {
         applicationId "com.pierreduchemin.smsforward"
         minSdkVersion 21
-        targetSdkVersion 30
+        targetSdkVersion 32
         versionCode 15
         versionName "1.6.1"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
@@ -19,12 +19,13 @@ android {
         }
     }
     buildFeatures {
-        viewBinding = true
+        viewBinding true
     }
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8
     }
+    namespace 'com.pierreduchemin.smsforward'
 }
 
 kapt {
@@ -32,19 +33,19 @@ kapt {
 }
 
 ext {
-    roomVersion = '2.3.0'
-    archLifecycleVersion = '2.3.1'
+    roomVersion = '2.4.2'
+    archLifecycleVersion = '2.4.1'
     coreTestingVersion = '2.1.0'
     coroutines = '1.6.1'
 }
 
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
-    implementation 'androidx.appcompat:appcompat:1.3.0'
-    implementation 'androidx.core:core-ktx:1.6.0'
-    implementation 'androidx.constraintlayout:constraintlayout:2.1.3'
-    implementation "androidx.fragment:fragment-ktx:1.3.5"
-    implementation 'androidx.activity:activity-ktx:1.3.0-rc01'
+    implementation 'androidx.appcompat:appcompat:1.4.1'
+    implementation 'androidx.core:core-ktx:1.7.0'
+    implementation 'androidx.constraintlayout:constraintlayout:2.1.4'
+    implementation "androidx.fragment:fragment-ktx:1.4.1"
+    implementation 'androidx.activity:activity-ktx:1.4.0'
 
     // Room components
     implementation "androidx.room:room-runtime:$roomVersion"
@@ -64,11 +65,11 @@ dependencies {
     api "org.jetbrains.kotlinx:kotlinx-coroutines-android:$coroutines"
 
     // Material design
-    implementation "com.google.android.material:material:1.4.0"
+    implementation "com.google.android.material:material:1.6.0"
 
     // Dagger2
-    implementation 'com.google.dagger:dagger:2.36'
-    kapt 'com.google.dagger:dagger-compiler:2.36'
+    implementation 'com.google.dagger:dagger:2.41'
+    kapt 'com.google.dagger:dagger-compiler:2.41'
 
     implementation 'com.googlecode.libphonenumber:libphonenumber:8.12.47'
     implementation "com.github.medyo:android-about-page:1.3.1"

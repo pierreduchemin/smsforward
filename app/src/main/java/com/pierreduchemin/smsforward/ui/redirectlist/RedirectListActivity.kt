@@ -28,7 +28,7 @@ class RedirectListActivity : AppCompatActivity() {
         }
     }
 
-    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+    override fun onCreateOptionsMenu(menu: Menu): Boolean {
         menuInflater.inflate(R.menu.menu_redirectlist, menu)
         return super.onCreateOptionsMenu(menu)
     }
