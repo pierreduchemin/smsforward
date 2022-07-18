@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<manifest xmlns:android="http://schemas.android.com/apk/res/android">
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:tools="http://schemas.android.com/tools">
 
     <uses-permission android:name="android.permission.RECEIVE_SMS" />
     <uses-permission android:name="android.permission.READ_SMS" />
@@ -12,11 +13,14 @@
     <application
             android:name=".App"
             android:allowBackup="false"
+            android:dataExtractionRules="@xml/data_extraction_rules"
+            android:fullBackupContent="false"
             android:icon="@mipmap/ic_launcher"
             android:label="@string/app_name"
             android:roundIcon="@mipmap/ic_launcher_round"
             android:supportsRtl="true"
-            android:theme="@style/AppTheme">
+            android:theme="@style/AppTheme"
+            tools:targetApi="s">
 
         <activity
                 android:name=".ui.redirectlist.RedirectListActivity"
@@ -34,8 +38,8 @@
 
         <activity
                 android:name=".ui.addredirect.AddRedirectActivity"
-                android:launchMode="singleTop"
-                android:exported="true">
+                android:exported="true"
+                android:launchMode="singleTop">
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
             </intent-filter>
@@ -44,6 +48,7 @@
         <activity
                 android:name=".ui.about.AboutActivity"
                 android:launchMode="singleTop" />
+
         <receiver
                 android:name=".ui.addredirect.BootDeviceReceiver"
                 android:exported="false">

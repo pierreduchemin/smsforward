@@ -43,7 +43,7 @@ class RedirectListFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View {
         ui = RedirectListFragmentBinding.inflate(layoutInflater, container, false)
-        viewModel = ViewModelProvider(this).get(RedirectListViewModel::class.java)
+        viewModel = ViewModelProvider(this)[RedirectListViewModel::class.java]
         return ui.root
     }
 
@@ -60,15 +60,15 @@ class RedirectListFragment : Fragment() {
             viewModel.onRedirectionToggled()
         }
 
-        viewModel.ldButtonState.observe(requireActivity(), {
+        viewModel.ldButtonState.observe(requireActivity()) {
             if (it == SwitchState.JUST_ENABLED) {
                 vibrate()
             }
             setSwitchState(it)
-        })
-        viewModel.ldForwardsList.observe(requireActivity(), {
+        }
+        viewModel.ldForwardsList.observe(requireActivity()) {
             setList(it)
-        })
+        }
     }
 
     private fun setSwitchState(switchState: SwitchState) {

@@ -51,31 +51,31 @@ class AddRedirectFragment : Fragment(), AddRedirectContract.View {
         ui = AddRedirectsFragmentBinding.inflate(layoutInflater, container, false)
         askPermission(requiredPermissions)
 
-        viewModel = ViewModelProvider(this).get(AddRedirectViewModel::class.java)
-        viewModel.buttonState.observe(requireActivity(), {
+        viewModel = ViewModelProvider(this)[AddRedirectViewModel::class.java]
+        viewModel.buttonState.observe(requireActivity()) {
             setButtonState(it)
-        })
-        viewModel.errorMessageRes.observe(requireActivity(), {
+        }
+        viewModel.errorMessageRes.observe(requireActivity()) {
             showError(it)
-        })
-        viewModel.sourceText.observe(requireActivity(), {
+        }
+        viewModel.sourceText.observe(requireActivity()) {
             setSource(it)
-        })
-        viewModel.destinationText.observe(requireActivity(), {
+        }
+        viewModel.destinationText.observe(requireActivity()) {
             setDestination(it)
-        })
-        viewModel.isComplete.observe(requireActivity(), {
+        }
+        viewModel.isComplete.observe(requireActivity()) {
             if (it) {
                 requireActivity().finish()
             }
-        })
-        viewModel.isAdvancedModeEnabled.observe(requireActivity(), {
+        }
+        viewModel.isAdvancedModeEnabled.observe(requireActivity()) {
             if (it != null && it) {
                 setAdvancedMode()
             } else {
                 setNormalMode()
             }
-        })
+        }
 
         return ui.root
     }

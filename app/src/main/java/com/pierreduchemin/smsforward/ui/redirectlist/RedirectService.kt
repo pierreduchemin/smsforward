@@ -182,7 +182,7 @@ class RedirectService : Service() {
 
     private fun sendSMS(phoneNumber: String, message: String) {
         Log.d(TAG, "Forwarding to $phoneNumber: $message")
-        val smsManager = SmsManager.getDefault()
+        val smsManager = getSystemService(SmsManager::class.java)
         val messageDivided = smsManager.divideMessage(message)
 
         if (messageDivided.size == 1) {
