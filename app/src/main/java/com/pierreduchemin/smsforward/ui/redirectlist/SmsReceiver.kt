@@ -7,6 +7,7 @@ import android.os.Build
 import android.os.Bundle
 import android.telephony.SmsMessage
 import android.util.Log
+import android.widget.Toast
 import com.pierreduchemin.smsforward.data.ForwardModel
 import com.pierreduchemin.smsforward.ui.addredirect.OnSmsReceivedListener
 import com.pierreduchemin.smsforward.utils.PhoneNumberUtils
@@ -56,6 +57,7 @@ class SmsReceiver : BroadcastReceiver() {
             smsReceivedListener.onSmsReceived(phoneNumberFrom, messageContent)
         } catch (e: Exception) {
             Log.e(TAG, "Exception in smsReceiver $e")
+            Toast.makeText(context, "Error: $e", Toast.LENGTH_LONG).show()
         }
     }
 

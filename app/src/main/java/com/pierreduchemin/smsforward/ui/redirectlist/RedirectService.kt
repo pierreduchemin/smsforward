@@ -182,7 +182,8 @@ class RedirectService : Service() {
 
     private fun sendSMS(phoneNumber: String, message: String) {
         Log.d(TAG, "Forwarding to $phoneNumber: $message")
-        val smsManager = getSystemService(SmsManager::class.java)
+        @Suppress("DEPRECATION")
+        val smsManager = getSystemService(SmsManager::class.java) ?: SmsManager.getDefault()
         val messageDivided = smsManager.divideMessage(message)
 
         if (messageDivided.size == 1) {
