@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:id="@+id/nav_graph"
+        app:startDestination="@id/redirectListFragment">
+
+    <fragment
+            android:id="@+id/redirectListFragment"
+            android:name="com.pierreduchemin.smsforward.ui.redirectlist.RedirectListFragment"
+            android:label="redirect_list_fragment_content"
+            tools:layout="@layout/redirect_list_fragment_content">
+        <action
+                android:id="@+id/action_redirectListFragment_to_addRedirectFragment"
+                app:destination="@id/addRedirectFragment" />
+        <action
+                android:id="@+id/action_redirectListFragment_to_aboutActivity"
+                app:destination="@id/aboutActivity" />
+    </fragment>
+    <fragment
+            android:id="@+id/addRedirectFragment"
+            android:name="com.pierreduchemin.smsforward.ui.addredirect.AddRedirectFragment"
+            android:label="AddRedirectFragment"
+            tools:layout="@layout/add_redirects_fragment" >
+        <action
+                android:id="@+id/action_addRedirectFragment_to_redirectListFragment"
+                app:destination="@id/redirectListFragment" />
+    </fragment>
+    <activity
+            android:id="@+id/aboutActivity"
+            android:name="com.pierreduchemin.smsforward.ui.about.AboutActivity"
+            android:label="AboutActivity"
+            tools:layout="@layout/about_activity" />
+</navigation>

@@ -6,7 +6,6 @@ import android.content.Intent
 import android.content.IntentFilter
 import android.os.Build
 import android.os.IBinder
-import android.telephony.SmsManager
 import android.telephony.TelephonyManager
 import android.util.Log
 import androidx.annotation.RequiresApi
@@ -17,6 +16,7 @@ import com.pierreduchemin.smsforward.R
 import com.pierreduchemin.smsforward.data.ForwardModel
 import com.pierreduchemin.smsforward.data.ForwardModelRepository
 import com.pierreduchemin.smsforward.data.GlobalModelRepository
+import com.pierreduchemin.smsforward.ui.MainActivity
 import com.pierreduchemin.smsforward.ui.addredirect.OnSmsReceivedListener
 import com.pierreduchemin.smsforward.utils.SdkUtils
 import kotlinx.coroutines.CoroutineScope
@@ -104,7 +104,7 @@ class RedirectService : Service() {
                     }
 
                     val startAppIntent =
-                        Intent(this@RedirectService, RedirectListActivity::class.java)
+                        Intent(this@RedirectService, MainActivity::class.java)
                     startAppIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
                     startAppIntent.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP)
                     val startAppPendingIntent =

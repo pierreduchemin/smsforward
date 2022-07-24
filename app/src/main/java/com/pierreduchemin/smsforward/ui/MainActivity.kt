@@ -1,31 +1,24 @@
-package com.pierreduchemin.smsforward.ui.redirectlist
+package com.pierreduchemin.smsforward.ui
 
-import android.content.Intent
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
 import androidx.appcompat.app.AppCompatActivity
+import androidx.navigation.findNavController
 import com.pierreduchemin.smsforward.R
-import com.pierreduchemin.smsforward.databinding.RedirectListActivityBinding
-import com.pierreduchemin.smsforward.ui.about.AboutActivity
+import com.pierreduchemin.smsforward.databinding.MainActivityBinding
 
-class RedirectListActivity : AppCompatActivity() {
+class MainActivity : AppCompatActivity() {
 
-    private lateinit var ui: RedirectListActivityBinding
+    private lateinit var ui: MainActivityBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        ui = RedirectListActivityBinding.inflate(layoutInflater)
+        ui = MainActivityBinding.inflate(layoutInflater)
         setContentView(ui.root)
 
         setSupportActionBar(ui.toolbar)
-
-        if (savedInstanceState == null) {
-            supportFragmentManager.beginTransaction()
-                .replace(R.id.mainContent, RedirectListFragment.newInstance())
-                .commitNow()
-        }
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
@@ -41,6 +34,6 @@ class RedirectListActivity : AppCompatActivity() {
     }
 
     private fun startAbout() {
-        startActivity(Intent(this, AboutActivity::class.java))
+        findNavController(R.id.nav_host_fragment).navigate(R.id.action_redirectListFragment_to_aboutActivity)
     }
 }

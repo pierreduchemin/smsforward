@@ -1,6 +1,5 @@
 package com.pierreduchemin.smsforward.ui.redirectlist
 
-import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -9,18 +8,14 @@ import androidx.appcompat.app.AlertDialog
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.pierreduchemin.smsforward.R
 import com.pierreduchemin.smsforward.data.ForwardModel
 import com.pierreduchemin.smsforward.databinding.RedirectListFragmentBinding
-import com.pierreduchemin.smsforward.ui.addredirect.AddRedirectActivity
 import com.pierreduchemin.smsforward.utils.SdkUtils
 
 class RedirectListFragment : Fragment() {
-
-    companion object {
-        fun newInstance() = RedirectListFragment()
-    }
 
     enum class SwitchState {
         JUST_ENABLED,
@@ -71,7 +66,7 @@ class RedirectListFragment : Fragment() {
     }
 
     private fun startAddRedirect() {
-        startActivity(Intent(requireActivity(), AddRedirectActivity::class.java))
+        findNavController().navigate(R.id.action_redirectListFragment_to_addRedirectFragment)
     }
 
     private fun setSwitchState(switchState: SwitchState) {

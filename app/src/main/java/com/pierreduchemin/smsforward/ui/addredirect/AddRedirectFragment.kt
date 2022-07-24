@@ -16,6 +16,7 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.fragment.findNavController
 import com.google.android.material.snackbar.Snackbar
 import com.pierreduchemin.smsforward.R
 import com.pierreduchemin.smsforward.databinding.AddRedirectsFragmentBinding
@@ -23,8 +24,6 @@ import com.pierreduchemin.smsforward.databinding.AddRedirectsFragmentBinding
 class AddRedirectFragment : Fragment(), AddRedirectContract.View {
 
     companion object {
-        fun newInstance() = AddRedirectFragment()
-
         const val CONTACT_PICKER_SOURCE_REQUEST_CODE = 1456
         const val CONTACT_PICKER_DESTINATION_REQUEST_CODE = 1896
     }
@@ -66,7 +65,7 @@ class AddRedirectFragment : Fragment(), AddRedirectContract.View {
         }
         viewModel.isComplete.observe(requireActivity()) {
             if (it) {
-                requireActivity().finish()
+                findNavController().navigate(R.id.action_addRedirectFragment_to_redirectListFragment)
             }
         }
         viewModel.isAdvancedModeEnabled.observe(requireActivity()) {
@@ -99,6 +98,12 @@ class AddRedirectFragment : Fragment(), AddRedirectContract.View {
             viewModel.toggleMode()
         }
     }
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        setHasOptionsMenu(false)
+    }
+
 
     override fun hasPermission(permissionString: String): Boolean {
         return ContextCompat.checkSelfPermission(
