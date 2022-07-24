@@ -1,36 +1,51 @@
 package com.pierreduchemin.smsforward.ui.about
 
 import android.content.Intent
-import android.content.res.Configuration
 import android.net.Uri
 import android.os.Bundle
 import android.view.Gravity
-import android.view.MenuItem
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.view.isVisible
+import androidx.fragment.app.Fragment
+import androidx.navigation.fragment.findNavController
 import com.pierreduchemin.smsforward.BuildConfig
 import com.pierreduchemin.smsforward.R
-import com.pierreduchemin.smsforward.databinding.AboutActivityBinding
+import com.pierreduchemin.smsforward.databinding.AboutFragmentBinding
+import com.pierreduchemin.smsforward.utils.SdkUtils.Companion.isDarkTheme
 import mehdi.sakout.aboutpage.AboutPage
 import mehdi.sakout.aboutpage.Element
 
-class AboutActivity : AppCompatActivity() {
+class AboutFragment : Fragment() {
 
-    private lateinit var ui: AboutActivityBinding
+    private lateinit var ui: AboutFragmentBinding
 
-    override fun onCreate(savedInstanceState: Bundle?) {
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View {
         super.onCreate(savedInstanceState)
+        ui = AboutFragmentBinding.inflate(layoutInflater, container, false)
 
-        ui = AboutActivityBinding.inflate(layoutInflater)
-        setContentView(ui.root)
-
-        setSupportActionBar(ui.toolbar)
-        supportActionBar?.setDisplayHomeAsUpEnabled(true)
+        setupToolbar()
         loadAbout()
+
+        return ui.root
     }
 
-    override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        onBackPressed()
-        return true
+    private fun setupToolbar() {
+        val appCompatActivity = requireActivity() as AppCompatActivity
+        appCompatActivity.setSupportActionBar(ui.toolbar.toolbar)
+        appCompatActivity.supportActionBar?.setDisplayHomeAsUpEnabled(true)
+        ui.toolbar.toolbar.setNavigationOnClickListener { startRedirectList() }
+        ui.toolbar.ivHelp.isVisible = false
+    }
+
+    private fun startRedirectList() {
+        findNavController().navigate(R.id.action_aboutFragment_pop)
     }
 
     private fun loadAbout() {
@@ -67,8 +82,8 @@ class AboutActivity : AppCompatActivity() {
                 )
             )
 
-        val aboutPage = AboutPage(this)
-            .enableDarkMode(isDarkTheme())
+        val aboutPage = AboutPage(requireContext())
+            .enableDarkMode(isDarkTheme(resources))
             .isRTL(false)
             .setImage(R.mipmap.ic_launcher)
             .setDescription(getString(R.string.about_info_app_description))
@@ -78,10 +93,5 @@ class AboutActivity : AppCompatActivity() {
             .create()
 
         ui.flAbout.addView(aboutPage)
-    }
-
-    private fun isDarkTheme(): Boolean {
-        return resources.configuration.uiMode and
-                Configuration.UI_MODE_NIGHT_MASK == Configuration.UI_MODE_NIGHT_YES
     }
 }

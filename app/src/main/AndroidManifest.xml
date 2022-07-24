@@ -23,7 +23,7 @@
             tools:targetApi="s">
 
         <activity
-                android:name=".ui.redirectlist.RedirectListActivity"
+                android:name=".ui.MainActivity"
                 android:exported="true"
                 android:launchMode="singleTop">
             <intent-filter>
@@ -35,19 +35,6 @@
         <service
                 android:name=".ui.redirectlist.RedirectService"
                 android:exported="false" />
-
-        <activity
-                android:name=".ui.addredirect.AddRedirectActivity"
-                android:exported="true"
-                android:launchMode="singleTop">
-            <intent-filter>
-                <action android:name="android.intent.action.VIEW" />
-            </intent-filter>
-        </activity>
-
-        <activity
-                android:name=".ui.about.AboutActivity"
-                android:launchMode="singleTop" />
 
         <receiver
                 android:name=".ui.addredirect.BootDeviceReceiver"

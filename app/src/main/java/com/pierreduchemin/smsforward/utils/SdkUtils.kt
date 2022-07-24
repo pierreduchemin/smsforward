@@ -1,6 +1,8 @@
 package com.pierreduchemin.smsforward.utils
 
 import android.content.Context
+import android.content.res.Configuration
+import android.content.res.Resources
 import android.os.*
 import android.telephony.SmsManager
 import android.telephony.SmsMessage
@@ -49,6 +51,11 @@ class SdkUtils {
                     (systemService as Vibrator).vibrate(50)
                 }
             }
+        }
+
+        fun isDarkTheme(resources: Resources): Boolean {
+            return resources.configuration.uiMode and
+                    Configuration.UI_MODE_NIGHT_MASK == Configuration.UI_MODE_NIGHT_YES
         }
     }
 }

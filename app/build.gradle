@@ -37,6 +37,7 @@ ext {
     archLifecycleVersion = '2.5.0'
     coreTestingVersion = '2.1.0'
     coroutines = '1.6.2'
+    navVersion = '2.5.0'
 }
 
 dependencies {
@@ -63,6 +64,11 @@ dependencies {
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$kotlin_version"
     api "org.jetbrains.kotlinx:kotlinx-coroutines-core:$coroutines"
     api "org.jetbrains.kotlinx:kotlinx-coroutines-android:$coroutines"
+
+    // Navigation
+    implementation "androidx.navigation:navigation-fragment-ktx:$navVersion"
+    implementation "androidx.navigation:navigation-ui-ktx:$navVersion"
+
 
     // Material design
     implementation "com.google.android.material:material:1.6.1"
