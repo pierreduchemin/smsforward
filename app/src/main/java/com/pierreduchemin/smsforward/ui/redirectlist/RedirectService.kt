@@ -18,6 +18,7 @@ import com.pierreduchemin.smsforward.data.ForwardModel
 import com.pierreduchemin.smsforward.data.ForwardModelRepository
 import com.pierreduchemin.smsforward.data.GlobalModelRepository
 import com.pierreduchemin.smsforward.ui.addredirect.OnSmsReceivedListener
+import com.pierreduchemin.smsforward.utils.SdkUtils
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -182,8 +183,7 @@ class RedirectService : Service() {
 
     private fun sendSMS(phoneNumber: String, message: String) {
         Log.d(TAG, "Forwarding to $phoneNumber: $message")
-        @Suppress("DEPRECATION")
-        val smsManager = getSystemService(SmsManager::class.java) ?: SmsManager.getDefault()
+        val smsManager = SdkUtils.getSmsManager(this)
         val messageDivided = smsManager.divideMessage(message)
 
         if (messageDivided.size == 1) {

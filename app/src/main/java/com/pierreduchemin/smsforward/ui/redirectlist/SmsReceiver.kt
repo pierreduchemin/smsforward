@@ -3,14 +3,12 @@ package com.pierreduchemin.smsforward.ui.redirectlist
 import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
-import android.os.Build
-import android.os.Bundle
-import android.telephony.SmsMessage
 import android.util.Log
 import android.widget.Toast
 import com.pierreduchemin.smsforward.data.ForwardModel
 import com.pierreduchemin.smsforward.ui.addredirect.OnSmsReceivedListener
 import com.pierreduchemin.smsforward.utils.PhoneNumberUtils
+import com.pierreduchemin.smsforward.utils.SdkUtils
 
 class SmsReceiver : BroadcastReceiver() {
 
@@ -45,7 +43,7 @@ class SmsReceiver : BroadcastReceiver() {
                 if (o == null) {
                     continue
                 }
-                val currentMessage = getIncomingMessage(o, bundle)
+                val currentMessage = SdkUtils.getIncomingMessage(o, bundle)
                 if (phoneNumberFrom.isEmpty()) {
                     phoneNumberFrom = PhoneNumberUtils.toUnifiedNumber(
                         context,
@@ -59,17 +57,5 @@ class SmsReceiver : BroadcastReceiver() {
             Log.e(TAG, "Exception in smsReceiver $e")
             Toast.makeText(context, "Error: $e", Toast.LENGTH_LONG).show()
         }
-    }
-
-    private fun getIncomingMessage(aObject: Any, bundle: Bundle): SmsMessage {
-        val currentSMS: SmsMessage
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            val format = bundle.getString("format")
-            currentSMS = SmsMessage.createFromPdu(aObject as ByteArray, format)
-        } else {
-            @Suppress("DEPRECATION")
-            currentSMS = SmsMessage.createFromPdu(aObject as ByteArray)
-        }
-        return currentSMS
     }
 }
