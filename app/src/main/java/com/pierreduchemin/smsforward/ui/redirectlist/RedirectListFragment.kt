@@ -1,9 +1,7 @@
 package com.pierreduchemin.smsforward.ui.redirectlist
 
-import android.content.Context
-import android.content.Context.VIBRATOR_SERVICE
 import android.content.Intent
-import android.os.*
+import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -16,6 +14,7 @@ import com.pierreduchemin.smsforward.R
 import com.pierreduchemin.smsforward.data.ForwardModel
 import com.pierreduchemin.smsforward.databinding.RedirectListFragmentBinding
 import com.pierreduchemin.smsforward.ui.addredirect.AddRedirectActivity
+import com.pierreduchemin.smsforward.utils.SdkUtils
 
 class RedirectListFragment : Fragment() {
 
@@ -52,7 +51,7 @@ class RedirectListFragment : Fragment() {
 
         ui.vfContent.rvForwards.layoutManager = LinearLayoutManager(requireContext())
         val fabAction: (v: View) -> Unit = {
-            startActivity(Intent(requireActivity(), AddRedirectActivity::class.java))
+            startAddRedirect()
         }
         ui.vfEmpty.fabAddRedirectEmpty.setOnClickListener(fabAction)
         ui.vfContent.fabAddRedirect.setOnClickListener(fabAction)
@@ -62,13 +61,17 @@ class RedirectListFragment : Fragment() {
 
         viewModel.ldButtonState.observe(requireActivity()) {
             if (it == SwitchState.JUST_ENABLED) {
-                vibrate()
+                SdkUtils.vibrate(requireContext())
             }
             setSwitchState(it)
         }
         viewModel.ldForwardsList.observe(requireActivity()) {
             setList(it)
         }
+    }
+
+    private fun startAddRedirect() {
+        startActivity(Intent(requireActivity(), AddRedirectActivity::class.java))
     }
 
     private fun setSwitchState(switchState: SwitchState) {
@@ -120,29 +123,6 @@ class RedirectListFragment : Fragment() {
                 .setNegativeButton(android.R.string.cancel, null)
                 .setIcon(R.drawable.ic_alert_24dp)
                 .show()
-        }
-    }
-
-    @Suppress("DEPRECATION")
-    private fun vibrate() {
-        when {
-            Build.VERSION.SDK_INT >= Build.VERSION_CODES.S -> {
-                val vibratorManager =
-                    requireContext().getSystemService(Context.VIBRATOR_MANAGER_SERVICE) as VibratorManager
-                vibratorManager.defaultVibrator.vibrate(
-                    VibrationEffect.createOneShot(50, VibrationEffect.DEFAULT_AMPLITUDE)
-                )
-            }
-            Build.VERSION.SDK_INT >= Build.VERSION_CODES.O -> {
-                val systemService = requireContext().getSystemService(VIBRATOR_SERVICE) ?: return
-                (systemService as Vibrator).vibrate(
-                    VibrationEffect.createOneShot(50, VibrationEffect.DEFAULT_AMPLITUDE)
-                )
-            }
-            else -> {
-                val systemService = requireContext().getSystemService(VIBRATOR_SERVICE) ?: return
-                (systemService as Vibrator).vibrate(50)
-            }
         }
     }
 }

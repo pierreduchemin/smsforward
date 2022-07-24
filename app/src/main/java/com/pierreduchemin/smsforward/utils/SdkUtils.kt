@@ -1,8 +1,7 @@
 package com.pierreduchemin.smsforward.utils
 
 import android.content.Context
-import android.os.Build
-import android.os.Bundle
+import android.os.*
 import android.telephony.SmsManager
 import android.telephony.SmsMessage
 import androidx.core.content.ContextCompat.getSystemService
@@ -27,6 +26,29 @@ class SdkUtils {
                 SmsMessage.createFromPdu(aObject as ByteArray)
             }
             return currentSMS
+        }
+
+        @Suppress("DEPRECATION")
+        fun vibrate(context: Context) {
+            when {
+                Build.VERSION.SDK_INT >= Build.VERSION_CODES.S -> {
+                    val vibratorManager =
+                        context.getSystemService(Context.VIBRATOR_MANAGER_SERVICE) as VibratorManager
+                    vibratorManager.defaultVibrator.vibrate(
+                        VibrationEffect.createOneShot(50, VibrationEffect.DEFAULT_AMPLITUDE)
+                    )
+                }
+                Build.VERSION.SDK_INT >= Build.VERSION_CODES.O -> {
+                    val systemService = context.getSystemService(Context.VIBRATOR_SERVICE) ?: return
+                    (systemService as Vibrator).vibrate(
+                        VibrationEffect.createOneShot(50, VibrationEffect.DEFAULT_AMPLITUDE)
+                    )
+                }
+                else -> {
+                    val systemService = context.getSystemService(Context.VIBRATOR_SERVICE) ?: return
+                    (systemService as Vibrator).vibrate(50)
+                }
+            }
         }
     }
 }

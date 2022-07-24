@@ -35,8 +35,12 @@ class RedirectListActivity : AppCompatActivity() {
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         if (item.itemId == R.id.miAbout) {
-            startActivity(Intent(this, AboutActivity::class.java))
+            startAbout()
         }
         return super.onOptionsItemSelected(item)
+    }
+
+    private fun startAbout() {
+        startActivity(Intent(this, AboutActivity::class.java))
     }
 }
