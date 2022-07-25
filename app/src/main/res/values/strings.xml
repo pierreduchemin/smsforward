@@ -47,5 +47,6 @@
     <string name="description_delete_icon">Delete</string>
     <string name="description_send_sms_illustration">Send SMS</string>
     <string name="description_add_redirection_button">Add a redirection button</string>
+    <string name="description_help_button">Help button</string>
 
 </resources>
