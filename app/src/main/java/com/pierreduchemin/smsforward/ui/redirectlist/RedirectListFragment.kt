@@ -1,27 +1,22 @@
 package com.pierreduchemin.smsforward.ui.redirectlist
 
-import android.content.Context
-import android.content.Context.VIBRATOR_SERVICE
-import android.content.Intent
-import android.os.*
+import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.appcompat.app.AlertDialog
 import androidx.core.content.ContextCompat
+import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.pierreduchemin.smsforward.R
 import com.pierreduchemin.smsforward.data.ForwardModel
 import com.pierreduchemin.smsforward.databinding.RedirectListFragmentBinding
-import com.pierreduchemin.smsforward.ui.addredirect.AddRedirectActivity
+import com.pierreduchemin.smsforward.utils.SdkUtils
 
 class RedirectListFragment : Fragment() {
-
-    companion object {
-        fun newInstance() = RedirectListFragment()
-    }
 
     enum class SwitchState {
         JUST_ENABLED,
@@ -30,12 +25,14 @@ class RedirectListFragment : Fragment() {
     }
 
     private object Flipper {
-        const val EMPTY = 0
-        const val CONTENT = 1
+        //const val LOADING = 0
+        const val EMPTY = 1
+        const val CONTENT = 2
     }
 
     private lateinit var ui: RedirectListFragmentBinding
-    private lateinit var viewModel: RedirectListViewModel
+    private val viewModel by lazy { ViewModelProvider(this)[RedirectListViewModel::class.java] }
+    private var lastSwitchState: SwitchState? = null
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -43,7 +40,6 @@ class RedirectListFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View {
         ui = RedirectListFragmentBinding.inflate(layoutInflater, container, false)
-        viewModel = ViewModelProvider(this).get(RedirectListViewModel::class.java)
         return ui.root
     }
 
@@ -51,27 +47,54 @@ class RedirectListFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         ui.vfContent.rvForwards.layoutManager = LinearLayoutManager(requireContext())
+        ui.vfContent.rvForwards.adapter = ForwardModelAdapter { v ->
+            AlertDialog.Builder(requireContext())
+                .setTitle(getString(R.string.redirectlist_info_delete_title))
+                .setMessage(getString(R.string.redirectlist_info_delete_content))
+                .setPositiveButton(android.R.string.ok) { _, _ ->
+                    val forwardModel = v.tag as ForwardModel
+                    viewModel.onDeleteConfirmed(forwardModel)
+                }
+                .setNegativeButton(android.R.string.cancel, null)
+                .setIcon(R.drawable.ic_alert_24dp)
+                .show()
+        }
+        ui.toolbar.ivHelp.isVisible = true
+
         val fabAction: (v: View) -> Unit = {
-            startActivity(Intent(requireActivity(), AddRedirectActivity::class.java))
+            startAddRedirect()
         }
         ui.vfEmpty.fabAddRedirectEmpty.setOnClickListener(fabAction)
         ui.vfContent.fabAddRedirect.setOnClickListener(fabAction)
         ui.vfContent.swActivate.setOnClickListener {
             viewModel.onRedirectionToggled()
         }
-
-        viewModel.ldButtonState.observe(requireActivity(), {
-            if (it == SwitchState.JUST_ENABLED) {
-                vibrate()
+        viewModel.ldButtonState.observe(requireActivity()) {
+            if (lastSwitchState != it) {
+                lastSwitchState = it
+                setSwitchState(it)
             }
-            setSwitchState(it)
-        })
-        viewModel.ldForwardsList.observe(requireActivity(), {
+        }
+        viewModel.ldForwardsList.observe(requireActivity()) {
             setList(it)
-        })
+        }
+        ui.toolbar.ivHelp.setOnClickListener {
+            startAbout()
+        }
+    }
+
+    private fun startAddRedirect() {
+        findNavController().navigate(R.id.action_redirectListFragment_to_addRedirectFragment)
+    }
+
+    private fun startAbout() {
+        findNavController().navigate(R.id.action_redirectListFragment_to_aboutActivity)
     }
 
     private fun setSwitchState(switchState: SwitchState) {
+        if (switchState == SwitchState.JUST_ENABLED) {
+            SdkUtils.vibrate(requireContext())
+        }
         when (switchState) {
             SwitchState.JUST_ENABLED,
             SwitchState.ENABLED -> {
@@ -107,42 +130,7 @@ class RedirectListFragment : Fragment() {
             return
         }
         ui.viewFlipper.displayedChild = Flipper.CONTENT
-
-        // TODO update adapter instead of replacing it
-        ui.vfContent.rvForwards.adapter = ForwardModelAdapter(forwardsList) { v ->
-            AlertDialog.Builder(requireContext())
-                .setTitle(getString(R.string.redirectlist_info_delete_title))
-                .setMessage(getString(R.string.redirectlist_info_delete_content))
-                .setPositiveButton(android.R.string.ok) { _, _ ->
-                    val forwardModel = v.tag as ForwardModel
-                    viewModel.onDeleteConfirmed(forwardModel)
-                }
-                .setNegativeButton(android.R.string.cancel, null)
-                .setIcon(R.drawable.ic_alert_24dp)
-                .show()
-        }
-    }
-
-    @Suppress("DEPRECATION")
-    private fun vibrate() {
-        when {
-            Build.VERSION.SDK_INT >= Build.VERSION_CODES.S -> {
-                val vibratorManager =
-                    requireContext().getSystemService(Context.VIBRATOR_MANAGER_SERVICE) as VibratorManager
-                vibratorManager.defaultVibrator.vibrate(
-                    VibrationEffect.createOneShot(50, VibrationEffect.DEFAULT_AMPLITUDE)
-                )
-            }
-            Build.VERSION.SDK_INT >= Build.VERSION_CODES.O -> {
-                val systemService = requireContext().getSystemService(VIBRATOR_SERVICE) ?: return
-                (systemService as Vibrator).vibrate(
-                    VibrationEffect.createOneShot(50, VibrationEffect.DEFAULT_AMPLITUDE)
-                )
-            }
-            else -> {
-                val systemService = requireContext().getSystemService(VIBRATOR_SERVICE) ?: return
-                (systemService as Vibrator).vibrate(50)
-            }
-        }
+        val adapter = ui.vfContent.rvForwards.adapter as ForwardModelAdapter
+        adapter.setData(forwardsList)
     }
 }

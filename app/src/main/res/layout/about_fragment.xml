@@ -1,22 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:app="http://schemas.android.com/apk/res-auto"
-        xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical">
 
-    <androidx.appcompat.widget.Toolbar
+    <include
             android:id="@+id/toolbar"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="?attr/colorPrimary"
-            android:minHeight="?attr/actionBarSize"
-            android:title="@string/app_name"
-            android:titleTextColor="@android:color/white"
-            app:theme="@style/ToolBarStyle"
-            app:titleTextColor="@android:color/white"
-            tools:targetApi="m" />
+            layout="@layout/toolbar" />
 
     <ScrollView
             android:id="@+id/svAbout"

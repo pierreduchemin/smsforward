@@ -93,6 +93,7 @@ class AddRedirectViewModel(application: Application) : AndroidViewModel(applicat
                 R.string.addredirect_error_source_and_redirection_must_be_different
             return
         }
+        // TODO: check redirection is not already existing
 
         val advancedMode = globalModel?.advancedMode ?: false
         if (advancedMode) {

@@ -26,6 +26,11 @@ Build with:
 ./gradlew assembleRelease
 ```
 
+## Testing
+
+Given the nature of this project, testing can be challenging.
+A good option is to use services like [TextNow](https://www.textnow.com) to get a phone number and start testing sms redirections.
+
 ## Contributing
 
 Any contributions welcome. Please fork this repository and create a pull request notifying your changes and why.

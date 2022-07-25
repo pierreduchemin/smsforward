@@ -13,9 +13,12 @@ import android.view.inputmethod.EditorInfo
 import android.view.inputmethod.InputMethodManager
 import android.widget.TextView
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
+import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.fragment.findNavController
 import com.google.android.material.snackbar.Snackbar
 import com.pierreduchemin.smsforward.R
 import com.pierreduchemin.smsforward.databinding.AddRedirectsFragmentBinding
@@ -23,8 +26,6 @@ import com.pierreduchemin.smsforward.databinding.AddRedirectsFragmentBinding
 class AddRedirectFragment : Fragment(), AddRedirectContract.View {
 
     companion object {
-        fun newInstance() = AddRedirectFragment()
-
         const val CONTACT_PICKER_SOURCE_REQUEST_CODE = 1456
         const val CONTACT_PICKER_DESTINATION_REQUEST_CODE = 1896
     }
@@ -41,7 +42,7 @@ class AddRedirectFragment : Fragment(), AddRedirectContract.View {
     )
 
     private lateinit var ui: AddRedirectsFragmentBinding
-    private lateinit var viewModel: AddRedirectViewModel
+    private val viewModel by lazy { ViewModelProvider(this)[AddRedirectViewModel::class.java] }
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -49,35 +50,49 @@ class AddRedirectFragment : Fragment(), AddRedirectContract.View {
         savedInstanceState: Bundle?
     ): View {
         ui = AddRedirectsFragmentBinding.inflate(layoutInflater, container, false)
+
+        setupToolbar()
+
         askPermission(requiredPermissions)
 
-        viewModel = ViewModelProvider(this).get(AddRedirectViewModel::class.java)
-        viewModel.buttonState.observe(requireActivity(), {
+        viewModel.buttonState.observe(requireActivity()) {
             setButtonState(it)
-        })
-        viewModel.errorMessageRes.observe(requireActivity(), {
+        }
+        viewModel.errorMessageRes.observe(requireActivity()) {
             showError(it)
-        })
-        viewModel.sourceText.observe(requireActivity(), {
+        }
+        viewModel.sourceText.observe(requireActivity()) {
             setSource(it)
-        })
-        viewModel.destinationText.observe(requireActivity(), {
+        }
+        viewModel.destinationText.observe(requireActivity()) {
             setDestination(it)
-        })
-        viewModel.isComplete.observe(requireActivity(), {
+        }
+        viewModel.isComplete.observe(requireActivity()) {
             if (it) {
-                requireActivity().finish()
+                startRedirectList()
             }
-        })
-        viewModel.isAdvancedModeEnabled.observe(requireActivity(), {
+        }
+        viewModel.isAdvancedModeEnabled.observe(requireActivity()) {
             if (it != null && it) {
                 setAdvancedMode()
             } else {
                 setNormalMode()
             }
-        })
+        }
 
         return ui.root
+    }
+
+    private fun setupToolbar() {
+        val appCompatActivity = requireActivity() as AppCompatActivity
+        appCompatActivity.setSupportActionBar(ui.toolbar.toolbar)
+        appCompatActivity.supportActionBar?.setDisplayHomeAsUpEnabled(true)
+        ui.toolbar.toolbar.setNavigationOnClickListener { startRedirectList() }
+        ui.toolbar.ivHelp.isVisible = false
+    }
+
+    private fun startRedirectList() {
+        findNavController().navigate(R.id.action_addRedirectFragment_pop)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {

@@ -1,15 +1,29 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ViewFlipper xmlns:android="http://schemas.android.com/apk/res/android"
-        android:id="@+id/viewFlipper"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_height="match_parent"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:orientation="vertical">
 
     <include
-            android:id="@+id/vfEmpty"
-            layout="@layout/redirect_fragment_list_empty" />
+            android:id="@+id/toolbar"
+            layout="@layout/toolbar" />
 
-    <include
-            android:id="@+id/vfContent"
-            layout="@layout/redirect_list_fragment_content" />
+    <ViewFlipper
+            android:id="@+id/viewFlipper"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
 
-</ViewFlipper>
+        <include
+                android:id="@+id/vfLoading"
+                layout="@layout/redirect_fragment_list_loading" />
+
+        <include
+                android:id="@+id/vfEmpty"
+                layout="@layout/redirect_fragment_list_empty" />
+
+        <include
+                android:id="@+id/vfContent"
+                layout="@layout/redirect_list_fragment_content" />
+
+    </ViewFlipper>
+</LinearLayout>
