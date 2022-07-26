@@ -82,6 +82,12 @@ class AboutFragment : Fragment() {
                 )
             )
 
+        val developersElement = Element(
+            getString(R.string.about_info_developers),
+            R.drawable.ic_developer_24dp
+        )
+            .setAutoApplyIconTint(false)
+
         val aboutPage = AboutPage(requireContext())
             .enableDarkMode(isDarkTheme(resources))
             .isRTL(false)
@@ -90,6 +96,7 @@ class AboutFragment : Fragment() {
             .addItem(versionElement)
             .addItem(licensesElement)
             .addItem(gitlabElement)
+            .addItem(developersElement)
             .create()
 
         ui.flAbout.addView(aboutPage)

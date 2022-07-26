@@ -30,6 +30,7 @@
     <string name="about_info_gitlab" translatable="false">Gitlab</string>
     <string name="about_info_license">Licensed under GNU GPLv3</string>
     <string name="about_info_app_description">SMS Forward is a simple app that allows you to redirect SMS</string>
+    <string name="about_info_developers">Developed by Pierre Duchemin</string>
     <string name="about_FAQ_title">FAQ</string>
     <string name="about_question1">Why would I need this app?</string>
     <string name="about_answer1">This application have been developed to bypass regional limitations. For example, a service in country A requires a phone number from country A, but your phone number is from country B. You ask a friend from country A to install this app and you will be able to receive SMS from the service in country B.\nHowever, since this is a pretty simple application, it can also serve other purposes.</string>
