@@ -10,7 +10,6 @@ import android.view.ViewGroup
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
-import androidx.navigation.fragment.findNavController
 import com.pierreduchemin.smsforward.BuildConfig
 import com.pierreduchemin.smsforward.R
 import com.pierreduchemin.smsforward.databinding.AboutFragmentBinding
@@ -40,12 +39,7 @@ class AboutFragment : Fragment() {
         val appCompatActivity = requireActivity() as AppCompatActivity
         appCompatActivity.setSupportActionBar(ui.toolbar.toolbar)
         appCompatActivity.supportActionBar?.setDisplayHomeAsUpEnabled(true)
-        ui.toolbar.toolbar.setNavigationOnClickListener { startRedirectList() }
         ui.toolbar.ivHelp.isVisible = false
-    }
-
-    private fun startRedirectList() {
-        findNavController().navigate(R.id.action_aboutFragment_pop)
     }
 
     private fun loadAbout() {

@@ -87,7 +87,6 @@ class AddRedirectFragment : Fragment(), AddRedirectContract.View {
         val appCompatActivity = requireActivity() as AppCompatActivity
         appCompatActivity.setSupportActionBar(ui.toolbar.toolbar)
         appCompatActivity.supportActionBar?.setDisplayHomeAsUpEnabled(true)
-        ui.toolbar.toolbar.setNavigationOnClickListener { startRedirectList() }
         ui.toolbar.ivHelp.isVisible = false
     }
 
