@@ -6,6 +6,7 @@ import android.content.Intent
 import android.content.pm.PackageManager
 import android.os.Bundle
 import android.provider.ContactsContract
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -26,6 +27,8 @@ import com.pierreduchemin.smsforward.databinding.AddRedirectsFragmentBinding
 class AddRedirectFragment : Fragment(), AddRedirectContract.View {
 
     companion object {
+        private val TAG by lazy { BootDeviceReceiver::class.java.simpleName }
+
         const val CONTACT_PICKER_SOURCE_REQUEST_CODE = 1456
         const val CONTACT_PICKER_DESTINATION_REQUEST_CODE = 1896
     }
@@ -150,28 +153,29 @@ class AddRedirectFragment : Fragment(), AddRedirectContract.View {
         }
         var phoneNo: String? = null
         var displayName: String? = null
-        val uri = data.data!!
-        requireContext().contentResolver.query(uri, null, null, null, null)?.use { cursor ->
-            if (cursor.moveToFirst()) {
-                val phoneIndex =
-                    cursor.getColumnIndex(ContactsContract.CommonDataKinds.Phone.NUMBER)
-                val nameSourceIndex =
-                    cursor.getColumnIndex(ContactsContract.CommonDataKinds.Phone.DISPLAY_NAME_SOURCE)
-                phoneNo = cursor.getString(phoneIndex)
-                if (cursor.getString(nameSourceIndex) == ContactsContract.DisplayNameSources.STRUCTURED_NAME.toString()) {
-                    val nameIndex =
-                        cursor.getColumnIndex(ContactsContract.CommonDataKinds.Phone.DISPLAY_NAME)
-                    displayName = cursor.getString(nameIndex)
+        data.data?.let { uri ->
+            requireContext().contentResolver.query(uri, null, null, null, null)?.use { cursor ->
+                if (cursor.moveToFirst()) {
+                    val phoneIndex =
+                        cursor.getColumnIndex(ContactsContract.CommonDataKinds.Phone.NUMBER)
+                    val nameSourceIndex =
+                        cursor.getColumnIndex(ContactsContract.CommonDataKinds.Phone.DISPLAY_NAME_SOURCE)
+                    phoneNo = cursor.getString(phoneIndex)
+                    if (cursor.getString(nameSourceIndex) == ContactsContract.DisplayNameSources.STRUCTURED_NAME.toString()) {
+                        val nameIndex =
+                            cursor.getColumnIndex(ContactsContract.CommonDataKinds.Phone.DISPLAY_NAME)
+                        displayName = cursor.getString(nameIndex)
+                    }
                 }
+                cursor.close()
             }
-            cursor.close()
-        }
 
-        if (requestCode == CONTACT_PICKER_SOURCE_REQUEST_CODE) {
-            viewModel.onSourceRetrieved(phoneNo, displayName)
-        } else if (requestCode == CONTACT_PICKER_DESTINATION_REQUEST_CODE) {
-            viewModel.onDestinationRetrieved(phoneNo)
-        }
+            if (requestCode == CONTACT_PICKER_SOURCE_REQUEST_CODE) {
+                viewModel.onSourceRetrieved(phoneNo, displayName)
+            } else if (requestCode == CONTACT_PICKER_DESTINATION_REQUEST_CODE) {
+                viewModel.onDestinationRetrieved(phoneNo)
+            }
+        } ?: Log.e(TAG, "Not able to get uri") // TODO: manage error with error view
     }
 
     override fun setButtonState(buttonState: ButtonState) {
