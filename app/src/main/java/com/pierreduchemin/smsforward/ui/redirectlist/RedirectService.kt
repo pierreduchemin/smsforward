@@ -1,6 +1,7 @@
 package com.pierreduchemin.smsforward.ui.redirectlist
 
 import android.app.*
+import android.app.PendingIntent.FLAG_IMMUTABLE
 import android.content.Context
 import android.content.Intent
 import android.content.IntentFilter
@@ -103,12 +104,18 @@ class RedirectService : Service() {
                         "REDIRECT_CHANNEL_ID"
                     }
 
+                    val flag = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                        FLAG_IMMUTABLE
+                    } else {
+                        0
+                    }
+
                     val startAppIntent =
                         Intent(this@RedirectService, MainActivity::class.java)
                     startAppIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
                     startAppIntent.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP)
                     val startAppPendingIntent =
-                        PendingIntent.getActivity(this@RedirectService, 0, startAppIntent, 0)
+                        PendingIntent.getActivity(this@RedirectService, 0, startAppIntent, flag)
 
                     val notification: Notification =
                         NotificationCompat.Builder(this@RedirectService, channelId)
