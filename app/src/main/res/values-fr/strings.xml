@@ -28,6 +28,7 @@
     <string name="about_info_license">Sous license GNU GPLv3</string>
     <string name="about_info_app_description">SMS Forward est une application qui vous permet de transférer automatiquement des SMS</string>
     <string name="about_info_title">À propos</string>
+    <string name="about_info_developers">Développé par Pierre Duchemin</string>
     <string name="about_FAQ_title">FAQ</string>
     <string name="about_question1">Quel est le but de cette application ?</string>
     <string name="about_answer1">Cette application a été développée pour contourner des limitations régionales. Par exemple, si un service dans un pays A requiert un numéro de téléphone de ce même pays, mais que vous avez un numéro de téléphone du pays B, vous pouvez demander à un ami qui a un numéro du pays A d\'installer cette application pour vous rediriger les SMS et vous pourrez les recevoir.\nToutefois, comme cette application est assez basique, vous pouvez y trouver d\'autres usages.</string>
@@ -45,4 +46,6 @@
     <string name="description_delete_icon">Supprimer</string>
     <string name="description_send_sms_illustration">Envoyer un SMS</string>
     <string name="description_add_redirection_button">Ajouter une redirection</string>
+    <string name="description_help_button">Aide</string>
+
 </resources>

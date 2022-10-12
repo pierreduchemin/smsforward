@@ -69,7 +69,7 @@
                             android:layout_centerVertical="true"
                             android:background="?attr/selectableItemBackgroundBorderless"
                             android:clickable="true"
-                            android:contentDescription="Enable regex mode"
+                            android:contentDescription="@string/addredirect_info_enable_regex_mode"
                             android:focusable="true"
                             app:srcCompat="@drawable/ic_regex_grey_24dp" />
 

@@ -6,13 +6,14 @@ import android.content.Intent
 import android.content.pm.PackageManager
 import android.os.Bundle
 import android.provider.ContactsContract
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.inputmethod.EditorInfo
 import android.view.inputmethod.InputMethodManager
 import android.widget.TextView
-import androidx.activity.result.contract.ActivityResultContracts
+import androidx.activity.result.ActivityResultLauncher
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import androidx.core.view.isVisible
@@ -22,10 +23,13 @@ import androidx.navigation.fragment.findNavController
 import com.google.android.material.snackbar.Snackbar
 import com.pierreduchemin.smsforward.R
 import com.pierreduchemin.smsforward.databinding.AddRedirectsFragmentBinding
+import com.pierreduchemin.smsforward.ui.PermissionRegisterer
 
-class AddRedirectFragment : Fragment(), AddRedirectContract.View {
+class AddRedirectFragment : Fragment(), AddRedirectSubscriber {
 
     companion object {
+        private val TAG by lazy { BootDeviceReceiver::class.java.simpleName }
+
         const val CONTACT_PICKER_SOURCE_REQUEST_CODE = 1456
         const val CONTACT_PICKER_DESTINATION_REQUEST_CODE = 1896
     }
@@ -43,6 +47,7 @@ class AddRedirectFragment : Fragment(), AddRedirectContract.View {
 
     private lateinit var ui: AddRedirectsFragmentBinding
     private val viewModel by lazy { ViewModelProvider(this)[AddRedirectViewModel::class.java] }
+    private lateinit var registerForActivityResult: ActivityResultLauncher<Array<String>>
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -53,7 +58,11 @@ class AddRedirectFragment : Fragment(), AddRedirectContract.View {
 
         setupToolbar()
 
-        askPermission(requiredPermissions)
+        val permissionRegisterer = activity as? PermissionRegisterer
+        permissionRegisterer?.let {
+            it.registerForPermission(this)
+            askPermission(requiredPermissions)
+        } ?: Log.e(TAG, "Not able to ask for permission") // TODO: manage error with error view
 
         viewModel.buttonState.observe(requireActivity()) {
             setButtonState(it)
@@ -87,7 +96,6 @@ class AddRedirectFragment : Fragment(), AddRedirectContract.View {
         val appCompatActivity = requireActivity() as AppCompatActivity
         appCompatActivity.setSupportActionBar(ui.toolbar.toolbar)
         appCompatActivity.supportActionBar?.setDisplayHomeAsUpEnabled(true)
-        ui.toolbar.toolbar.setNavigationOnClickListener { startRedirectList() }
         ui.toolbar.ivHelp.isVisible = false
     }
 
@@ -125,17 +133,16 @@ class AddRedirectFragment : Fragment(), AddRedirectContract.View {
     override fun askPermission(permissionsString: Array<String>) {
         val missingPermissions = permissionsString.filter { !hasPermission(it) }
         if (missingPermissions.isNotEmpty()) {
-            requireActivity().registerForActivityResult(ActivityResultContracts.RequestMultiplePermissions()) { permissions ->
-                val permissionsOk = permissions.entries.all { it.value }
-                if (!permissionsOk) {
-                    showError(R.string.addredirect_warning_permission_refused)
-                }
-            }.launch(missingPermissions.toTypedArray())
+            registerForActivityResult.launch(missingPermissions.toTypedArray())
         }
     }
 
     override fun showError(message: Int) {
         Snackbar.make(ui.addredirectContainer, message, Snackbar.LENGTH_LONG).show()
+    }
+
+    override fun setRegisterForActivityResult(registerForActivityResult: ActivityResultLauncher<Array<String>>) {
+        this.registerForActivityResult = registerForActivityResult
     }
 
     override fun pickNumber(requestCode: Int) {
@@ -151,28 +158,29 @@ class AddRedirectFragment : Fragment(), AddRedirectContract.View {
         }
         var phoneNo: String? = null
         var displayName: String? = null
-        val uri = data.data!!
-        requireContext().contentResolver.query(uri, null, null, null, null)?.use { cursor ->
-            if (cursor.moveToFirst()) {
-                val phoneIndex =
-                    cursor.getColumnIndex(ContactsContract.CommonDataKinds.Phone.NUMBER)
-                val nameSourceIndex =
-                    cursor.getColumnIndex(ContactsContract.CommonDataKinds.Phone.DISPLAY_NAME_SOURCE)
-                phoneNo = cursor.getString(phoneIndex)
-                if (cursor.getString(nameSourceIndex) == ContactsContract.DisplayNameSources.STRUCTURED_NAME.toString()) {
-                    val nameIndex =
-                        cursor.getColumnIndex(ContactsContract.CommonDataKinds.Phone.DISPLAY_NAME)
-                    displayName = cursor.getString(nameIndex)
+        data.data?.let { uri ->
+            requireContext().contentResolver.query(uri, null, null, null, null)?.use { cursor ->
+                if (cursor.moveToFirst()) {
+                    val phoneIndex =
+                        cursor.getColumnIndex(ContactsContract.CommonDataKinds.Phone.NUMBER)
+                    val nameSourceIndex =
+                        cursor.getColumnIndex(ContactsContract.CommonDataKinds.Phone.DISPLAY_NAME_SOURCE)
+                    phoneNo = cursor.getString(phoneIndex)
+                    if (cursor.getString(nameSourceIndex) == ContactsContract.DisplayNameSources.STRUCTURED_NAME.toString()) {
+                        val nameIndex =
+                            cursor.getColumnIndex(ContactsContract.CommonDataKinds.Phone.DISPLAY_NAME)
+                        displayName = cursor.getString(nameIndex)
+                    }
                 }
+                cursor.close()
             }
-            cursor.close()
-        }
 
-        if (requestCode == CONTACT_PICKER_SOURCE_REQUEST_CODE) {
-            viewModel.onSourceRetrieved(phoneNo, displayName)
-        } else if (requestCode == CONTACT_PICKER_DESTINATION_REQUEST_CODE) {
-            viewModel.onDestinationRetrieved(phoneNo)
-        }
+            if (requestCode == CONTACT_PICKER_SOURCE_REQUEST_CODE) {
+                viewModel.onSourceRetrieved(phoneNo, displayName)
+            } else if (requestCode == CONTACT_PICKER_DESTINATION_REQUEST_CODE) {
+                viewModel.onDestinationRetrieved(phoneNo)
+            }
+        } ?: Log.e(TAG, "Not able to get uri") // TODO: manage error with error view
     }
 
     override fun setButtonState(buttonState: ButtonState) {
