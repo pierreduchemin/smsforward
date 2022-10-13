@@ -36,7 +36,7 @@ ext {
     roomVersion = '2.4.3'
     archLifecycleVersion = '2.5.1'
     coreTestingVersion = '2.1.0'
-    coroutines = '1.6.2'
+    coroutines = '1.6.4'
     navVersion = '2.5.2'
 }
 
