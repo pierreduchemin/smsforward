@@ -42,6 +42,7 @@ java {
 ext {
     roomVersion = '2.5.2'
     archLifecycleVersion = '2.6.1'
+    coreTestingVersion = '2.1.0'
     coroutines = '1.7.3'
     navVersion = '2.6.0'
 }
