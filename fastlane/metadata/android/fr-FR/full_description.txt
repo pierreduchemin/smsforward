@@ -1,8 +1,15 @@
-<b>Cette application a été développée pour contourner des restrictions régionales.</b>
-Exemple: un service d'un pays A requiert un numéro de téléphone de ce même pays A, mais votre numéro de téléphone provient du pays B. Vous pouvez demander à un amis ayant un numéro de téléphone du pays A d'installer cette application et vous pourrez recevoir les SMS du service sur votre numéro de téléphone du pays B. Toutefois, comme cette application est très simple, elle peut également avoir d'autres usages.
+<b>Transférez des messages simplement</b>
+Permet de recevoir ses SMS sur tous vos appareils.
+
+<b>Contournez les restrictions régionales</b>
+Si un service d'un pays A requiert un numéro de téléphone de ce même pays A, mais votre numéro de téléphone provient du pays B. Vous pouvez demander à un amis ayant un numéro de téléphone du pays A d'installer cette application et vous pourrez recevoir les SMS du service sur votre numéro de téléphone du pays B. Toutefois, comme cette application est très simple, elle peut également avoir d'autres usages.
 
 <b>Fonctionnalités :</b>
 - Peux gérer plusieurs redirections
-- Activationdésactivation globale
+- Activation et désactivation globale
 
 SMS Forward est <b>libre</b>, <b>open source</b> et <b>sans pubs</b>.
+
+
+<b>Mise en garde :</b>
+Si quelqu'un d'autre vous demande d'installer SMS Forward, soyez prudent car il peut s'agir d'une fraude.
