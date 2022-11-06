@@ -18,6 +18,7 @@ stages:
     - build
     - lint
     - artifact
+    - renovate
 
 build:
     stage: build
@@ -53,3 +54,16 @@ artifact:
         - main
     when: on_success
     allow_failure: false
+
+renovate:
+    stage: renovate
+    image:
+        name: mortimmer/renovate-gitlab-ci
+    script:
+        - do-rebase
+        - do-renovate
+    only:
+        refs:
+            - schedules
+        variables:
+            - $WHICH_SCHEDULE == "renovate"
