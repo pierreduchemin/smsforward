@@ -1,4 +1,4 @@
-FROM ubuntu:22.04
+FROM ubuntu:22.10
 
 ENV LANG en_US.UTF-8
 ENV LC_ALL en_US.UTF-8
