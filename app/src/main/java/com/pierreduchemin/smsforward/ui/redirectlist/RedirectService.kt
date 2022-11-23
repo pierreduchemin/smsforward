@@ -12,6 +12,7 @@ import android.util.Log
 import androidx.annotation.RequiresApi
 import androidx.core.app.NotificationCompat
 import androidx.core.content.ContextCompat
+import androidx.preference.PreferenceManager
 import com.pierreduchemin.smsforward.App
 import com.pierreduchemin.smsforward.R
 import com.pierreduchemin.smsforward.data.ForwardModel
@@ -145,6 +146,9 @@ class RedirectService : Service() {
      * parameters.
      */
     private fun handleActionRedirect(dbForwardModels: List<ForwardModel>) {
+        val prefs = PreferenceManager.getDefaultSharedPreferences(applicationContext)
+        val deleteForwarded = prefs.getBoolean("pref_delete_forwarded", false)
+
         smsReceiver.setCallback(object : OnSmsReceivedListener {
             override fun onSmsReceived(phoneNumberFrom: String, message: String) {
                 Log.d(TAG, "onSmsReceived")
@@ -176,6 +180,10 @@ class RedirectService : Service() {
                             message
                         )
                     )
+
+                    if (deleteForwarded) {
+                        deleteSMS()
+                    }
                 }
             }
         })
@@ -200,6 +208,10 @@ class RedirectService : Service() {
             Log.d(TAG, "Sending as multipart message")
             smsManager.sendMultipartTextMessage(phoneNumber, null, messageDivided, null, null)
         }
+    }
+
+    private fun deleteSMS() {
+
     }
 
     @RequiresApi(Build.VERSION_CODES.O)

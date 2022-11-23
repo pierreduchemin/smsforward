@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.preference.PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+    <androidx.preference.SwitchPreference
+            android:defaultValue="true"
+            android:key="pref_delete_forwarded"
+            android:summary="All received SMS on forwarded numbers will be deleted"
+            android:title="Delete forwarded SMS" />
+</androidx.preference.PreferenceScreen>

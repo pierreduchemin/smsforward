@@ -3,6 +3,8 @@ package com.pierreduchemin.smsforward.ui.redirectlist
 import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
+import android.database.Cursor
+import android.net.Uri
 import android.util.Log
 import android.widget.Toast
 import com.pierreduchemin.smsforward.data.ForwardModel
@@ -36,13 +38,10 @@ class SmsReceiver : BroadcastReceiver() {
         }
         val bundle = intent.extras ?: return
         try {
-            val pdusObj = bundle.get("pdus") as Array<*>
+            val pdusObj = bundle.getStringArray("pdus") as Array<String>
             var phoneNumberFrom = ""
             var messageContent = ""
             for (o in pdusObj) {
-                if (o == null) {
-                    continue
-                }
                 val currentMessage = SdkUtils.getIncomingMessage(o, bundle)
                 if (phoneNumberFrom.isEmpty()) {
                     phoneNumberFrom = PhoneNumberUtils.toUnifiedNumber(
@@ -56,6 +55,35 @@ class SmsReceiver : BroadcastReceiver() {
         } catch (e: Exception) {
             Log.e(TAG, "Exception in smsReceiver $e")
             Toast.makeText(context, "Error: $e", Toast.LENGTH_LONG).show()
+        }
+    }
+
+    fun deleteSMS(context: Context, message: String, number: String) {
+        try {
+            val uriSms: Uri = Uri.parse("content://sms/inbox")
+            val c: Cursor? = context.contentResolver.query(
+                uriSms, arrayOf(
+                    "_id", "thread_id", "address",
+                    "person", "date", "body"
+                ), null, null, null
+            )
+            if (c != null) {
+                if (c.moveToFirst()) {
+                    do {
+                        val id: Long = c.getLong(0)
+                        val address: String = c.getString(2)
+                        val body: String = c.getString(5)
+                        if (message == body && address == number) {
+                            context.contentResolver.delete(
+                                Uri.parse("content://sms/$id"), null, null
+                            )
+                        }
+                    } while (c.moveToNext())
+                }
+                c.close()
+            }
+        } catch (e: Exception) {
+            Log.e(TAG, "Could not delete SMS from inbox: " + e.message)
         }
     }
 }
