@@ -1,69 +1,79 @@
+# You can override the included template(s) by including variable overrides
+# SAST customization: https://docs.gitlab.com/ee/user/application_security/sast/#customizing-the-sast-settings
+# Secret Detection customization: https://docs.gitlab.com/ee/user/application_security/secret_detection/#customizing-settings
+# Dependency Scanning customization: https://docs.gitlab.com/ee/user/application_security/dependency_scanning/#customizing-the-dependency-scanning-settings
+# Container Scanning customization: https://docs.gitlab.com/ee/user/application_security/container_scanning/#customizing-the-container-scanning-settings
+# Note that environment variables can be set in several places
+# See https://docs.gitlab.com/ee/ci/variables/#cicd-variable-precedence
 image: registry.gitlab.com/pierreduchemin/smsforward:latest
-
 variables:
-    GRADLE_OPTS: "-Dorg.gradle.daemon=false"
-    JAVA_OPTS: "-Dhttps.protocols=TLSv1.1,TLSv1.2"
-
+  GRADLE_OPTS: "-Dorg.gradle.daemon=false"
+  JAVA_OPTS: "-Dhttps.protocols=TLSv1.1,TLSv1.2"
 before_script:
-    - export GRADLE_USER_HOME=`pwd`/.gradle
-    - chmod +x ./gradlew
-    - export APP_VERSION=$(grep -P '^[^/]+versionName\s(.*)' app/build.gradle | grep -Po '(?<=").*(?=")')
-
+- export GRADLE_USER_HOME=`pwd`/.gradle
+- chmod +x ./gradlew
+- export APP_VERSION=$(grep -P '^[^/]+versionName\s(.*)' app/build.gradle | grep -Po
+  '(?<=").*(?=")')
 cache:
-    paths:
-        - .gradle/wrapper
-        - .gradle/caches
-
+  paths:
+  - ".gradle/wrapper"
+  - ".gradle/caches"
 stages:
-    - build
-    - lint
-    - artifact
-    - renovate
-
+- build
+- lint
+- artifact
+- renovate
+- test
 build:
-    stage: build
-    script:
-        - ./gradlew assemble --stacktrace
-    cache:
-        key: "$CI_COMMIT_REF_NAME"
-        paths:
-            - app/build/
-    except:
-        - tags
-
+  stage: build
+  script:
+  - "./gradlew assemble --stacktrace"
+  cache:
+    key: "$CI_COMMIT_REF_NAME"
+    paths:
+    - app/build/
+  except:
+  - tags
 buildLint:
-    stage: lint
-    script:
-        - ./gradlew lintRelease --stacktrace
-    except:
-        - tags
-
+  stage: lint
+  script:
+  - "./gradlew lintRelease --stacktrace"
+  except:
+  - tags
 artifact:
-    stage: artifact
-    script:
-        - ./gradlew assemble --stacktrace
-        - echo "$ANDROID_KEYSTORE" | base64 -d > app/smsforward_keystore.jks
-        - apksigner sign --verbose --ks app/smsforward_keystore.jks --ks-key-alias sms-forward-key --ks-pass pass:"$ANDROID_KEYSTORE_PASSWORD" --key-pass pass:"$ANDROID_KEY_PASSWORD" --out app/smsforward-app-signed-$APP_VERSION.apk app/build/outputs/apk/release/app-release-unsigned.apk
-        - mv app/smsforward-app-signed-*.apk .
-    artifacts:
-        name: "smsforward-app-signed-$CI_COMMIT_SHA"
-        paths:
-            - smsforward-app-signed-*.apk
-        when: always
-    only:
-        - main
-    when: on_success
-    allow_failure: false
-
+  stage: artifact
+  script:
+  - "./gradlew assemble --stacktrace"
+  - echo "$ANDROID_KEYSTORE" | base64 -d > app/smsforward_keystore.jks
+  - apksigner sign --verbose --ks app/smsforward_keystore.jks --ks-key-alias sms-forward-key
+    --ks-pass pass:"$ANDROID_KEYSTORE_PASSWORD" --key-pass pass:"$ANDROID_KEY_PASSWORD"
+    --out app/smsforward-app-signed-$APP_VERSION.apk app/build/outputs/apk/release/app-release-unsigned.apk
+  - mv app/smsforward-app-signed-*.apk .
+  artifacts:
+    name: smsforward-app-signed-$CI_COMMIT_SHA
+    paths:
+    - smsforward-app-signed-*.apk
+    when: always
+  only:
+  - main
+  when: on_success
+  allow_failure: false
 renovate:
-    stage: renovate
-    image:
-        name: mortimmer/renovate-gitlab-ci
-    script:
-        - do-rebase
-        - do-renovate
-    only:
-        refs:
-            - schedules
-        variables:
-            - $WHICH_SCHEDULE == "renovate"
+  stage: renovate
+  image:
+    name: mortimmer/renovate-gitlab-ci
+  script:
+  - do-rebase
+  - do-renovate
+  only:
+    refs:
+    - schedules
+    variables:
+    - $WHICH_SCHEDULE == "renovate"
+sast:
+  variables:
+    SAST_EXCLUDED_ANALYZERS: brakeman, flawfinder, kubesec, nodejs-scan, phpcs-security-audit,
+      pmd-apex, security-code-scan, sobelow
+  stage: test
+include:
+- template: Security/SAST.gitlab-ci.yml
