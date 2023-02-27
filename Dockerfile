@@ -1,11 +1,11 @@
-FROM ubuntu:22.10
+FROM ubuntu:23.04
 
 ENV LANG en_US.UTF-8
 ENV LC_ALL en_US.UTF-8
 ENV TZ=Etc/UTC
 
 RUN apt-get update
-RUN DEBIAN_FRONTEND="noninteractive" apt-get install -y --no-install-recommends \
+RUN DEBIAN_FRONTEND="noninteractive" apt-get install -y --no-install-recommends --fix-missing \
     build-essential \
     ruby3.0-dev \
 	git \
@@ -13,9 +13,11 @@ RUN DEBIAN_FRONTEND="noninteractive" apt-get install -y --no-install-recommends 
 	openjdk-11-jdk \
 	unzip \
 	wget \
-	tzdata \
-	&& locale-gen $LANG $LC_ALL && update-locale $LANG $LC_ALL \
-	&& update-java-alternatives --set java-1.11.0-openjdk-amd64
+	tzdata
+RUN locale-gen $LANG $LC_ALL && update-locale $LANG $LC_ALL
+RUN update-java-alternatives --set java-1.11.0-openjdk-amd64
+RUN apt-get autoclean
+RUN apt-get autoremove
 
 RUN mkdir -p /root/.android/
 RUN touch /root/.android/repositories.cfg
