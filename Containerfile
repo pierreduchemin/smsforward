@@ -12,7 +12,8 @@ RUN DEBIAN_FRONTEND="noninteractive" apt-get install -y --no-install-recommends 
 	locales \
 	unzip \
 	wget \
-	tzdata
+	tzdata \
+	gradle
 RUN locale-gen $LANG $LC_ALL && update-locale $LANG $LC_ALL
 RUN apt-get autoclean
 RUN apt-get autoremove
