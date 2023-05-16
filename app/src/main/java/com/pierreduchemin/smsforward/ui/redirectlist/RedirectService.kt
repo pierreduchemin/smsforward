@@ -42,9 +42,9 @@ class RedirectService : Service() {
         private var intent: Intent? = null
 
         private const val ACTION_START_REDIRECT =
-            "com.pierreduchemin.smsforward.buisiness.redirects.action.START_REDIRECT"
+            "com.pierreduchemin.smsforward.business.redirects.action.START_REDIRECT"
         private const val ACTION_STOP_REDIRECT =
-            "com.pierreduchemin.smsforward.buisiness.redirects.action.STOP_REDIRECT"
+            "com.pierreduchemin.smsforward.business.redirects.action.STOP_REDIRECT"
 
         private const val REDIRECT_NOTIFICATION_ID: Int = 1
 
@@ -117,8 +117,7 @@ class RedirectService : Service() {
                     val startAppPendingIntent =
                         PendingIntent.getActivity(this@RedirectService, 0, startAppIntent, flag)
 
-                    val notification: Notification =
-                        NotificationCompat.Builder(this@RedirectService, channelId)
+                    val notification = NotificationCompat.Builder(this@RedirectService, channelId)
                             .setSmallIcon(R.drawable.ic_sms_forward)
                             .setContentTitle(getString(R.string.app_name))
                             .setContentText(getString(R.string.notification_info_sms_now_redirected))
@@ -147,7 +146,7 @@ class RedirectService : Service() {
     private fun handleActionRedirect(dbForwardModels: List<ForwardModel>) {
         smsReceiver.setCallback(object : OnSmsReceivedListener {
             override fun onSmsReceived(phoneNumberFrom: String, message: String) {
-                Log.d(TAG, "onSmsReceived")
+                Log.d(TAG, "SMS received from $phoneNumberFrom")
                 dbForwardModels.filter { dbForwardModel ->
                     if (dbForwardModel.isRegex) {
                         try {
@@ -189,7 +188,7 @@ class RedirectService : Service() {
     }
 
     private fun sendSMS(phoneNumber: String, message: String) {
-        Log.d(TAG, "Forwarding to $phoneNumber: $message")
+        Log.d(TAG, "Sending SMS to $phoneNumber: $message")
         val smsManager = SdkUtils.getSmsManager(this)
         val messageDivided = smsManager.divideMessage(message)
 
