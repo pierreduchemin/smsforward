@@ -1,4 +1,4 @@
-FROM docker.io/library/eclipse-temurin:17-jre
+FROM docker.io/library/eclipse-temurin:17-jdk
 
 ENV LANG en_US.UTF-8
 ENV LC_ALL en_US.UTF-8
