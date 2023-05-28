@@ -118,19 +118,20 @@ class RedirectService : Service() {
                         PendingIntent.getActivity(this@RedirectService, 0, startAppIntent, flag)
 
                     val notification = NotificationCompat.Builder(this@RedirectService, channelId)
-                            .setSmallIcon(R.drawable.ic_sms_forward)
-                            .setContentTitle(getString(R.string.app_name))
-                            .setContentText(getString(R.string.notification_info_sms_now_redirected))
-                            .setContentIntent(startAppPendingIntent)
-                            .setWhen(System.currentTimeMillis())
-                            .setPriority(NotificationCompat.PRIORITY_MIN)
-                            .build()
+                        .setSmallIcon(R.drawable.ic_sms_forward)
+                        .setContentTitle(getString(R.string.app_name))
+                        .setContentText(getString(R.string.notification_info_sms_now_redirected))
+                        .setContentIntent(startAppPendingIntent)
+                        .setWhen(System.currentTimeMillis())
+                        .setPriority(NotificationCompat.PRIORITY_MIN)
+                        .build()
 
                     Log.d(TAG, "Notification started")
 
                     startForeground(REDIRECT_NOTIFICATION_ID, notification)
                 }
             }
+
             ACTION_STOP_REDIRECT -> {
                 unregisterReceiver(smsReceiver)
             }

@@ -26,8 +26,8 @@
             <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="5dp"
                     android:layout_margin="10dp"
+                    android:layout_marginTop="5dp"
                     android:orientation="vertical"
                     android:padding="5dp">
 
@@ -40,9 +40,9 @@
                         android:textStyle="bold" />
 
                 <TextView
-                        android:layout_marginTop="4dp"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:layout_marginTop="4dp"
                         android:text="@string/about_question1"
                         android:textStyle="bold" />
 
@@ -53,9 +53,9 @@
                         android:textStyle="italic" />
 
                 <TextView
-                        android:layout_marginTop="4dp"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:layout_marginTop="4dp"
                         android:text="@string/about_question2"
                         android:textStyle="bold" />
 
@@ -66,9 +66,9 @@
                         android:textStyle="italic" />
 
                 <TextView
-                        android:layout_marginTop="4dp"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:layout_marginTop="4dp"
                         android:text="@string/about_question3"
                         android:textStyle="bold" />
 
@@ -79,9 +79,9 @@
                         android:textStyle="italic" />
 
                 <TextView
-                        android:layout_marginTop="4dp"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:layout_marginTop="4dp"
                         android:text="@string/about_question4"
                         android:textStyle="bold" />
 
@@ -92,9 +92,9 @@
                         android:textStyle="italic" />
 
                 <TextView
-                        android:layout_marginTop="4dp"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:layout_marginTop="4dp"
                         android:text="@string/about_question5"
                         android:textStyle="bold" />
 

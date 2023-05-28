@@ -10,6 +10,6 @@ import com.pierreduchemin.smsforward.data.GlobalModel
 abstract class SMSForwardDatabase : RoomDatabase() {
 
     abstract fun globalModelDao(): GlobalModelDao
-    
+
     abstract fun forwardModelDao(): ForwardModelDao
 }
