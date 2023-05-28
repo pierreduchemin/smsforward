@@ -192,6 +192,7 @@ class AddRedirectFragment : Fragment(), AddRedirectSubscriber {
                 ui.btnAdd.isEnabled = false
                 ui.btnAdd.text = getString(R.string.addredirect_info_add)
             }
+
             ButtonState.ENABLED -> {
                 ui.etSource.isEnabled = true
                 ui.etDestination.isEnabled = true

@@ -13,10 +13,12 @@ class SdkUtils {
     companion object {
 
         @Suppress("DEPRECATION")
-        fun getSmsManager(context: Context): SmsManager = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            getSystemService(context, SmsManager::class.java) ?: SmsManager.getDefault()
-        } else {
-            SmsManager.getDefault()
+        fun getSmsManager(context: Context): SmsManager {
+            return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                getSystemService(context, SmsManager::class.java) ?: SmsManager.getDefault()
+            } else {
+                SmsManager.getDefault()
+            }
         }
 
         @Suppress("DEPRECATION")
@@ -40,12 +42,14 @@ class SdkUtils {
                         VibrationEffect.createOneShot(50, VibrationEffect.DEFAULT_AMPLITUDE)
                     )
                 }
+
                 Build.VERSION.SDK_INT >= Build.VERSION_CODES.O -> {
                     val systemService = context.getSystemService(Context.VIBRATOR_SERVICE) ?: return
                     (systemService as Vibrator).vibrate(
                         VibrationEffect.createOneShot(50, VibrationEffect.DEFAULT_AMPLITUDE)
                     )
                 }
+
                 else -> {
                     val systemService = context.getSystemService(Context.VIBRATOR_SERVICE) ?: return
                     (systemService as Vibrator).vibrate(50)

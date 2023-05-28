@@ -109,6 +109,7 @@ class RedirectListFragment : Fragment() {
                     )
                 )
             }
+
             SwitchState.STOP -> {
                 ui.vfContent.swActivate.isEnabled = true
                 ui.vfContent.swActivate.isChecked = false
