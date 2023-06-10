@@ -5,7 +5,7 @@ import android.content.Context
 import android.content.Intent
 import android.util.Log
 import android.widget.Toast
-import com.pierreduchemin.smsforward.data.ForwardModel
+import com.pierreduchemin.smsforward.data.source.database.ForwardModel
 import com.pierreduchemin.smsforward.ui.addredirect.OnSmsReceivedListener
 import com.pierreduchemin.smsforward.utils.PhoneNumberUtils
 import com.pierreduchemin.smsforward.utils.SdkUtils

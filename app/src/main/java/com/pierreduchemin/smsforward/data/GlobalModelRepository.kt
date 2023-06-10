@@ -1,5 +1,6 @@
 package com.pierreduchemin.smsforward.data
 
+import com.pierreduchemin.smsforward.data.source.database.GlobalModel
 import com.pierreduchemin.smsforward.data.source.database.GlobalModelDao
 
 class GlobalModelRepository(private val globalModelDao: GlobalModelDao) : GlobalModelDataSource {

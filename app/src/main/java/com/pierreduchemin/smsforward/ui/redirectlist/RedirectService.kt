@@ -14,7 +14,7 @@ import androidx.core.app.NotificationCompat
 import androidx.core.content.ContextCompat
 import com.pierreduchemin.smsforward.App
 import com.pierreduchemin.smsforward.R
-import com.pierreduchemin.smsforward.data.ForwardModel
+import com.pierreduchemin.smsforward.data.source.database.ForwardModel
 import com.pierreduchemin.smsforward.data.ForwardModelRepository
 import com.pierreduchemin.smsforward.data.GlobalModelRepository
 import com.pierreduchemin.smsforward.ui.MainActivity
