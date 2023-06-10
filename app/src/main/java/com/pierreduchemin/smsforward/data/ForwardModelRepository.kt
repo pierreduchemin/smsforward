@@ -1,5 +1,6 @@
 package com.pierreduchemin.smsforward.data
 
+import com.pierreduchemin.smsforward.data.source.database.ForwardModel
 import com.pierreduchemin.smsforward.data.source.database.ForwardModelDao
 
 class ForwardModelRepository(private val forwardModelDao: ForwardModelDao) :

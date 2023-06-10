@@ -1,6 +1,7 @@
 package com.pierreduchemin.smsforward.data
 
 import androidx.lifecycle.LiveData
+import com.pierreduchemin.smsforward.data.source.database.ForwardModel
 
 interface ForwardModelDataSource {
 

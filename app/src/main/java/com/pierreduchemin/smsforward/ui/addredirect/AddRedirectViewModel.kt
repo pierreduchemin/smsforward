@@ -7,9 +7,10 @@ import androidx.lifecycle.viewModelScope
 import com.pierreduchemin.smsforward.App
 import com.pierreduchemin.smsforward.BuildConfig
 import com.pierreduchemin.smsforward.R
-import com.pierreduchemin.smsforward.data.ForwardModel
+import com.pierreduchemin.smsforward.data.ContactModel
+import com.pierreduchemin.smsforward.data.source.database.ForwardModel
 import com.pierreduchemin.smsforward.data.ForwardModelRepository
-import com.pierreduchemin.smsforward.data.GlobalModel
+import com.pierreduchemin.smsforward.data.source.database.GlobalModel
 import com.pierreduchemin.smsforward.data.GlobalModelRepository
 import com.pierreduchemin.smsforward.utils.PhoneNumberUtils
 import kotlinx.coroutines.Dispatchers
@@ -46,7 +47,10 @@ class AddRedirectViewModel(application: Application) : AndroidViewModel(applicat
         }
     }
 
-    fun onSourceRetrieved(source: String?, displayName: String?) {
+    fun onSourceRetrieved(contactModel: ContactModel) {
+        val source = contactModel.phoneNo
+        val displayName = contactModel.displayName
+
         if (source == null) {
             errorMessageRes.value = R.string.addredirect_error_invalid_source
             return
@@ -64,7 +68,9 @@ class AddRedirectViewModel(application: Application) : AndroidViewModel(applicat
         notifyUpdate()
     }
 
-    fun onDestinationRetrieved(destination: String?) {
+    fun onDestinationRetrieved(contactModel: ContactModel) {
+        val destination = contactModel.phoneNo
+
         if (destination == null) {
             errorMessageRes.value = R.string.addredirect_error_invalid_destination
             return

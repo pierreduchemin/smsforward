@@ -12,7 +12,7 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.pierreduchemin.smsforward.R
-import com.pierreduchemin.smsforward.data.ForwardModel
+import com.pierreduchemin.smsforward.data.source.database.ForwardModel
 import com.pierreduchemin.smsforward.databinding.RedirectListFragmentBinding
 import com.pierreduchemin.smsforward.utils.SdkUtils
 

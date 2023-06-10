@@ -9,7 +9,7 @@ import android.widget.TextView
 import androidx.annotation.Nullable
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
-import com.pierreduchemin.smsforward.data.ForwardModel
+import com.pierreduchemin.smsforward.data.source.database.ForwardModel
 import com.pierreduchemin.smsforward.databinding.RedirectAdapterBinding
 
 class ForwardModelAdapter(
