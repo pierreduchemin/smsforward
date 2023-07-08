@@ -26,5 +26,5 @@ data class ForwardModel(
     var vto: String = "",
 
     @ColumnInfo
-    var isRegex: Boolean = false
+    var isRegex: Boolean = false,
 )

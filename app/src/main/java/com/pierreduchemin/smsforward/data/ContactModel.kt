@@ -1,7 +1,7 @@
 package com.pierreduchemin.smsforward.data
 
 class ContactModel(
-    val key: String?,
+    val id: String?,
     val displayName: String?,
     val phoneNo: String?
 )
