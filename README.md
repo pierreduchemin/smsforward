@@ -35,6 +35,10 @@ A good option is to use services like [TextNow](https://www.textnow.com) to get 
 
 Any contributions welcome. Please fork this repository and create a pull request notifying your changes and why.
 
+## If you have a question
+If you have a question regarding the app, please ask it in an issue in [Gilab issue tracker](https://gitlab.com/pierreduchemin/smsforward/-/issues), so that everyone can contribute and that the answer is public.
+This way, your question becomes a contribution to the project.
+
 ## Author
 
 **Pierre Duchemin**
