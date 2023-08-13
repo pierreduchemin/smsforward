@@ -83,7 +83,6 @@ class AboutFragment : Fragment() {
             .setAutoApplyIconTint(false)
 
         val aboutPage = AboutPage(requireContext())
-            .enableDarkMode(isDarkTheme(resources))
             .isRTL(false)
             .setImage(R.mipmap.ic_launcher)
             .setDescription(getString(R.string.about_info_app_description))

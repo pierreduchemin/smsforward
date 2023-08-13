@@ -36,7 +36,7 @@ class SmsReceiver : BroadcastReceiver() {
         }
         val bundle = intent.extras ?: return
         try {
-            val pdusObj = bundle.get("pdus") as Array<*>
+            val pdusObj = bundle.getStringArray("pdus") as Array<String?>
             var phoneNumberFrom = ""
             var messageContent = ""
             for (o in pdusObj) {
