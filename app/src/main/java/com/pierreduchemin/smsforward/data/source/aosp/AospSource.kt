@@ -20,20 +20,23 @@ object AospSource {
             null,
             null
         )?.apply {
-            moveToFirst()
+            if (count > 0) {
+                moveToFirst()
 
-            val columnIndexKey = getColumnIndex(ContactsContract.CommonDataKinds.Phone.LOOKUP_KEY)
-            val columnIndexName =
-                getColumnIndex(ContactsContract.CommonDataKinds.Phone.DISPLAY_NAME)
-            val columnIndexNumber = getColumnIndex(ContactsContract.CommonDataKinds.Phone.NUMBER)
-
-            val contactModel = ContactModel(
-                getString(columnIndexKey),
-                getString(columnIndexName),
-                getString(columnIndexNumber)
-            )
-            close()
-            return contactModel
+                val columnIndexKey =
+                    getColumnIndex(ContactsContract.CommonDataKinds.Phone.LOOKUP_KEY)
+                val columnIndexName =
+                    getColumnIndex(ContactsContract.CommonDataKinds.Phone.DISPLAY_NAME)
+                val columnIndexNumber =
+                    getColumnIndex(ContactsContract.CommonDataKinds.Phone.NUMBER)
+                val contactModel = ContactModel(
+                    getString(columnIndexKey),
+                    getString(columnIndexName),
+                    getString(columnIndexNumber)
+                )
+                close()
+                return contactModel
+            }
         }
         return null
     }
