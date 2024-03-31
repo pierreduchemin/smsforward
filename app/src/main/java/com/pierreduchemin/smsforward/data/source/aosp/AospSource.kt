@@ -20,6 +20,11 @@ object AospSource {
             null,
             null
         )?.apply {
+            if (count <= 0) {
+                close()
+                return null
+            }
+
             moveToFirst()
 
             val columnIndexKey = getColumnIndex(ContactsContract.CommonDataKinds.Phone.LOOKUP_KEY)
