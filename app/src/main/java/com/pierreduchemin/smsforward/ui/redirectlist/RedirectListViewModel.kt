@@ -10,11 +10,15 @@ import com.pierreduchemin.smsforward.data.source.database.ForwardModel
 import com.pierreduchemin.smsforward.data.ForwardModelRepository
 import com.pierreduchemin.smsforward.data.source.database.GlobalModel
 import com.pierreduchemin.smsforward.data.GlobalModelRepository
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
-class RedirectListViewModel(application: Application) : AndroidViewModel(application) {
+@HiltViewModel
+class RedirectListViewModel @Inject constructor(
+    application: Application
+) : AndroidViewModel(application) {
 
     companion object {
         private val TAG by lazy { RedirectListViewModel::class.java.simpleName }
@@ -33,7 +37,7 @@ class RedirectListViewModel(application: Application) : AndroidViewModel(applica
     private var globalModel: GlobalModel? = null
 
     init {
-        getApplication<App>().component.inject(this)
+//        getApplication<App>().component.inject(this)
 
         viewModelScope.launch(Dispatchers.IO) {
             forwardModels = forwardModelRepository.getForwardModels()

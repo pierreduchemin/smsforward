@@ -8,11 +8,13 @@ import androidx.fragment.app.Fragment
 import androidx.navigation.findNavController
 import com.pierreduchemin.smsforward.R
 import com.pierreduchemin.smsforward.databinding.MainActivityBinding
+import dagger.hilt.android.AndroidEntryPoint
 
 interface PermissionRegisterer {
     fun registerForPermission(permissionSubscriber: PermissionSubscriber)
 }
 
+@AndroidEntryPoint
 class MainActivity : AppCompatActivity(), PermissionRegisterer {
 
     private val ui: MainActivityBinding by lazy { MainActivityBinding.inflate(layoutInflater) }

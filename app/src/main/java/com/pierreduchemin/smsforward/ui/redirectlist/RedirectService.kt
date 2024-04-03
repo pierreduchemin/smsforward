@@ -76,7 +76,7 @@ class RedirectService : Service() {
     override fun onCreate() {
         super.onCreate()
         Log.d(TAG, "RedirectService created")
-        (application as App).component.inject(this)
+//        (application as App).component.inject(this)
     }
 
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {

@@ -18,6 +18,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.viewModels
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import com.google.android.material.snackbar.Snackbar
@@ -44,7 +45,7 @@ class AddRedirectFragment : Fragment(), AddRedirectSubscriber {
     )
 
     private lateinit var ui: AddRedirectsFragmentBinding
-    private val viewModel by lazy { ViewModelProvider(this)[AddRedirectViewModel::class.java] }
+    private val viewModel: AddRedirectViewModel by viewModels()
     private lateinit var registerForPermissions: ActivityResultLauncher<Array<String>>
 
     private lateinit var registerForNumberPicker: ActivityResultLauncher<Void?>

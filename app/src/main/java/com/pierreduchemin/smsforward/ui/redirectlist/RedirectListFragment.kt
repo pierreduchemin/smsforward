@@ -8,12 +8,14 @@ import androidx.appcompat.app.AlertDialog
 import androidx.core.content.ContextCompat
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.viewModels
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.pierreduchemin.smsforward.R
 import com.pierreduchemin.smsforward.data.source.database.ForwardModel
 import com.pierreduchemin.smsforward.databinding.RedirectListFragmentBinding
+import com.pierreduchemin.smsforward.ui.addredirect.AddRedirectViewModel
 import com.pierreduchemin.smsforward.utils.SdkUtils
 
 class RedirectListFragment : Fragment() {
@@ -31,7 +33,7 @@ class RedirectListFragment : Fragment() {
     }
 
     private lateinit var ui: RedirectListFragmentBinding
-    private val viewModel by lazy { ViewModelProvider(this)[RedirectListViewModel::class.java] }
+    private val viewModel: RedirectListViewModel by viewModels()
     private var lastSwitchState: SwitchState? = null
 
     override fun onCreateView(

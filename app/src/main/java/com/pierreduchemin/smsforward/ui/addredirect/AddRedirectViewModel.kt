@@ -13,6 +13,7 @@ import com.pierreduchemin.smsforward.data.ForwardModelRepository
 import com.pierreduchemin.smsforward.data.source.database.GlobalModel
 import com.pierreduchemin.smsforward.data.GlobalModelRepository
 import com.pierreduchemin.smsforward.utils.PhoneNumberUtils
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
@@ -20,7 +21,10 @@ import java.util.regex.Pattern
 import java.util.regex.PatternSyntaxException
 import javax.inject.Inject
 
-class AddRedirectViewModel(application: Application) : AndroidViewModel(application) {
+@HiltViewModel
+class AddRedirectViewModel @Inject constructor(
+    application: Application
+) : AndroidViewModel(application) {
 
     val buttonState = MutableLiveData<AddRedirectFragment.ButtonState>()
     val sourceText = MutableLiveData<String>()
@@ -39,7 +43,7 @@ class AddRedirectViewModel(application: Application) : AndroidViewModel(applicat
     private var forwardModel: ForwardModel? = null
 
     init {
-        getApplication<App>().component.inject(this)
+//        getApplication<App>().component.inject(this)
         forwardModel = ForwardModel()
         viewModelScope.launch(Dispatchers.IO) {
             globalModel = globalModelRepository.getGlobalModel()
