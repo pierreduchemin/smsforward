@@ -5,6 +5,8 @@ import android.app.PendingIntent.FLAG_IMMUTABLE
 import android.content.Context
 import android.content.Intent
 import android.content.IntentFilter
+import android.content.pm.ServiceInfo.FOREGROUND_SERVICE_TYPE_MANIFEST
+import android.content.pm.ServiceInfo.FOREGROUND_SERVICE_TYPE_MEDIA_PLAYBACK
 import android.os.Build
 import android.os.IBinder
 import android.telephony.TelephonyManager
@@ -128,7 +130,11 @@ class RedirectService : Service() {
 
                     Log.d(TAG, "Notification started")
 
-                    startForeground(REDIRECT_NOTIFICATION_ID, notification)
+                    if (Build.VERSION.SDK_INT < Build.VERSION_CODES.TIRAMISU) {
+                        startForeground(REDIRECT_NOTIFICATION_ID, notification)
+                    } else {
+                        startForeground(REDIRECT_NOTIFICATION_ID, notification, FOREGROUND_SERVICE_TYPE_MANIFEST)
+                    }
                 }
             }
 

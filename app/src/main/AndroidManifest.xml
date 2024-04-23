@@ -38,7 +38,8 @@
 
         <service
                 android:name=".ui.redirectlist.RedirectService"
-                android:exported="false" />
+                android:exported="false"
+                android:foregroundServiceType="shortService" />
 
         <receiver
                 android:name=".ui.addredirect.BootDeviceReceiver"
