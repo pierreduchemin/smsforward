@@ -5,6 +5,7 @@ import com.pierreduchemin.smsforward.App
 import com.pierreduchemin.smsforward.data.ForwardModelRepository
 import com.pierreduchemin.smsforward.data.GlobalModelRepository
 import com.pierreduchemin.smsforward.data.source.database.SMSForwardDatabase
+import com.pierreduchemin.smsforward.utils.RedirectionManager
 import dagger.Module
 import dagger.Provides
 import javax.inject.Singleton
@@ -33,4 +34,8 @@ class AppModule(val app: App) {
     @Provides
     @Singleton
     fun provideGlobalModelRepository() = GlobalModelRepository(smsForwardDatabase.globalModelDao())
+
+    @Provides
+    @Singleton
+    fun provideRedirectionManager() = RedirectionManager()
 }

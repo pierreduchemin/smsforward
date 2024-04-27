@@ -13,7 +13,7 @@ import androidx.fragment.app.Fragment
 import com.pierreduchemin.smsforward.BuildConfig
 import com.pierreduchemin.smsforward.R
 import com.pierreduchemin.smsforward.databinding.AboutFragmentBinding
-import com.pierreduchemin.smsforward.utils.SdkUtils.Companion.isDarkTheme
+import com.pierreduchemin.smsforward.utils.SdkUtils
 import mehdi.sakout.aboutpage.AboutPage
 import mehdi.sakout.aboutpage.Element
 
@@ -83,7 +83,7 @@ class AboutFragment : Fragment() {
             .setAutoApplyIconTint(false)
 
         val aboutPage = AboutPage(requireContext())
-            .enableDarkMode(isDarkTheme(resources))
+            .enableDarkMode(SdkUtils.isDarkTheme(resources))
             .isRTL(false)
             .setImage(R.mipmap.ic_launcher)
             .setDescription(getString(R.string.about_info_app_description))

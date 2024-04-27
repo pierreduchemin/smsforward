@@ -74,6 +74,7 @@ dependencies {
 
     // Dagger2
     implementation 'com.google.dagger:dagger:2.51.1'
+    implementation 'com.google.dagger:dagger-android-support:2.51.1'
     ksp 'com.google.dagger:dagger-compiler:2.51.1'
 
     implementation 'com.googlecode.libphonenumber:libphonenumber:8.13.33'

@@ -8,10 +8,10 @@ import com.pierreduchemin.smsforward.App
 import com.pierreduchemin.smsforward.BuildConfig
 import com.pierreduchemin.smsforward.R
 import com.pierreduchemin.smsforward.data.ContactModel
-import com.pierreduchemin.smsforward.data.source.database.ForwardModel
 import com.pierreduchemin.smsforward.data.ForwardModelRepository
-import com.pierreduchemin.smsforward.data.source.database.GlobalModel
 import com.pierreduchemin.smsforward.data.GlobalModelRepository
+import com.pierreduchemin.smsforward.data.source.database.ForwardModel
+import com.pierreduchemin.smsforward.data.source.database.GlobalModel
 import com.pierreduchemin.smsforward.utils.PhoneNumberUtils
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch

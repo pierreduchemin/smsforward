@@ -1,7 +1,11 @@
 package com.pierreduchemin.smsforward.data.source.database
 
 import androidx.lifecycle.LiveData
-import androidx.room.*
+import androidx.room.Dao
+import androidx.room.Insert
+import androidx.room.OnConflictStrategy
+import androidx.room.Query
+import androidx.room.Update
 
 /**
  * Data Access Object for the tasks table.
@@ -19,8 +23,8 @@ interface GlobalModelDao {
     fun countGlobalModel(): LiveData<Long>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    fun insertGlobalModel(GlobalModel: GlobalModel): Long
+    fun insertGlobalModel(globalModel: GlobalModel): Long
 
     @Update
-    fun updateGlobalModel(GlobalModel: GlobalModel)
+    fun updateGlobalModel(globalModel: GlobalModel)
 }

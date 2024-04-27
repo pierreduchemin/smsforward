@@ -6,10 +6,11 @@ import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import com.pierreduchemin.smsforward.App
-import com.pierreduchemin.smsforward.data.source.database.ForwardModel
 import com.pierreduchemin.smsforward.data.ForwardModelRepository
-import com.pierreduchemin.smsforward.data.source.database.GlobalModel
 import com.pierreduchemin.smsforward.data.GlobalModelRepository
+import com.pierreduchemin.smsforward.data.source.database.ForwardModel
+import com.pierreduchemin.smsforward.data.source.database.GlobalModel
+import dagger.android.AndroidInjection
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -32,6 +33,8 @@ class RedirectListViewModel(application: Application) : AndroidViewModel(applica
     private var forwardModels: List<ForwardModel> = arrayListOf()
     private var globalModel: GlobalModel? = null
 
+    private val smsReceiver = SmsReceiver()
+
     init {
         getApplication<App>().component.inject(this)
 
@@ -46,7 +49,11 @@ class RedirectListViewModel(application: Application) : AndroidViewModel(applica
 
         globalModelRepository.observeGlobalModel().observeForever {
             globalModel = it
-            notifyUpdate()
+            if (it == null || !it.activated) {
+                smsReceiver.unregisterSmsReceiver(application)
+            } else {
+                smsReceiver.registerSmsReceiver(application)
+            }
         }
         forwardModelRepository.observeForwardModels().observeForever {
             forwardModels = it
@@ -88,10 +95,11 @@ class RedirectListViewModel(application: Application) : AndroidViewModel(applica
         val localActivated = globalModel?.activated ?: false
         if (localActivated) {
             ldButtonState.value = RedirectListFragment.SwitchState.ENABLED
-            RedirectService.startActionRedirect(getApplication())
+//            RedirectService.startActionRedirect(getApplication())
+
         } else {
             ldButtonState.value = RedirectListFragment.SwitchState.STOP
-            RedirectService.stopActionRedirect(getApplication())
+//            RedirectService.stopActionRedirect(getApplication())
         }
     }
 
@@ -105,7 +113,8 @@ class RedirectListViewModel(application: Application) : AndroidViewModel(applica
             // deactivate redirection if list is going to be empty
             val currentGlobalModel = globalModel
             if (currentGlobalModel != null && forwardModels.size == 1) {
-                RedirectService.stopActionRedirect(getApplication())
+//                RedirectService.stopActionRedirect(getApplication())
+
                 currentGlobalModel.activated = false
                 globalModelRepository.updateGlobalModel(currentGlobalModel)
             }

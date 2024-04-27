@@ -1,7 +1,6 @@
 package com.pierreduchemin.smsforward.data
 
 import android.content.Context
-import android.net.Uri
 
 interface ContactModelDataSource {
 

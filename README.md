@@ -46,3 +46,12 @@ This way, your question becomes a contribution to the project.
 ## License
 
 SMS Forward's [LICENSE](LICENSE) is GNU GPL v3+.
+
+
+## dev notes
+on boot:
+check activated -> register smsreceiver
+
+on activation:
+register smsreceiver
+
