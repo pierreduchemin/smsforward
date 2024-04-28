@@ -64,6 +64,7 @@ class RedirectListViewModel @Inject constructor(
         val localGlobalModel = globalModel!!
         if (localGlobalModel.activated) {
             localGlobalModel.activated = false
+            ldButtonState.value = RedirectListFragment.SwitchState.STOP
             viewModelScope.launch(Dispatchers.IO) {
                 globalModelRepository.updateGlobalModel(localGlobalModel)
             }
@@ -94,7 +95,6 @@ class RedirectListViewModel @Inject constructor(
         val localActivated = globalModel?.activated ?: false
         if (localActivated) {
             ldButtonState.value = RedirectListFragment.SwitchState.ENABLED
-
         } else {
             ldButtonState.value = RedirectListFragment.SwitchState.STOP
         }
