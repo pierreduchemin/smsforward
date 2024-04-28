@@ -70,9 +70,9 @@ class RedirectionManager @Inject constructor(
         }
         if (!globalModel.activated) {
             Log.i(TAG, "Redirection not activated")
-            return true
+            return false
         }
-        return false
+        return true
     }
 
     private fun sendSMS(context: Context, phoneNumber: String, message: String) {
