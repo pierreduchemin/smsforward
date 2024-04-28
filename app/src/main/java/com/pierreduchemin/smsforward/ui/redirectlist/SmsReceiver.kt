@@ -5,6 +5,7 @@ import android.content.Context
 import android.content.Intent
 import android.content.IntentFilter
 import android.os.Bundle
+import android.provider.Telephony.Sms.Intents.SMS_RECEIVED_ACTION
 import android.telephony.TelephonyManager
 import android.util.Log
 import android.widget.Toast
@@ -28,7 +29,7 @@ class SmsReceiver : BroadcastReceiver() {
 
     fun registerSmsReceiver(context: Context) {
         val filter = IntentFilter().apply {
-            addAction("android.provider.Telephony.SMS_RECEIVED")
+            addAction(SMS_RECEIVED_ACTION)
             addAction(TelephonyManager.ACTION_PHONE_STATE_CHANGED)
         }
 
@@ -45,12 +46,15 @@ class SmsReceiver : BroadcastReceiver() {
         try {
             context.unregisterReceiver(this)
             Log.d(TAG, "Unregistered")
-        } catch(e: IllegalArgumentException) {
-
+        } catch (e: IllegalArgumentException) {
+// TODO: better handling
         }
     }
 
     override fun onReceive(context: Context, intent: Intent) {
+        if (intent.action != SMS_RECEIVED_ACTION) {
+            return
+        }
         Log.d(TAG, "onReceive")
         val bundle = intent.extras ?: return
         try {
