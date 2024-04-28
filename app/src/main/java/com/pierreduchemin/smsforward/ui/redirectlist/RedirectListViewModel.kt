@@ -9,6 +9,7 @@ import com.pierreduchemin.smsforward.data.ForwardModelRepository
 import com.pierreduchemin.smsforward.data.GlobalModelRepository
 import com.pierreduchemin.smsforward.data.source.database.ForwardModel
 import com.pierreduchemin.smsforward.data.source.database.GlobalModel
+import com.pierreduchemin.smsforward.utils.NotificationUtils
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -45,8 +46,10 @@ class RedirectListViewModel @Inject constructor(
 
         globalModelRepository.observeGlobalModel().observeForever {
             if (it == null || !it.activated) {
+                NotificationUtils.cancel(application)
                 smsReceiver.unregisterSmsReceiver(application)
             } else {
+                NotificationUtils.notify(application)
                 smsReceiver.registerSmsReceiver(application)
             }
             globalModel = it

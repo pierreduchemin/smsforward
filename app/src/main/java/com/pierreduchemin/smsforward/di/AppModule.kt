@@ -54,8 +54,4 @@ class AppModule {
     @Provides
     @Singleton
     fun provideApplication(@ApplicationContext appContext: Context) = appContext
-
-    @Provides
-    @Singleton
-    fun provideContext(@ApplicationContext appContext: Context) = appContext
 }

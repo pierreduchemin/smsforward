@@ -3,6 +3,7 @@ package com.pierreduchemin.smsforward.ui.addredirect
 import android.Manifest
 import android.app.Activity
 import android.content.pm.PackageManager
+import android.os.Build
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -18,7 +19,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.ViewModelProvider
+import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import com.google.android.material.snackbar.Snackbar
 import com.pierreduchemin.smsforward.R
@@ -39,14 +40,23 @@ class AddRedirectFragment : Fragment(), AddRedirectSubscriber {
         ENABLED
     }
 
-    private val requiredPermissions = arrayOf(
-        Manifest.permission.SEND_SMS,
-        Manifest.permission.RECEIVE_SMS,
-        Manifest.permission.READ_CONTACTS
-    )
+    private val requiredPermissions = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+        arrayOf(
+            Manifest.permission.SEND_SMS,
+            Manifest.permission.RECEIVE_SMS,
+            Manifest.permission.READ_CONTACTS,
+            Manifest.permission.POST_NOTIFICATIONS,
+        )
+    } else {
+        arrayOf(
+            Manifest.permission.SEND_SMS,
+            Manifest.permission.RECEIVE_SMS,
+            Manifest.permission.READ_CONTACTS,
+        )
+    }
 
     private lateinit var ui: AddRedirectsFragmentBinding
-    private val viewModel by lazy { ViewModelProvider(this)[AddRedirectViewModel::class.java] }
+    private val viewModel: AddRedirectViewModel by viewModels()
     private lateinit var registerForPermissions: ActivityResultLauncher<Array<String>>
 
     private lateinit var registerForNumberPicker: ActivityResultLauncher<Void?>
