@@ -25,7 +25,9 @@ import com.pierreduchemin.smsforward.R
 import com.pierreduchemin.smsforward.data.ContactModelRepository
 import com.pierreduchemin.smsforward.databinding.AddRedirectsFragmentBinding
 import com.pierreduchemin.smsforward.ui.PermissionRegisterer
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class AddRedirectFragment : Fragment(), AddRedirectSubscriber {
 
     companion object {

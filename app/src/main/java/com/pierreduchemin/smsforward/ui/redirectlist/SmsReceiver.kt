@@ -1,6 +1,5 @@
 package com.pierreduchemin.smsforward.ui.redirectlist
 
-import android.app.Application
 import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
@@ -10,13 +9,14 @@ import android.telephony.TelephonyManager
 import android.util.Log
 import android.widget.Toast
 import androidx.core.content.ContextCompat
-import com.pierreduchemin.smsforward.App
 import com.pierreduchemin.smsforward.utils.PhoneNumberUtils
 import com.pierreduchemin.smsforward.utils.RedirectionManager
 import com.pierreduchemin.smsforward.utils.SdkUtils
-import dagger.android.AndroidInjection
+import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
 
+
+@AndroidEntryPoint
 class SmsReceiver : BroadcastReceiver() {
 
     companion object {
@@ -51,7 +51,6 @@ class SmsReceiver : BroadcastReceiver() {
     }
 
     override fun onReceive(context: Context, intent: Intent) {
-        AndroidInjection.inject(this, context)
         Log.d(TAG, "onReceive")
         val bundle = intent.extras ?: return
         try {

@@ -9,19 +9,20 @@ import java.util.regex.Pattern
 import java.util.regex.PatternSyntaxException
 import javax.inject.Inject
 
-class RedirectionManager {
-
-    @Inject
-    lateinit var globalModelRepository: GlobalModelRepository
-
-    @Inject
-    lateinit var forwardModelRepository: ForwardModelRepository
+class RedirectionManager @Inject constructor(
+    private val globalModelRepository: GlobalModelRepository,
+    private val forwardModelRepository: ForwardModelRepository
+) {
 
     companion object {
         private val TAG by lazy { RedirectionManager::class.java.simpleName }
     }
+
     fun onSmsReceived(context: Context, phoneNumberFrom: String, message: String) {
-        if (!isRedirectionActivated()) return
+        if (!isRedirectionActivated()) {
+            Log.i(TAG, "Redirection not activated")
+            return
+        }
 
         val forwardModels = forwardModelRepository.getForwardModels()
         if (forwardModels.isEmpty()) {
@@ -63,7 +64,11 @@ class RedirectionManager {
 
     fun isRedirectionActivated(): Boolean {
         val globalModel = globalModelRepository.getGlobalModel()
-        if (globalModel == null || !globalModel.activated) {
+        if (globalModel == null) {
+            Log.d(TAG, "globalModel is null")
+            return true
+        }
+        if (!globalModel.activated) {
             Log.i(TAG, "Redirection not activated")
             return true
         }

@@ -1,10 +1,9 @@
 package com.pierreduchemin.smsforward.ui.addredirect
 
 import android.app.Application
-import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.pierreduchemin.smsforward.App
 import com.pierreduchemin.smsforward.BuildConfig
 import com.pierreduchemin.smsforward.R
 import com.pierreduchemin.smsforward.data.ContactModel
@@ -13,6 +12,7 @@ import com.pierreduchemin.smsforward.data.GlobalModelRepository
 import com.pierreduchemin.smsforward.data.source.database.ForwardModel
 import com.pierreduchemin.smsforward.data.source.database.GlobalModel
 import com.pierreduchemin.smsforward.utils.PhoneNumberUtils
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
@@ -20,7 +20,8 @@ import java.util.regex.Pattern
 import java.util.regex.PatternSyntaxException
 import javax.inject.Inject
 
-class AddRedirectViewModel(application: Application) : AndroidViewModel(application) {
+@HiltViewModel
+class AddRedirectViewModel @Inject constructor() : ViewModel() {
 
     val buttonState = MutableLiveData<AddRedirectFragment.ButtonState>()
     val sourceText = MutableLiveData<String>()
@@ -35,11 +36,13 @@ class AddRedirectViewModel(application: Application) : AndroidViewModel(applicat
     @Inject
     lateinit var forwardModelRepository: ForwardModelRepository
 
+    @Inject
+    lateinit var application: Application
+
     private var globalModel: GlobalModel? = null
     private var forwardModel: ForwardModel? = null
 
     init {
-        getApplication<App>().component.inject(this)
         forwardModel = ForwardModel()
         viewModelScope.launch(Dispatchers.IO) {
             globalModel = globalModelRepository.getGlobalModel()
@@ -58,8 +61,8 @@ class AddRedirectViewModel(application: Application) : AndroidViewModel(applicat
 
         val advancedMode = globalModel?.advancedMode ?: false
         if (!advancedMode) {
-            val uSource = PhoneNumberUtils.toUnifiedNumber(getApplication(), source)
-            val vSource = PhoneNumberUtils.toVisualNumber(getApplication(), source)
+            val uSource = PhoneNumberUtils.toUnifiedNumber(application, source)
+            val vSource = PhoneNumberUtils.toVisualNumber(application, source)
             forwardModel?.from = uSource
             forwardModel?.vfrom = vSource
             if (displayName != null)
@@ -76,8 +79,8 @@ class AddRedirectViewModel(application: Application) : AndroidViewModel(applicat
             return
         }
 
-        val uDestination = PhoneNumberUtils.toUnifiedNumber(getApplication(), destination)
-        val vDestination = PhoneNumberUtils.toVisualNumber(getApplication(), destination)
+        val uDestination = PhoneNumberUtils.toUnifiedNumber(application, destination)
+        val vDestination = PhoneNumberUtils.toVisualNumber(application, destination)
         forwardModel?.to = uDestination
         forwardModel?.vto = vDestination
 

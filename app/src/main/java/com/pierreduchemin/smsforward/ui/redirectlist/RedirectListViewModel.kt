@@ -2,20 +2,24 @@ package com.pierreduchemin.smsforward.ui.redirectlist
 
 import android.app.Application
 import android.util.Log
-import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.pierreduchemin.smsforward.App
 import com.pierreduchemin.smsforward.data.ForwardModelRepository
 import com.pierreduchemin.smsforward.data.GlobalModelRepository
 import com.pierreduchemin.smsforward.data.source.database.ForwardModel
 import com.pierreduchemin.smsforward.data.source.database.GlobalModel
-import dagger.android.AndroidInjection
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
-class RedirectListViewModel(application: Application) : AndroidViewModel(application) {
+@HiltViewModel
+class RedirectListViewModel @Inject constructor(
+    private val application: Application,
+    private val globalModelRepository: GlobalModelRepository,
+    private val forwardModelRepository: ForwardModelRepository,
+) : ViewModel() {
 
     companion object {
         private val TAG by lazy { RedirectListViewModel::class.java.simpleName }
@@ -24,20 +28,12 @@ class RedirectListViewModel(application: Application) : AndroidViewModel(applica
     val ldForwardsList = MutableLiveData<List<ForwardModel>>()
     val ldButtonState = MutableLiveData<RedirectListFragment.SwitchState>()
 
-    @Inject
-    lateinit var globalModelRepository: GlobalModelRepository
-
-    @Inject
-    lateinit var forwardModelRepository: ForwardModelRepository
-
     private var forwardModels: List<ForwardModel> = arrayListOf()
     private var globalModel: GlobalModel? = null
 
     private val smsReceiver = SmsReceiver()
 
     init {
-        getApplication<App>().component.inject(this)
-
         viewModelScope.launch(Dispatchers.IO) {
             forwardModels = forwardModelRepository.getForwardModels()
 
@@ -48,12 +44,12 @@ class RedirectListViewModel(application: Application) : AndroidViewModel(applica
         }
 
         globalModelRepository.observeGlobalModel().observeForever {
-            globalModel = it
             if (it == null || !it.activated) {
                 smsReceiver.unregisterSmsReceiver(application)
             } else {
                 smsReceiver.registerSmsReceiver(application)
             }
+            globalModel = it
         }
         forwardModelRepository.observeForwardModels().observeForever {
             forwardModels = it
@@ -95,11 +91,9 @@ class RedirectListViewModel(application: Application) : AndroidViewModel(applica
         val localActivated = globalModel?.activated ?: false
         if (localActivated) {
             ldButtonState.value = RedirectListFragment.SwitchState.ENABLED
-//            RedirectService.startActionRedirect(getApplication())
 
         } else {
             ldButtonState.value = RedirectListFragment.SwitchState.STOP
-//            RedirectService.stopActionRedirect(getApplication())
         }
     }
 
@@ -113,8 +107,6 @@ class RedirectListViewModel(application: Application) : AndroidViewModel(applica
             // deactivate redirection if list is going to be empty
             val currentGlobalModel = globalModel
             if (currentGlobalModel != null && forwardModels.size == 1) {
-//                RedirectService.stopActionRedirect(getApplication())
-
                 currentGlobalModel.activated = false
                 globalModelRepository.updateGlobalModel(currentGlobalModel)
             }

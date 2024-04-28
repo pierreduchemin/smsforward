@@ -14,9 +14,11 @@ import com.pierreduchemin.smsforward.BuildConfig
 import com.pierreduchemin.smsforward.R
 import com.pierreduchemin.smsforward.databinding.AboutFragmentBinding
 import com.pierreduchemin.smsforward.utils.SdkUtils
+import dagger.hilt.android.AndroidEntryPoint
 import mehdi.sakout.aboutpage.AboutPage
 import mehdi.sakout.aboutpage.Element
 
+@AndroidEntryPoint
 class AboutFragment : Fragment() {
 
     private lateinit var ui: AboutFragmentBinding
