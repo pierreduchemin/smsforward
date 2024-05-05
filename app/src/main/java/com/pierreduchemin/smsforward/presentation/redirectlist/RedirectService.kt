@@ -1,4 +1,4 @@
-package com.pierreduchemin.smsforward.ui.redirectlist
+package com.pierreduchemin.smsforward.presentation.redirectlist
 
 import android.app.*
 import android.app.PendingIntent.FLAG_IMMUTABLE
@@ -17,8 +17,8 @@ import com.pierreduchemin.smsforward.R
 import com.pierreduchemin.smsforward.data.ForwardModel
 import com.pierreduchemin.smsforward.data.ForwardModelRepository
 import com.pierreduchemin.smsforward.data.GlobalModelRepository
-import com.pierreduchemin.smsforward.ui.MainActivity
-import com.pierreduchemin.smsforward.ui.addredirect.OnSmsReceivedListener
+import com.pierreduchemin.smsforward.presentation.MainActivity
+import com.pierreduchemin.smsforward.presentation.addredirect.OnSmsReceivedListener
 import com.pierreduchemin.smsforward.utils.SdkUtils
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers

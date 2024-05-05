@@ -1,10 +1,10 @@
-package com.pierreduchemin.smsforward.ui.addredirect
+package com.pierreduchemin.smsforward.presentation.addredirect
 
 import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
 import android.util.Log
-import com.pierreduchemin.smsforward.ui.redirectlist.RedirectService
+import com.pierreduchemin.smsforward.presentation.redirectlist.RedirectService
 
 class BootDeviceReceiver : BroadcastReceiver() {
 

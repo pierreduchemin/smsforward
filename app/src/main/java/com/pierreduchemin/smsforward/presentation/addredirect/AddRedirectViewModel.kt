@@ -1,4 +1,4 @@
-package com.pierreduchemin.smsforward.ui.addredirect
+package com.pierreduchemin.smsforward.presentation.addredirect
 
 import android.app.Application
 import androidx.lifecycle.AndroidViewModel

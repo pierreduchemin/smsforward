@@ -1,7 +1,7 @@
-package com.pierreduchemin.smsforward.ui.addredirect
+package com.pierreduchemin.smsforward.presentation.addredirect
 
-import com.pierreduchemin.smsforward.ui.ErrorContract
-import com.pierreduchemin.smsforward.ui.PermissionSubscriber
+import com.pierreduchemin.smsforward.presentation.ErrorContract
+import com.pierreduchemin.smsforward.presentation.PermissionSubscriber
 
 interface AddRedirectSubscriber: ErrorContract, PermissionSubscriber {
     fun pickNumber(requestCode: Int)

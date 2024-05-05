@@ -1,4 +1,4 @@
-package com.pierreduchemin.smsforward.ui.addredirect
+package com.pierreduchemin.smsforward.presentation.addredirect
 
 import android.Manifest
 import android.app.Activity
@@ -23,7 +23,7 @@ import androidx.navigation.fragment.findNavController
 import com.google.android.material.snackbar.Snackbar
 import com.pierreduchemin.smsforward.R
 import com.pierreduchemin.smsforward.databinding.AddRedirectsFragmentBinding
-import com.pierreduchemin.smsforward.ui.PermissionRegisterer
+import com.pierreduchemin.smsforward.presentation.PermissionRegisterer
 
 class AddRedirectFragment : Fragment(), AddRedirectSubscriber {
 

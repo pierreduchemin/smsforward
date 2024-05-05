@@ -1,4 +1,4 @@
-package com.pierreduchemin.smsforward.ui.redirectlist
+package com.pierreduchemin.smsforward.presentation.redirectlist
 
 
 import android.view.LayoutInflater

@@ -7,7 +7,7 @@
 
     <fragment
             android:id="@+id/redirectListFragment"
-            android:name="com.pierreduchemin.smsforward.ui.redirectlist.RedirectListFragment"
+            android:name="com.pierreduchemin.smsforward.presentation.redirectlist.RedirectListFragment"
             android:label="redirect_list_fragment_content"
             tools:layout="@layout/redirect_list_fragment_content">
         <action
@@ -27,7 +27,7 @@
     </fragment>
     <fragment
             android:id="@+id/addRedirectFragment"
-            android:name="com.pierreduchemin.smsforward.ui.addredirect.AddRedirectFragment"
+            android:name="com.pierreduchemin.smsforward.presentation.addredirect.AddRedirectFragment"
             android:label="AddRedirectFragment"
             tools:layout="@layout/add_redirects_fragment">
         <action
@@ -37,7 +37,7 @@
     </fragment>
     <fragment
             android:id="@+id/aboutFragment"
-            android:name="com.pierreduchemin.smsforward.ui.about.AboutFragment"
+            android:name="com.pierreduchemin.smsforward.presentation.about.AboutFragment"
             android:label="AboutFragment"
             tools:layout="@layout/about_fragment">
         <action

@@ -1,4 +1,4 @@
-package com.pierreduchemin.smsforward.ui.redirectlist
+package com.pierreduchemin.smsforward.presentation.redirectlist
 
 import android.content.BroadcastReceiver
 import android.content.Context
@@ -6,7 +6,7 @@ import android.content.Intent
 import android.util.Log
 import android.widget.Toast
 import com.pierreduchemin.smsforward.data.ForwardModel
-import com.pierreduchemin.smsforward.ui.addredirect.OnSmsReceivedListener
+import com.pierreduchemin.smsforward.presentation.addredirect.OnSmsReceivedListener
 import com.pierreduchemin.smsforward.utils.PhoneNumberUtils
 import com.pierreduchemin.smsforward.utils.SdkUtils
 
