@@ -80,7 +80,18 @@ class AboutFragment : Fragment() {
             getString(R.string.about_info_developers),
             R.drawable.ic_developer_24dp
         )
+
+        val iconsElement = Element(
+            getString(R.string.about_info_images),
+            R.drawable.ic_palette_24
+        )
             .setAutoApplyIconTint(false)
+            .setIntent(
+                Intent(
+                    Intent.ACTION_VIEW,
+                    Uri.parse("https://undraw.co")
+                )
+            )
 
         val aboutPage = AboutPage(requireContext())
             .enableDarkMode(isDarkTheme(resources))
@@ -91,6 +102,7 @@ class AboutFragment : Fragment() {
             .addItem(licensesElement)
             .addItem(gitlabElement)
             .addItem(developersElement)
+            .addItem(iconsElement)
             .create()
 
         ui.flAbout.addView(aboutPage)
