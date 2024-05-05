@@ -34,9 +34,9 @@ class AddRedirectFragment : Fragment(), AddRedirectSubscriber {
         const val CONTACT_PICKER_DESTINATION_REQUEST_CODE = 1896
     }
 
-    enum class ButtonState {
-        DISABLED,
-        ENABLED
+    sealed interface ButtonState {
+        object Disabled: ButtonState
+        object Enabled: ButtonState
     }
 
     private val requiredPermissions = arrayOf(
@@ -185,13 +185,13 @@ class AddRedirectFragment : Fragment(), AddRedirectSubscriber {
 
     override fun setButtonState(buttonState: ButtonState) {
         when (buttonState) {
-            ButtonState.DISABLED -> {
+            ButtonState.Disabled -> {
                 ui.etSource.isEnabled = true
                 ui.etDestination.isEnabled = true
                 ui.btnAdd.isEnabled = false
                 ui.btnAdd.text = getString(R.string.addredirect_info_add)
             }
-            ButtonState.ENABLED -> {
+            ButtonState.Enabled -> {
                 ui.etSource.isEnabled = true
                 ui.etDestination.isEnabled = true
                 ui.btnAdd.isEnabled = true

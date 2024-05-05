@@ -63,7 +63,7 @@ class RedirectListViewModel(application: Application) : AndroidViewModel(applica
             }
         } else {
             localGlobalModel.activated = true
-            ldButtonState.value = RedirectListFragment.SwitchState.JUST_ENABLED
+            ldButtonState.value = RedirectListFragment.SwitchState.JustEnabled
             viewModelScope.launch(Dispatchers.IO) {
                 globalModelRepository.updateGlobalModel(localGlobalModel)
             }
@@ -81,16 +81,16 @@ class RedirectListViewModel(application: Application) : AndroidViewModel(applica
     private fun notifyUpdate() {
         ldForwardsList.value = forwardModels
         if (forwardModels.isEmpty()) {
-            ldButtonState.value = RedirectListFragment.SwitchState.STOP
+            ldButtonState.value = RedirectListFragment.SwitchState.Stopped
             return
         }
 
         val localActivated = globalModel?.activated ?: false
         if (localActivated) {
-            ldButtonState.value = RedirectListFragment.SwitchState.ENABLED
+            ldButtonState.value = RedirectListFragment.SwitchState.Enabled
             RedirectService.startActionRedirect(getApplication())
         } else {
-            ldButtonState.value = RedirectListFragment.SwitchState.STOP
+            ldButtonState.value = RedirectListFragment.SwitchState.Stopped
             RedirectService.stopActionRedirect(getApplication())
         }
     }
