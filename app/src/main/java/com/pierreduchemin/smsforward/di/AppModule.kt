@@ -29,7 +29,6 @@ class AppModule {
                 SMSForwardDatabase::class.java,
                 "smsforward_database"
             )
-                .allowMainThreadQueries() // TODO: remove
                 .fallbackToDestructiveMigration()
                 .build()
         }
