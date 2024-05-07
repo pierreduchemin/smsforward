@@ -2,7 +2,6 @@ package com.pierreduchemin.smsforward.data.source.database
 
 import androidx.lifecycle.LiveData
 import androidx.room.*
-import com.pierreduchemin.smsforward.data.ForwardModel
 
 /**
  * Data Access Object for the tasks table.

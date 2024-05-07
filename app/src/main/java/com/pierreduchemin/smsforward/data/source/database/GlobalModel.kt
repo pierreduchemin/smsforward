@@ -1,4 +1,4 @@
-package com.pierreduchemin.smsforward.data
+package com.pierreduchemin.smsforward.data.source.database
 
 import androidx.annotation.NonNull
 import androidx.room.ColumnInfo
@@ -9,12 +9,11 @@ import androidx.room.PrimaryKey
 data class GlobalModel(
 
     @PrimaryKey(autoGenerate = true)
-    @NonNull
     val id: Long,
 
     @ColumnInfo
-    var activated: Boolean,
+    var activated: Boolean = false,
 
     @ColumnInfo
-    var advancedMode: Boolean
+    var advancedMode: Boolean = false,
 )

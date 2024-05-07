@@ -1,4 +1,4 @@
-package com.pierreduchemin.smsforward.data
+package com.pierreduchemin.smsforward.data.source.database
 
 import androidx.room.ColumnInfo
 import androidx.room.Entity
@@ -26,5 +26,5 @@ data class ForwardModel(
     var vto: String = "",
 
     @ColumnInfo
-    var isRegex: Boolean = false
+    var isRegex: Boolean = false,
 )
