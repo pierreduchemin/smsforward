@@ -1,4 +1,4 @@
-package com.pierreduchemin.smsforward.ui.redirectlist
+package com.pierreduchemin.smsforward.presentation.redirectlist
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -20,10 +20,10 @@ import dagger.hilt.android.AndroidEntryPoint
 @AndroidEntryPoint
 class RedirectListFragment : Fragment() {
 
-    enum class SwitchState {
-        JUST_ENABLED,
-        ENABLED,
-        STOP
+    sealed interface SwitchState {
+        object JustEnabled: SwitchState
+        object Enabled: SwitchState
+        object Stopped: SwitchState
     }
 
     private object Flipper {
@@ -94,12 +94,12 @@ class RedirectListFragment : Fragment() {
     }
 
     private fun setSwitchState(switchState: SwitchState) {
-        if (switchState == SwitchState.JUST_ENABLED) {
+        if (switchState == SwitchState.JustEnabled) {
             SdkUtils.vibrate(requireContext())
         }
         when (switchState) {
-            SwitchState.JUST_ENABLED,
-            SwitchState.ENABLED -> {
+            SwitchState.JustEnabled,
+            SwitchState.Enabled -> {
                 ui.vfContent.swActivate.isEnabled = true
                 ui.vfContent.swActivate.isChecked = true
                 ui.vfContent.tvActivationMessage.text =
@@ -112,7 +112,7 @@ class RedirectListFragment : Fragment() {
                 )
             }
 
-            SwitchState.STOP -> {
+            SwitchState.Stopped -> {
                 ui.vfContent.swActivate.isEnabled = true
                 ui.vfContent.swActivate.isChecked = false
                 ui.vfContent.tvActivationMessage.text =

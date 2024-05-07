@@ -27,7 +27,7 @@
             tools:targetApi="s">
 
         <activity
-                android:name=".ui.MainActivity"
+                android:name=".presentation.MainActivity"
                 android:exported="true"
                 android:launchMode="singleTop">
             <intent-filter>
@@ -37,7 +37,7 @@
         </activity>
 
         <receiver
-                android:name=".ui.addredirect.BootDeviceReceiver"
+                android:name=".presentation.addredirect.BootDeviceReceiver"
                 android:exported="false">
             <intent-filter>
                 <action android:name="android.intent.action.BOOT_COMPLETED" />

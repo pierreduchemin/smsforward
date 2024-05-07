@@ -1,4 +1,4 @@
-package com.pierreduchemin.smsforward.ui.addredirect
+package com.pierreduchemin.smsforward.presentation.addredirect
 
 import android.Manifest
 import android.app.Activity
@@ -25,7 +25,7 @@ import com.google.android.material.snackbar.Snackbar
 import com.pierreduchemin.smsforward.R
 import com.pierreduchemin.smsforward.data.ContactModelRepository
 import com.pierreduchemin.smsforward.databinding.AddRedirectsFragmentBinding
-import com.pierreduchemin.smsforward.ui.PermissionRegisterer
+import com.pierreduchemin.smsforward.presentation.PermissionRegisterer
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -35,9 +35,9 @@ class AddRedirectFragment : Fragment(), AddRedirectSubscriber {
         private val TAG by lazy { BootDeviceReceiver::class.java.simpleName }
     }
 
-    enum class ButtonState {
-        DISABLED,
-        ENABLED
+    sealed interface ButtonState {
+        object Disabled: ButtonState
+        object Enabled: ButtonState
     }
 
     private val requiredPermissions = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
@@ -181,14 +181,14 @@ class AddRedirectFragment : Fragment(), AddRedirectSubscriber {
 
     override fun setButtonState(buttonState: ButtonState) {
         when (buttonState) {
-            ButtonState.DISABLED -> {
+            ButtonState.Disabled -> {
                 ui.etSource.isEnabled = true
                 ui.etDestination.isEnabled = true
                 ui.btnAdd.isEnabled = false
                 ui.btnAdd.text = getString(R.string.addredirect_info_add)
             }
 
-            ButtonState.ENABLED -> {
+            ButtonState.Enabled -> {
                 ui.etSource.isEnabled = true
                 ui.etDestination.isEnabled = true
                 ui.btnAdd.isEnabled = true
@@ -218,7 +218,7 @@ class AddRedirectFragment : Fragment(), AddRedirectSubscriber {
         ui.etSource.clearFocus()
         ui.etSource.inputType = EditorInfo.TYPE_CLASS_PHONE
         hideKeyboardFrom(ui.etSource)
-        ui.btnAdvancedMode.setImageResource(R.drawable.ic_regex_grey_24dp)
+        ui.btnAdvancedMode.setImageResource(R.drawable.ic_regex_24dp)
     }
 
     private fun setAdvancedMode() {
@@ -226,7 +226,7 @@ class AddRedirectFragment : Fragment(), AddRedirectSubscriber {
         ui.etSource.isFocusableInTouchMode = true
         ui.etSource.requestFocus()
         ui.etSource.inputType = EditorInfo.TYPE_CLASS_TEXT
-        ui.btnAdvancedMode.setImageResource(R.drawable.ic_regex_black_24dp)
+        ui.btnAdvancedMode.setImageResource(R.drawable.ic_regex_24dp)
     }
 
     private fun hideKeyboardFrom(view: View) {

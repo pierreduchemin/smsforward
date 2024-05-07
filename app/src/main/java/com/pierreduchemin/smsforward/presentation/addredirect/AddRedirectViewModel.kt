@@ -1,4 +1,4 @@
-package com.pierreduchemin.smsforward.ui.addredirect
+package com.pierreduchemin.smsforward.presentation.addredirect
 
 import android.app.Application
 import androidx.lifecycle.MutableLiveData
@@ -135,7 +135,7 @@ class AddRedirectViewModel @Inject constructor() : ViewModel() {
         if (forwardModel == null) {
             sourceText.value = ""
             destinationText.value = ""
-            buttonState.value = AddRedirectFragment.ButtonState.DISABLED
+            buttonState.value = AddRedirectFragment.ButtonState.Disabled
             return
         }
 
@@ -148,9 +148,9 @@ class AddRedirectViewModel @Inject constructor() : ViewModel() {
         val enabled = (advancedMode || localForwardModel.from.isNotEmpty())
                 && localForwardModel.to.isNotEmpty()
         if (enabled) {
-            buttonState.value = AddRedirectFragment.ButtonState.ENABLED
+            buttonState.value = AddRedirectFragment.ButtonState.Enabled
         } else {
-            buttonState.value = AddRedirectFragment.ButtonState.DISABLED
+            buttonState.value = AddRedirectFragment.ButtonState.Disabled
         }
     }
 

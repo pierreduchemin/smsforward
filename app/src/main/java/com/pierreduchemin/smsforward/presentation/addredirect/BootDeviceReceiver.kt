@@ -1,10 +1,10 @@
-package com.pierreduchemin.smsforward.ui.addredirect
+package com.pierreduchemin.smsforward.presentation.addredirect
 
 import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
 import android.util.Log
-import com.pierreduchemin.smsforward.ui.redirectlist.SmsReceiver
+import com.pierreduchemin.smsforward.presentation.redirectlist.SmsReceiver
 import com.pierreduchemin.smsforward.utils.NotificationUtils
 import com.pierreduchemin.smsforward.utils.RedirectionManager
 import javax.inject.Inject

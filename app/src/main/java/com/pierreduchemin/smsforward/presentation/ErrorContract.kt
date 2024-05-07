@@ -1,4 +1,4 @@
-package com.pierreduchemin.smsforward.ui
+package com.pierreduchemin.smsforward.presentation
 
 interface ErrorContract {
     fun showError(message: Int)

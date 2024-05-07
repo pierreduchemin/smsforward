@@ -15,7 +15,7 @@ import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
 import androidx.core.content.ContextCompat
 import com.pierreduchemin.smsforward.R
-import com.pierreduchemin.smsforward.ui.MainActivity
+import com.pierreduchemin.smsforward.presentation.MainActivity
 
 object NotificationUtils {
 

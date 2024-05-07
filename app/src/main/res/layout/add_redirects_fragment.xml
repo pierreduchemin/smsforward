@@ -71,7 +71,7 @@
                             android:clickable="true"
                             android:contentDescription="@string/addredirect_info_enable_regex_mode"
                             android:focusable="true"
-                            app:srcCompat="@drawable/ic_regex_grey_24dp" />
+                            app:srcCompat="@drawable/ic_regex_24dp" />
 
                 </RelativeLayout>
 

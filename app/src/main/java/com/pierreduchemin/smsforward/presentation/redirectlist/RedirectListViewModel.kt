@@ -1,4 +1,4 @@
-package com.pierreduchemin.smsforward.ui.redirectlist
+package com.pierreduchemin.smsforward.presentation.redirectlist
 
 import android.app.Application
 import android.util.Log
@@ -64,13 +64,13 @@ class RedirectListViewModel @Inject constructor(
         val localGlobalModel = globalModel!!
         if (localGlobalModel.activated) {
             localGlobalModel.activated = false
-            ldButtonState.value = RedirectListFragment.SwitchState.STOP
+            ldButtonState.value = RedirectListFragment.SwitchState.Stopped
             viewModelScope.launch(Dispatchers.IO) {
                 globalModelRepository.updateGlobalModel(localGlobalModel)
             }
         } else {
             localGlobalModel.activated = true
-            ldButtonState.value = RedirectListFragment.SwitchState.JUST_ENABLED
+            ldButtonState.value = RedirectListFragment.SwitchState.JustEnabled
             viewModelScope.launch(Dispatchers.IO) {
                 globalModelRepository.updateGlobalModel(localGlobalModel)
             }
@@ -88,15 +88,15 @@ class RedirectListViewModel @Inject constructor(
     private fun notifyUpdate() {
         ldForwardsList.value = forwardModels
         if (forwardModels.isEmpty()) {
-            ldButtonState.value = RedirectListFragment.SwitchState.STOP
+            ldButtonState.value = RedirectListFragment.SwitchState.Stopped
             return
         }
 
         val localActivated = globalModel?.activated ?: false
         if (localActivated) {
-            ldButtonState.value = RedirectListFragment.SwitchState.ENABLED
+            ldButtonState.value = RedirectListFragment.SwitchState.Enabled
         } else {
-            ldButtonState.value = RedirectListFragment.SwitchState.STOP
+            ldButtonState.value = RedirectListFragment.SwitchState.Stopped
         }
     }
 

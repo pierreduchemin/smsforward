@@ -5,7 +5,7 @@
         android:id="@+id/redirectListContainer"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:context=".ui.redirectlist.RedirectListFragment">
+        tools:context=".presentation.redirectlist.RedirectListFragment">
 
     <ImageView
             android:id="@+id/ivSend"
