@@ -33,8 +33,8 @@ ENV PATH=${ANDROID_HOME}/cmdline-tools/bin:${ANDROID_HOME}/build-tools/34.0.0:${
 
 # Android SDK libraries, NDK
 ENV ANDROID_DEPS='platform-tools \
- build-tools;33.0.0 \
- platforms;android-33 \
+ build-tools;34.0.0 \
+ platforms;android-34 \
  extras;android;m2repository \
  extras;google;m2repository'
 RUN yes | sdkmanager --sdk_root=${ANDROID_HOME} $ANDROID_DEPS

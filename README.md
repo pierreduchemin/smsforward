@@ -26,6 +26,13 @@ Build with:
 ./gradlew assembleRelease
 ```
 
+## Update container
+```bash
+docker login registry.gitlab.com
+docker build -t registry.gitlab.com/pierreduchemin/smsforward .
+docker push registry.gitlab.com/pierreduchemin/smsforward
+```
+
 ## Testing
 
 Given the nature of this project, testing can be challenging.
@@ -46,12 +53,3 @@ This way, your question becomes a contribution to the project.
 ## License
 
 SMS Forward's [LICENSE](LICENSE) is GNU GPL v3+.
-
-
-## dev notes
-on boot:
-check activated -> register smsreceiver
-
-on activation:
-register smsreceiver
-
