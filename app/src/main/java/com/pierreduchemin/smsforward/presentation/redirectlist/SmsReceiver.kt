@@ -4,15 +4,13 @@ import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
 import android.content.IntentFilter
-import android.os.Bundle
+import android.provider.Telephony
 import android.provider.Telephony.Sms.Intents.SMS_RECEIVED_ACTION
 import android.telephony.TelephonyManager
 import android.util.Log
-import android.widget.Toast
 import androidx.core.content.ContextCompat
 import com.pierreduchemin.smsforward.utils.PhoneNumberUtils
 import com.pierreduchemin.smsforward.utils.RedirectionManager
-import com.pierreduchemin.smsforward.utils.SdkUtils
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
 
@@ -55,37 +53,27 @@ class SmsReceiver : BroadcastReceiver() {
         if (intent.action != SMS_RECEIVED_ACTION) {
             return
         }
-        Log.d(TAG, "onReceive")
-        val bundle = intent.extras ?: return
-        try {
-            val (phoneNumberFrom, messageContent) = readSms(bundle, context)
-            redirectionManager.onSmsReceived(context, phoneNumberFrom, messageContent)
-        } catch (e: Exception) {
-            Log.e(TAG, "Exception in smsReceiver $e")
-            Toast.makeText(context, "Error: $e", Toast.LENGTH_LONG).show()
-        }
-    }
+        val messagesFromIntent = Telephony.Sms.Intents.getMessagesFromIntent(intent)
+        Log.d(TAG, "onReceive" + messagesFromIntent.size)
 
-    private fun readSms(
-        bundle: Bundle,
-        context: Context
-    ): Pair<String, String> {
-        val pdusObj = bundle.get("pdus") as Array<*>
-        var phoneNumberFrom = ""
-        var messageContent = ""
-        for (o in pdusObj) {
-            if (o == null) {
-                continue
+        var message = ""
+        messagesFromIntent.forEach {
+            message += if (it.isEmail) {
+                it.emailBody
+            } else {
+                it.messageBody
             }
-            val currentMessage = SdkUtils.getIncomingMessage(o, bundle)
-            if (phoneNumberFrom.isEmpty()) {
-                phoneNumberFrom = PhoneNumberUtils.toUnifiedNumber(
-                    context,
-                    currentMessage.displayOriginatingAddress
-                )
-            }
-            messageContent += currentMessage.displayMessageBody
         }
-        return Pair(phoneNumberFrom, messageContent)
+
+        val first = messagesFromIntent.first()
+        if (first.isEmail) {
+            redirectionManager.onSmsReceived(context, first.emailFrom, message)
+        } else {
+            redirectionManager.onSmsReceived(
+                context,
+                PhoneNumberUtils.toUnifiedNumber(context, first.displayOriginatingAddress),
+                message
+            )
+        }
     }
 }

@@ -4,12 +4,10 @@ import android.content.Context
 import android.content.res.Configuration
 import android.content.res.Resources
 import android.os.Build
-import android.os.Bundle
 import android.os.VibrationEffect
 import android.os.Vibrator
 import android.os.VibratorManager
 import android.telephony.SmsManager
-import android.telephony.SmsMessage
 import androidx.core.content.ContextCompat.getSystemService
 
 object SdkUtils {
@@ -21,17 +19,6 @@ object SdkUtils {
         } else {
             SmsManager.getDefault()
         }
-    }
-
-    @Suppress("DEPRECATION")
-    fun getIncomingMessage(aObject: Any, bundle: Bundle): SmsMessage {
-        val currentSMS: SmsMessage = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            val format = bundle.getString("format")
-            SmsMessage.createFromPdu(aObject as ByteArray, format)
-        } else {
-            SmsMessage.createFromPdu(aObject as ByteArray)
-        }
-        return currentSMS
     }
 
     @Suppress("DEPRECATION")
