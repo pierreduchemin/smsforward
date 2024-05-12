@@ -44,7 +44,7 @@
             </intent-filter>
         </receiver>
         <receiver
-                android:name=".ui.redirectlist.SmsReceiver"
+                android:name=".presentation.redirectlist.SmsReceiver"
                 android:enabled="true"
                 android:exported="true"
                 android:permission="android.permission.BROADCAST_SMS">
