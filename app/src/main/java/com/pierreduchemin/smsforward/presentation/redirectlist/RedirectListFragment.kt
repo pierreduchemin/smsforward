@@ -21,9 +21,9 @@ import dagger.hilt.android.AndroidEntryPoint
 class RedirectListFragment : Fragment() {
 
     sealed interface SwitchState {
-        object JustEnabled: SwitchState
-        object Enabled: SwitchState
-        object Stopped: SwitchState
+        data object JustEnabled: SwitchState
+        data object Enabled: SwitchState
+        data object Stopped: SwitchState
     }
 
     private object Flipper {

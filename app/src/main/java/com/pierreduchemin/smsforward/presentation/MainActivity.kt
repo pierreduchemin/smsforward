@@ -18,10 +18,6 @@ interface PermissionRegisterer {
 @AndroidEntryPoint
 class MainActivity : AppCompatActivity(), PermissionRegisterer {
 
-    companion object {
-        private val TAG by lazy { MainActivity::class.java.simpleName }
-    }
-
     private val ui: MainActivityBinding by lazy { MainActivityBinding.inflate(layoutInflater) }
 
     private lateinit var registerForActivityResult: ActivityResultLauncher<Array<String>>
