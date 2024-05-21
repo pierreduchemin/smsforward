@@ -88,9 +88,9 @@ dependencies {
     implementation libs.androidx.animation
     implementation libs.material
     implementation libs.androidx.material3
-    implementation libs.ui.tooling.preview
+    implementation libs.androidx.ui.tooling.preview
     implementation libs.androidx.lifecycle.runtime.ktx
-    debugImplementation libs.ui.tooling
+    debugImplementation libs.androidx.ui.tooling
 
     // Android test
     testImplementation libs.junit
