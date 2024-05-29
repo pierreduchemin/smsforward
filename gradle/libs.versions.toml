@@ -7,7 +7,6 @@ appcompat = "1.6.1"
 constraintlayout = "2.1.4"
 coreTestingVersion = "2.2.0"
 coroutines = "1.8.1"
-foundation = "1.6.7"
 fragmentKtx = "1.7.1"
 gradle = "8.4.1"
 hiltAndroid = "2.51.1"
@@ -23,13 +22,14 @@ lifecycleExtensions = "2.2.0"
 lifecycleRuntimeKtx = "2.8.0"
 activityCompose = "1.9.0"
 composeBom = "2024.05.00"
-material = "1.12.0"
 material3 = "1.2.1"
 navVersion = "2.7.7"
 recyclerview = "1.3.2"
 roomVersion = "2.6.1"
 runner = "1.5.2"
 runtime = "1.6.7"
+ksp = " 1.9.24-1.0.20"
+hilt = "2.44"
 
 [libraries]
 android-about-page = { module = "com.github.medyo:android-about-page", version.ref = "androidAboutPage" }
@@ -74,4 +74,6 @@ libphonenumber = { module = "com.googlecode.libphonenumber:libphonenumber", vers
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }
 jetbrains-kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
+android-ksp = { id = "com.google.devtools.ksp", version.ref = "ksp" }
+dagger-hilt = { id = "dagger.hilt.android.plugin", version.ref = "hilt" }
 
