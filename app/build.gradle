@@ -34,7 +34,7 @@ android {
 
 ext {
     roomVersion = '2.6.1'
-    archLifecycleVersion = '2.8.0'
+    archLifecycleVersion = '2.8.1'
     coreTestingVersion = '2.2.0'
     coroutines = '1.8.1'
     navVersion = '2.7.7'
