@@ -2,7 +2,7 @@
 
 buildscript {
     ext.kotlin_version = '1.9.24'
-    ext.hilt_version = '2.51.1'
+    ext.hilt_version = '2.52'
     repositories {
         mavenCentral()
         maven { url "https://repo1.maven.org/" }
